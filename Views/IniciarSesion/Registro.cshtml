@@ -1,0 +1,144 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Registro";
+}
+<head>
+    <link rel="stylesheet" href="~/css/IniciarSesionRegistro.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="contenedor">
+        <form class="formulario" id="registro">
+            <div class="hoja1">
+                <div class="titulo">Registro</div>
+                <div class="input">
+                    <label class="form-label" placeholder="Nombre">ingresa primer y segundo nombre *</label>
+                    <input class="form-control" type="text" required name="nombres"/>
+                </div>
+                <div class="input">
+                    <label class="form-label" placeholder="Apellido">ingresa primer y segundo apellido *</label>
+                    <input class="form-control" type="text" required name="apellidos"/>
+                </div>
+                <div class="input">
+                    <input class="form-control" type="number" placeholder="Documento" required name="documento"/>
+                </div>
+                <div class="input">
+                    <select class="form-select" id="tipoDeDocumento" required name="tipoDocumento">
+                        <option selected value="">tipo de documento</option>
+				    </select>
+                </div>
+                <div class="input">
+                    <input class="form-control" type="text" placeholder="Direccion" required name="direccion"/>
+                </div>
+                <div class="input">
+                    <input class="form-control" type="number" placeholder="Telefono" required name="telefono"/>
+                </div>
+                <div class="input">
+                    <label class="form-label">Fecha de Nacimiento</label>
+                    <input class="form-control" type="date" required name="fechaNacimiento"/>
+                </div>
+            </div>
+            <div class="hoja2">
+                <div class="input">
+                    <label class="form-label">Ingresar correo electronico *</label>
+                    <input class="form-control" type="email" placeholder="Correo" required name="email"/>
+                </div>
+                <div class="input">
+                    <label class="form-label">Ingresar contraseña *</label>
+                    <input class="form-control" type="password" placeholder="Contraseña" required name="password"/>
+                </div>
+                <div class="input">
+                    <label class="form-label">Confirmar contraseña*</label>
+                    <input class="form-control" type="password" placeholder="Contraseña" required name="passwordConfirm"/>
+                </div>
+                <div class="input">
+                    <button class="btn"type="submit">REGISTRAR</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    @section Scripts{
+        <script>
+            $( document ).ready(function() {
+                traerTiposDeDocumento();
+            });
+
+            function traerTiposDeDocumento(){
+                const select=document.getElementById('tipoDeDocumento');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("TraerTiposDeDocumento","IniciarSesion")',
+                    success: function(respuesta){
+                        var tipoDeDocumentos=respuesta.tipoDocumentos;
+                        //console.log(tipoDeDocumentos);
+                        var plantilla='';
+                        tipoDeDocumentos.forEach(tipoDeDocumento => {
+                            plantilla+=`<option value="${tipoDeDocumento.id}">${tipoDeDocumento.tipo}</option>`
+                        });
+                        select.innerHTML+=plantilla;
+                    }
+                });
+            }
+
+            $('#registro').submit(function(e){
+                //console.log($('#registro').serialize());
+                $.ajax({
+                    type: "POST",
+                    data: $('#registro').serialize(),
+                    url: '@Url.Action("RegistrarUsuario","IniciarSesion")',
+                    success: function(respuesta){
+                        switch(respuesta){
+                            case "contraseñas incorrectas":
+                                Swal.fire({
+                                  icon: 'info',
+                                  title: 'Contraseñas no coinciden',
+                                  text: 'Las contraseñas no son iguales'
+                                });
+                                break;
+                            case "correo y documento existentes":
+                                Swal.fire({
+                                  icon: 'info',
+                                  title: 'Se encontraron registros',
+                                  text: 'El documento y el correo ya se encuentran registrados'
+                                });
+                                break;
+                            case "documento existente":
+                                Swal.fire({
+                                  icon: 'info',
+                                  title: 'Se encontraron registros',
+                                  text: 'El Documento ya se encuentra registrado'
+                                });
+                                break;
+                            case "email existente":
+                                Swal.fire({
+                                  icon: 'info',
+                                  title: 'Se encontraron registros',
+                                  text: 'El Email ya se encuentra registrado'
+                                });
+                                break;
+                            case "registro realizado":
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Registro realizado',
+                                    allowOutsideClick: false,
+                                    confirmButtonText: 'De acuerdo'
+
+                                }).then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    $('#registro').trigger('reset');
+                                    if (result.isConfirmed) {
+                                        location.href = '@Url.Action("Index","IniciarSesion")';
+                                    }
+                                });
+                                break;
+                            default:
+                                console.log(respuesta);
+                        }
+                    }
+                });
+                e.preventDefault();
+            });
+        </script>
+    }
+</body>

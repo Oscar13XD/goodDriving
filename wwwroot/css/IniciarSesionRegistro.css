@@ -1,0 +1,83 @@
+﻿body {
+    background-color: #E5E9F2;
+}
+
+.formulario {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap:20px;
+    min-height: 80vh;
+    background-color: #B2F1F7;
+    margin-bottom: 40px;
+    border: 3px solid #8492A6;
+    grid-template-areas: "hoja1 hoja2";
+}
+
+.hoja1 {
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+    padding: 40px;
+    border: 3px solid #8492A6;
+    grid-area:hoja1;
+}
+
+.hoja2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    border: 3px solid #8492A6;
+    grid-area: hoja2;
+}
+
+.titulo {
+    color: #47525E;
+    font-family: Berkshire Swash;
+    font-size: 56px;
+    line-height: 51px;
+    text-align: center;
+    margin-bottom:20px;
+}
+
+.input{
+    margin-bottom:20px;
+}
+
+.input label {
+    color: #8190A5;
+    font-family: Lato;
+    font-size: 18px;
+    text-align: left;
+}
+
+.input select {
+    color: #47525E;
+    font-family: Lato;
+    font-size: 18px;
+    text-align: left;
+}
+
+.input button {
+    background-color: #47525E;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-family: Lato;
+    font-size: 18px;
+    text-align: center;
+    width:100%;
+}
+
+    .input button:hover {
+        color: #FFFFFF;
+    }
+
+@media screen and (max-width: 768px) {
+    .formulario {
+        grid-template-columns: 1fr;
+        grid-template-areas: "hoja1"
+            "hoja2";
+    }
+}
+
+

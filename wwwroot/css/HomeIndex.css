@@ -1,0 +1,21 @@
+﻿body {
+    background-color: #64E9EE;
+}
+
+.container {
+    min-height: 76vh;
+    display: flex;
+}
+
+.titulo {
+    display:flex;
+    align-items:end;
+    color: #47525E;
+    font-family: Berkshire Swash;
+    font-size: 56px;
+    line-height: 53px;
+    width: 540px;
+    text-align: left;
+    bottom: 200px;
+    padding-bottom:40px;
+}

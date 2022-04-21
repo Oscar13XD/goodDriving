@@ -1,0 +1,71 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Recuperar Contraseña";
+}
+<head>
+    <link rel="stylesheet" href="~/css/IniciarSesionIndex.css" asp-append-version="true" />
+</head>
+<body>
+     <div class="contenedor">
+        <form id="enviarPassword">
+            <div class="titulo">Ingresar nueva Contraseña</div>
+            <div class="subtitulo">Ingrese la nueva contraseña y confirmela</div>
+            <div class="mb-3">
+                <input type="password" class="form-control" required  placeholder="Contraseña" name="password">
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" required  placeholder="Confirmar Contraseña" name="confirmPassword">
+            </div>
+            <input type="hidden" id="token" name="token"/>
+            <button type="submit" class="ingresar">Enviar</button>
+        </form>
+    </div>
+    @section Scripts{
+    <script>
+        let params = new URLSearchParams(location.search);
+		var token = params.get('token');
+        $('#token').val(token);
+        $('#enviarPassword').submit(function(e){
+            $.ajax({
+                type: "POST",
+                data: $('#enviarPassword').serialize(),
+                url: '@Url.Action("Recuperar","IniciarSesion")',
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "no coinciden":
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'No coinciden',
+                                text: 'las contraseñas no coinciden'
+                            });
+                            break;
+                        case "actualizado":
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Contraseña Reestablecida',
+                                text: 'A continuacion se le redigirá a iniciar sesión',
+                                allowOutsideClick: false,
+                                confirmButtonText: 'De acuerdo'
+
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                $('#registro').trigger('reset');
+                                if (result.isConfirmed) {
+                                    location.href = '@Url.Action("Index","IniciarSesion")';
+                                }
+                            });
+                            break;
+                        default:
+                            console.log(respuesta);
+                            break;
+                    }
+                }
+            });
+            e.preventDefault();
+        });
+    </script>
+    }
+</body>
+

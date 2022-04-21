@@ -1,0 +1,57 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Iniciar Sesion";
+}
+<head>
+    <link rel="stylesheet" href="~/css/IniciarSesionIndex.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="contenedor">
+        <form id="iniciarSesion">
+            <div class="titulo">Iniciar Sesion</div>
+            <div class="mb-3">
+                <input type="email" class="form-control" required aria-describedby="emailHelp" placeholder="Correo" name="email">
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" required placeholder="Contraseña" name="password">
+            </div>
+            <div class="olvide"><a asp-controller="IniciarSesion" asp-action="RecuperarPassword">!Olvide la contraseña!</a></div>
+            <button type="submit" class="ingresar">Ingresar</button>
+        </form>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @section Scripts{
+    <script>
+        $('#iniciarSesion').submit(function(e){
+            $.ajax({
+                type: "POST",
+                data: $('#iniciarSesion').serialize(),
+                url: '@Url.Action("IniciarSesion","IniciarSesion")',
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "ADMINISTRADOR":
+                            location.href = '@Url.Action("Index","Administrador")';
+                            break;
+                        case "TUTOR":
+                            break;
+                        case "USUARIO":
+                            location.href = '@Url.Action("Index","Usuario")';
+                            break;
+                        default:
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Datos Incorrectos',
+                                text: 'El correo o la contraseña son incorrectos'
+                            });
+                            break;
+                    }
+                }
+            });
+            e.preventDefault();
+        });
+    </script>
+    }
+</body>
