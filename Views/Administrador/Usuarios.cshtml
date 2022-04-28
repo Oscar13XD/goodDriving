@@ -1,0 +1,56 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutAdministrador";
+}
+<head>
+
+</head>
+<body>
+    <form>
+        <div class="input">
+           <label class="form-label" placeholder="Nombre">Ingresa primer y segundo nombre</label>
+           <input class="form-control" type="text" required name="nombres"/>
+        </div>
+         <div class="input">
+            <label class="form-label" placeholder="Apellido">Ingresa primer y segundo apellido</label>
+            <input class="form-control" type="text" required name="apellidos"/>
+        </div>
+        <div class="input">
+            <label class="form-label" placeholder="Docuemnto">Documento</label>
+            <input class="form-control" type="text" required name ="documento" />
+        </div>
+        <div class="input"> 
+            <select class="form-select" required id="tipoDeDocumento" name="tipoDocumento">
+                <option selected value="">Tipo de documento</option>
+            </select>
+	    </div>
+        <div class="input">
+           <label class="form-label" placeholder="direccion"> Direccion</label>
+            <input class="form-control" type="text" required name="direccion"/>
+        </div>
+        <div class="input"> 
+               <laber class="form-label" placeholder="telefono">Telefono</laber>
+               <input class="form-control" type="text" required name="telefono" />
+        </div>
+        <div class="input">
+            <label class="form-label" placeholder="fecha de nacimiento"> Fecha de nacimiento </label>
+            <input class="form-control" type="text" required name="fechanacimiento"/>
+        </div>
+        <div class="input">
+            <label class="form-label" placeholder="ingrese correo electronico"> Ingrese correo electronico</label>
+            <input class="form-control" type="text" required name="ingresecorreoelectronico" />
+       </div>
+       <div class="input">
+           <label class="form-label" placeholder="ingrese contraseña">Ingrese contraseña</label>
+           <input class="form-control" type="text" required name=" ingresecontraseña" />
+      </div>
+      <div class="input">
+       <label class="form-label" placeholder="" >Confirmar contraseña</label>
+       <input class="form-control" type="text" required name=" confirmacontraseña" />
+
+      </div>
+    </form>
+
+</body>

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GoodDriving.Controllers
 {
-    [Authorize(Roles = "ADMINISTRADOR")]
+    //[Authorize(Roles = "ADMINISTRADOR")]
     public class AdministradorController : Controller
     {
         private readonly goodDrivingContext _context;
@@ -14,7 +14,14 @@ namespace GoodDriving.Controllers
         {
             _context = context;
         }
+
+        //SECCION DE VISTAS
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Usuarios()
         {
             return View();
         }
