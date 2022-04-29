@@ -17,9 +17,12 @@ namespace GoodDriving.Models
         }
 
         public virtual DbSet<EstadoUsuario> EstadoUsuarios { get; set; } = null!;
+        public virtual DbSet<MarcaVehiculo> MarcaVehiculos { get; set; } = null!;
+        public virtual DbSet<ModeloVehiculo> ModeloVehiculos { get; set; } = null!;
         public virtual DbSet<TipoDocumento> TipoDocumentos { get; set; } = null!;
         public virtual DbSet<TipoUsuario> TipoUsuarios { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
+        public virtual DbSet<Vehiculo> Vehiculos { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,6 +45,30 @@ namespace GoodDriving.Models
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("estado");
+            });
+
+            modelBuilder.Entity<MarcaVehiculo>(entity =>
+            {
+                entity.ToTable("marcaVehiculo");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("descripcion");
+            });
+
+            modelBuilder.Entity<ModeloVehiculo>(entity =>
+            {
+                entity.ToTable("modeloVehiculo");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("descripcion");
             });
 
             modelBuilder.Entity<TipoDocumento>(entity =>
@@ -152,6 +179,29 @@ namespace GoodDriving.Models
                     .WithMany(p => p.Usuarios)
                     .HasForeignKey(d => d.IdTipoDocumento)
                     .HasConstraintName("fk_tipoDocumento");
+            });
+
+            modelBuilder.Entity<Vehiculo>(entity =>
+            {
+                entity.ToTable("vehiculo");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Cantidad).HasColumnName("cantidad");
+
+                entity.Property(e => e.IdMarca).HasColumnName("idMarca");
+
+                entity.Property(e => e.IdModelo).HasColumnName("idModelo");
+
+                entity.HasOne(d => d.IdMarcaNavigation)
+                    .WithMany(p => p.Vehiculos)
+                    .HasForeignKey(d => d.IdMarca)
+                    .HasConstraintName("fk_marcaVehiculo");
+
+                entity.HasOne(d => d.IdModeloNavigation)
+                    .WithMany(p => p.Vehiculos)
+                    .HasForeignKey(d => d.IdModelo)
+                    .HasConstraintName("fk_modeloVehiculo");
             });
 
             OnModelCreatingPartial(modelBuilder);

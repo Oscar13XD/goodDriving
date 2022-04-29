@@ -1,0 +1,209 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutAdministrador";
+}
+<head>
+
+</head>
+<body>
+    <div class="container ">
+        <div class="card mt-2">
+            <div class="card-body">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    CREAR USUARIO
+                </button>
+            </div>
+        </div>
+        <div class="card mt-2">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Registro de Usuarios
+            </div>
+            <div class="card-body">
+            <table id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Edad</th>
+                        <th>Documento</th>
+                        <th>Telefono</th>
+                        <th>Direccion</th>
+                        <th>Email</th>
+                        <th>Tipo de Usuario</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaUsuarios"></tbody>
+            </table>
+            </div>
+        </div>
+
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="registro">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="Nombre">Ingresa primer y segundo nombre</label>
+                                            <input class="form-control" type="text" required name="nombres" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="Apellido">Ingresa primer y segundo apellido</label>
+                                            <input class="form-control" type="text" required name="apellidos" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="Docuemnto">Documento</label>
+                                            <input class="form-control" type="text" required name="documento" />
+                                        </div>
+                                        <div class="col-6">
+                                            <select class="form-select" required id="tipoDeDocumento" name="tipoDocumento">
+                                                <option selected value="">Tipo de documento</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="direccion"> Direccion</label>
+                                            <input class="form-control" type="text" required name="direccion" />
+                                        </div>
+                                        <div class="col-6">
+                                            <laber class="form-label" placeholder="telefono">Telefono</laber>
+                                            <input class="form-control" type="text" required name="telefono" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="fecha de nacimiento"> Fecha de nacimiento </label>
+                                            <input class="form-control" type="text" required name="fechanacimiento" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="ingrese correo electronico"> Ingrese correo electronico</label>
+                                            <input class="form-control" type="text" required name="ingresecorreoelectronico" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="ingrese contraseña">Ingrese contraseña</label>
+                                            <input class="form-control" type="text" required name=" ingresecontraseña" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="">Confirmar contraseña</label>
+                                            <input class="form-control" type="text" required name=" confirmacontraseña" />
+                                        </div>
+                                        <div class="col-6">
+                                            <select class="form-select" required id="tipoUsuario" name="TipoUsuario">
+                                                <option selected value="">Tipo de usuario</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
+                        <button type="button" class="btn btn-primary">REGISTRAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @section Scripts{
+    <script>
+        $( document ).ready(function() {
+            traerTiposDeDocumento();
+            traerTipoDeUsuario();
+            traerUsuarios();
+        });
+
+        function traerTiposDeDocumento(){
+            const select=document.getElementById('tipoDeDocumento');
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerTiposDeDocumento","Administrador")',
+                success: function(respuesta){
+                    var tipoDeDocumentos=respuesta.tipoDocumentos;
+                    //console.log(tipoDeDocumentos);
+                    var plantilla='';
+                    tipoDeDocumentos.forEach(tipoDeDocumento => {
+                        plantilla+=`<option value="${tipoDeDocumento.id}">${tipoDeDocumento.tipo}</option>`
+                    });
+                    select.innerHTML+=plantilla;
+                }
+            });
+        }
+
+        function traerTipoDeUsuario(){
+            const select=document.getElementById('tipoUsuario');
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerTipoDeUsuario","Administrador")',
+                success: function(respuesta){
+                    var tipoUsuarios=respuesta.tipoUsuarios;
+                    //console.log(tipoUsuarios);
+                    var plantilla='';
+                    tipoUsuarios.forEach(tipoUsuario => {
+                        plantilla+=`<option value="${tipoUsuario.id}">${tipoUsuario.tipo}</option>`
+                    });
+                    select.innerHTML+=plantilla;
+                }
+            });
+
+        }
+
+        function dataTable(){
+            const datatablesSimple = document.getElementById('datatablesSimple');
+            if (datatablesSimple) {
+                new simpleDatatables.DataTable(datatablesSimple);
+            }
+        }
+
+        function traerUsuarios(){
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerUsuarios","Administrador")',
+                success: function(respuesta){
+                    //console.log(respuesta);
+                    var Usuarios = respuesta.usuarios;
+                    //console.log(Usuarios);
+                    var plantilla='';
+                    var contador = 1;
+                    Usuarios.forEach(Usuario => {
+                        plantilla+=`<tr>
+                            <td>${contador}</td>
+                            <td>${Usuario.nombre1}</td>
+                            <td>${Usuario.apellido1}</td>
+                            <td>${Usuario.fechaNacimiento}</td>
+                            <td>${Usuario.noDocumento}</td>
+                            <td>${Usuario.telefono}</td>
+                            <td>${Usuario.direccion}</td>
+                            <td>${Usuario.email}</td>
+                            <td>${Usuario.tipoUsuario}</td>
+                            <td>${Usuario.estado}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-primary editar">Editar<a>
+                                    <a class="btn btn-danger eliminar">Eliminar<a>
+                                </div>
+                            </td>
+                        </tr>`
+                        contador+=1;
+                    });
+                    $('#tablaUsuarios').html(plantilla);
+                    dataTable();
+                }
+            });
+        }
+    </script>
+    }
+</body>
