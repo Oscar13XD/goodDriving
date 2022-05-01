@@ -22,24 +22,24 @@
                 Registro de Usuarios
             </div>
             <div class="card-body">
-            <table id="datatablesSimple">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nombres</th>
-                        <th>Apellidos</th>
-                        <th>Edad</th>
-                        <th>Documento</th>
-                        <th>Telefono</th>
-                        <th>Direccion</th>
-                        <th>Email</th>
-                        <th>Tipo de Usuario</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaUsuarios"></tbody>
-            </table>
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Edad</th>
+                            <th>Documento</th>
+                            <th>Telefono</th>
+                            <th>Direccion</th>
+                            <th>Email</th>
+                            <th>Tipo de Usuario</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaUsuarios"></tbody>
+                </table>
             </div>
         </div>
 
@@ -49,14 +49,14 @@
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card">
-                            <div class="card-body">
-                                <form id="registro">
+                    <form id="registro">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Registrar Usuario</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card">
+                                <div class="card-body">
                                     <div class="row">
                                         <div class="col-6">
                                             <label class="form-label" placeholder="Nombre">Ingresa primer y segundo nombre</label>
@@ -85,19 +85,19 @@
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label" placeholder="fecha de nacimiento"> Fecha de nacimiento </label>
-                                            <input class="form-control" type="text" required name="fechanacimiento" />
+                                            <input class="form-control" type="date" required name="fechanacimiento" />
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label" placeholder="ingrese correo electronico"> Ingrese correo electronico</label>
-                                            <input class="form-control" type="text" required name="ingresecorreoelectronico" />
+                                            <input class="form-control" type="email" required name="ingresecorreoelectronico" />
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label" placeholder="ingrese contraseña">Ingrese contraseña</label>
-                                            <input class="form-control" type="text" required name=" ingresecontraseña" />
+                                            <input class="form-control" type="password" required name="ingresecontraseña" />
                                         </div>
                                         <div class="col-6">
                                             <label class="form-label" placeholder="">Confirmar contraseña</label>
-                                            <input class="form-control" type="text" required name=" confirmacontraseña" />
+                                            <input class="form-control" type="password" required name="confirmacontraseña" />
                                         </div>
                                         <div class="col-6">
                                             <select class="form-select" required id="tipoUsuario" name="TipoUsuario">
@@ -106,14 +106,79 @@
                                         </div>
 
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
-                        <button type="button" class="btn btn-primary">REGISTRAR</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
+                            <button type="submit" class="btn btn-primary">REGISTRAR</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalEditar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form id="editarUsuario">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Actualizar Usuario</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="Nombre">Ingresa primer y segundo nombre</label>
+                                            <input class="form-control" type="text" required name="nombres" id="nombres"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="Apellido">Ingresa primer y segundo apellido</label>
+                                            <input class="form-control" type="text" required name="apellidos" id="apellidos"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="Docuemnto">Documento</label>
+                                            <input class="form-control" type="text" required name="documento" id="documento" />
+                                        </div>
+                                        <div class="col-6">
+                                            <select class="form-select" required id="tipoDeDocumento2" name="tipoDocumento">
+                                                <option selected value="">Tipo de documento</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="direccion"> Direccion</label>
+                                            <input class="form-control" type="text" required name="direccion" id="direccion" />
+                                        </div>
+                                        <div class="col-6">
+                                            <laber class="form-label" placeholder="telefono">Telefono</laber>
+                                            <input class="form-control" type="text" required name="telefono" id="telefono" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="fecha de nacimiento"> Fecha de nacimiento </label>
+                                            <input class="form-control" type="date" required name="fechanacimiento" id="fechanacimiento" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="ingrese correo electronico"> Ingrese correo electronico</label>
+                                            <input class="form-control" type="email" required name="ingresecorreoelectronico" id="ingresecorreoelectronico"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <select class="form-select" required id="tipoUsuario2" name="TipoUsuario">
+                                                <option selected value="">Tipo de usuario</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
+                            <button type="submit" class="btn btn-primary">ACTUALIZAR</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -128,6 +193,7 @@
 
         function traerTiposDeDocumento(){
             const select=document.getElementById('tipoDeDocumento');
+            const select2=document.getElementById('tipoDeDocumento2');
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("TraerTiposDeDocumento","Administrador")',
@@ -139,12 +205,14 @@
                         plantilla+=`<option value="${tipoDeDocumento.id}">${tipoDeDocumento.tipo}</option>`
                     });
                     select.innerHTML+=plantilla;
+                    select2.innerHTML+=plantilla;
                 }
             });
         }
 
         function traerTipoDeUsuario(){
             const select=document.getElementById('tipoUsuario');
+            const select2=document.getElementById('tipoUsuario2');
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("TraerTipoDeUsuario","Administrador")',
@@ -156,6 +224,7 @@
                         plantilla+=`<option value="${tipoUsuario.id}">${tipoUsuario.tipo}</option>`
                     });
                     select.innerHTML+=plantilla;
+                    select2.innerHTML+=plantilla;
                 }
             });
 
@@ -179,7 +248,7 @@
                     var plantilla='';
                     var contador = 1;
                     Usuarios.forEach(Usuario => {
-                        plantilla+=`<tr>
+                        plantilla+=`<tr ID="${Usuario.id}">
                             <td>${contador}</td>
                             <td>${Usuario.nombre1}</td>
                             <td>${Usuario.apellido1}</td>
@@ -192,7 +261,7 @@
                             <td>${Usuario.estado}</td>
                             <td>
                                 <div class="btn-group">
-                                    <a class="btn btn-primary editar">Editar<a>
+                                    <a class="btn btn-primary editar" data-bs-toggle="modal" data-bs-target="#modalEditar">Editar<a>
                                     <a class="btn btn-danger eliminar">Eliminar<a>
                                 </div>
                             </td>
@@ -204,6 +273,94 @@
                 }
             });
         }
+
+        $('#registro').submit(function(e){
+         $.ajax({
+             type: "POST",
+             data: $('#registro').serialize(),
+             url:'@Url.Action("RegistrarUsuario","Administrador")',
+             success: function(respuesta){
+                 switch(respuesta){
+                    case "contraseñas incorrectas":
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Contraseñas no coinciden',
+                            text: 'Las contraseñas no son iguales'
+                        });
+                        break;
+                    case "correo y documento existentes":
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Se encontraron registros',
+                            text: 'El documento y el correo ya se encuentran registrados'
+                        });
+                        break;
+                    case "documento existente":
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Se encontraron registros',
+                            text: 'El Documento ya se encuentra registrado'
+                        });
+                        break;
+                    case "email existente":
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Se encontraron registros',
+                            text: 'El Email ya se encuentra registrado'
+                        });
+                        break;
+                    case "registro realizado":
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Registro realizado',
+                            allowOutsideClick: false,
+                            confirmButtonText: 'De acuerdo'
+
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            $('#registro').trigger('reset');
+                            $('#staticBackdrop').modal('hide');
+                            traerUsuarios();
+                        });
+                        break;
+                    default:
+                        console.log(respuesta);
+                 }
+                console.log(respuesta);
+
+
+             }
+
+         })
+
+
+
+            e.preventDefault();
+        });
+
+        $(document).on('click','.editar', function(){
+            var element=$(this)[0].parentElement.parentElement.parentElement;
+            console.log(element);
+            var id=$(element).attr('id');
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerUsuarioU","Administrador")',
+                data: {id:id},
+                success: function(respuesta){
+                    console.log(respuesta);
+                    var usuario = respuesta.usuario[0];
+                    $('#nombres').val(usuario.nombre1);
+                    $('#apellidos').val(usuario.apellido1);
+                    $('#documento').val(usuario.noDocumento);
+                    $('#tipoDeDocumento2').val(usuario.idTipoDocumento);
+                    $('#direccion').val(usuario.direccion);
+                    $('#telefono').val(usuario.telefono);
+                    $('#fechanacimiento').val(usuario.fechaNacimiento);
+                    $('#ingresecorreoelectronico').val(usuario.email);
+                    $('#tipoUsuario2').val(usuario.idTipoUsuario);
+                }
+            });
+        });
     </script>
     }
 </body>
