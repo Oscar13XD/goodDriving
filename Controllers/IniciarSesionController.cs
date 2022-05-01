@@ -149,7 +149,7 @@ namespace GoodDriving.Controllers
                 catch (Exception)
                 {
                 }
-
+                password = codifica(password);
                 //CREAMOS LOS DATOS DEL USUARIO
                 Usuario usuario = new Usuario();
                 usuario.NoDocumento = documento;
@@ -225,6 +225,7 @@ namespace GoodDriving.Controllers
             Usuario usuario = await _context.Usuarios.Where(b => b.TokenRecovery == token).FirstOrDefaultAsync();
             if (usuario != null)
             {
+                password = codifica(password);
                 try
                 {
                     usuario.TokenRecovery = null;
@@ -338,6 +339,31 @@ namespace GoodDriving.Controllers
             oSmtpClient.Send(oMailMessage);
 
             oSmtpClient.Dispose();*/
+        }
+
+
+        //SHA256
+        public static string ToHexString(byte[] array)
+        {
+            StringBuilder hex = new StringBuilder(array.Length * 2);
+            foreach (byte b in array)
+            {
+                hex.AppendFormat("{0:x2}", b);
+            }
+            return hex.ToString();
+        }
+        public static string codifica(string valor)
+        {
+            string hash;
+            string llave = "6v+h*+jb!+91psuc%lj8ty(ql*fx-8(1remclj(ch5=fd-5-";
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            Byte[] code = encoder.GetBytes(llave);
+            using (HMACSHA256 hmac = new HMACSHA256(Encoding.UTF8.GetBytes(llave)))
+            {
+                Byte[] hmBytes = hmac.ComputeHash(encoder.GetBytes(valor));
+                hash = ToHexString(hmBytes);
+            }
+            return hash.ToUpper();
         }
     }
 }
