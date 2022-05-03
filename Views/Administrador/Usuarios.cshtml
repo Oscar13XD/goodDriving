@@ -131,6 +131,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="row">
+                                        <input type="hidden" id="idUsuario" name="idUsuario"/>
                                         <div class="col-6">
                                             <label class="form-label" placeholder="Nombre">Ingresa primer y segundo nombre</label>
                                             <input class="form-control" type="text" required name="nombres" id="nombres"/>
@@ -340,7 +341,7 @@
 
         $(document).on('click','.editar', function(){
             var element=$(this)[0].parentElement.parentElement.parentElement;
-            console.log(element);
+            //console.log(element);
             var id=$(element).attr('id');
             $.ajax({
                 type: "GET",
@@ -349,6 +350,7 @@
                 success: function(respuesta){
                     console.log(respuesta);
                     var usuario = respuesta.usuario[0];
+                    $('#idUsuario').val(usuario.id);
                     $('#nombres').val(usuario.nombre1);
                     $('#apellidos').val(usuario.apellido1);
                     $('#documento').val(usuario.noDocumento);
@@ -358,6 +360,76 @@
                     $('#fechanacimiento').val(usuario.fechaNacimiento);
                     $('#ingresecorreoelectronico').val(usuario.email);
                     $('#tipoUsuario2').val(usuario.idTipoUsuario);
+                }
+            });
+        });
+
+        $('#editarUsuario').submit(function(e){
+            $.ajax({
+                type: "POST",
+                data: $('#editarUsuario').serialize(),
+                url:'@Url.Action("EditarUsuario","Administrador")',
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "correo existe":
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Se encontraron registros',
+                                text: 'El Email ya se encuentra registrado'
+                            });
+                            break;
+                        case "documento existe":
+                            Swal.fire({
+                            icon: 'info',
+                            title: 'Se encontraron registros',
+                            text: 'El Documento ya se encuentra registrado'
+                        });
+                            break;
+                        case "actualizado":
+                            traerUsuarios();
+                            Swal.fire({
+                            icon: 'success',
+                            title: 'Usuario Actualizado',
+                            allowOutsideClick: false,
+                            confirmButtonText: 'De acuerdo'
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                $('#editarUsuario').trigger('reset');
+                                $('#modalEditar').modal('hide');
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+            e.preventDefault();
+        });
+
+
+        $(document).on('click','.eliminar', function(){
+            var element=$(this)[0].parentElement.parentElement.parentElement;
+            //console.log(element);
+            var id=$(element).attr('id');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("EliminarUsuario","Administrador")',
+                data: {id:id},
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "eliminado":
+                            traerUsuarios();
+                            Swal.fire({
+                            icon: 'success',
+                            title: 'Usuario Eliminado',
+                            allowOutsideClick: false,
+                            confirmButtonText: 'De acuerdo'
+                            });
+                            break;
+                        default:
+                            console.log(respuesta);
+                            break;
+                    }
                 }
             });
         });
