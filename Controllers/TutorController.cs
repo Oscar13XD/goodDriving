@@ -1,16 +1,15 @@
 ﻿using GoodDriving.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GoodDriving.Controllers
 {
-    [Authorize(Roles = "USUARIO")]
-    public class UsuarioController : Controller
+    [Authorize(Roles = "TUTOR")]
+    public class TutorController : Controller
     {
         private readonly goodDrivingContext _context;
 
-        public UsuarioController(goodDrivingContext context)
+        public TutorController(goodDrivingContext context)
         {
             _context = context;
         }
@@ -18,9 +17,6 @@ namespace GoodDriving.Controllers
         {
             return View();
         }
-        public IActionResult SolicitarCita()
-        {
-            return View();
-        }
+
     }
 }
