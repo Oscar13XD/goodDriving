@@ -37,7 +37,7 @@ namespace GoodDriving.Controllers
         public async Task<IActionResult> TraerUsuario(int id)
         {
             List<Usuario> usuarios = await _context.Usuarios.Include(e => e.IdTipoNavigation).Include(e => e.IdEstadoNavigation).Where(b => b.Id == id).ToListAsync();
-            List< strUsuario> strUsuarios = new List<strUsuario>();
+            List<strUsuario> strUsuarios = new List<strUsuario>();
             if (usuarios.Count > 0)
             {
                 foreach (var usuario in usuarios)
@@ -77,13 +77,13 @@ namespace GoodDriving.Controllers
         [HttpGet]
         public async Task<IActionResult> TraerTipoDeUsuario()
         {
-            List<TipoUsuario>tipoUsuarios=await _context.TipoUsuarios.ToListAsync();
+            List<TipoUsuario> tipoUsuarios = await _context.TipoUsuarios.ToListAsync();
             List<strTipoUsuario> strTipoUsuario = new List<strTipoUsuario>();
             foreach (TipoUsuario tipoUsuario in tipoUsuarios)
             {
-                strTipoUsuario str= new strTipoUsuario();
+                strTipoUsuario str = new strTipoUsuario();
                 str.Id = tipoUsuario.Id;
-                str.Tipo= tipoUsuario.Tipo;
+                str.Tipo = tipoUsuario.Tipo;
                 strTipoUsuario.Add(str);
             }
             return Json(new { tipoUsuarios = strTipoUsuario });
@@ -95,10 +95,10 @@ namespace GoodDriving.Controllers
             List<Usuario> Usuarios = await _context.Usuarios.Include(e => e.IdTipoNavigation).Include(e => e.IdEstadoNavigation).ToListAsync();
             List<strUsuario> strUsuarios = new List<strUsuario>();
 
-            foreach(Usuario Usuario in Usuarios)
+            foreach (Usuario Usuario in Usuarios)
             {
-                Usuario.Nombre1 += " "+Usuario.Nombre2;
-                Usuario.Apellido1 += " "+Usuario.Apellido2;
+                Usuario.Nombre1 += " " + Usuario.Nombre2;
+                Usuario.Apellido1 += " " + Usuario.Apellido2;
                 strUsuario str = new strUsuario();
                 str.Id = Usuario.Id;
                 str.Nombre1 = Usuario.Nombre1;
@@ -115,15 +115,33 @@ namespace GoodDriving.Controllers
             return Json(new { usuarios = strUsuarios });
         }
         [HttpGet]
+        public async Task<IActionResult> TraerVehiculos()
+        {
+            List<Vehiculo> Vehiculos = await _context.Vehiculos.Include(e => e.IdMarcaNavigation).Include(e => e.IdModeloNavigation).ToListAsync();
+            List<strVehiculo> strVehiculos = new List<strVehiculo>();
+            foreach (Vehiculo Vehiculo in Vehiculos)
+            {
+                strVehiculo str = new strVehiculo();
+                str.Id = Vehiculo.Id;
+                str.Cantidad=Vehiculo.Cantidad;
+                str.IdMarca=Vehiculo.IdMarca;
+                str.IdModelo=Vehiculo.IdModelo;
+                str.DescripcionMarca = Vehiculo.IdMarcaNavigation.Descripcion;
+                str.DescripcionModelo = Vehiculo.IdModeloNavigation.Descripcion;
+                strVehiculos.Add(str);
+            }
+            return Json(new { vehiculos = strVehiculos });
+        }
+        [HttpGet]
         public async Task<IActionResult> TraerMarca()
         {
-            List<MarcaVehiculo> marcaVehiculos= await _context.MarcaVehiculos.ToListAsync();
-            List<strMarca> strMarcas= new List<strMarca>();
-            foreach(MarcaVehiculo marcaVehiculo in marcaVehiculos)
+            List<MarcaVehiculo> marcaVehiculos = await _context.MarcaVehiculos.ToListAsync();
+            List<strMarca> strMarcas = new List<strMarca>();
+            foreach (MarcaVehiculo marcaVehiculo in marcaVehiculos)
             {
-                strMarca str =new strMarca();
+                strMarca str = new strMarca();
                 str.Id = marcaVehiculo.Id;
-                str.Descripcion=marcaVehiculo.Descripcion;
+                str.Descripcion = marcaVehiculo.Descripcion;
                 strMarcas.Add(str);
             }
             return Json(new { marcas = strMarcas });
@@ -132,25 +150,25 @@ namespace GoodDriving.Controllers
         public async Task<IActionResult> TraerModelo()
         {
             List<ModeloVehiculo> modeloVehiculos = await _context.ModeloVehiculos.ToListAsync();
-            List<strModelo> strModelos= new List<strModelo>();
-            foreach(ModeloVehiculo modeloVehiculo in modeloVehiculos)
+            List<strModelo> strModelos = new List<strModelo>();
+            foreach (ModeloVehiculo modeloVehiculo in modeloVehiculos)
             {
-                strModelo str =new strModelo();
+                strModelo str = new strModelo();
                 str.Id = modeloVehiculo.Id;
                 str.Descripcion = modeloVehiculo.Descripcion;
                 strModelos.Add(str);
             }
-            return Json(new { modelos= strModelos });
+            return Json(new { modelos = strModelos });
 
         }
         [HttpPost]
-        public async Task<IActionResult> RegistrarUsuario(string nombres, string apellidos, string documento,int tipoDocumento,
-            string Direccion,long telefono,string direccion,DateTime fechanacimiento, string ingresecorreoelectronico,
+        public async Task<IActionResult> RegistrarUsuario(string nombres, string apellidos, string documento, int tipoDocumento,
+            string Direccion, long telefono, string direccion, DateTime fechanacimiento, string ingresecorreoelectronico,
             string ingresecontraseña, string confirmacontraseña, int TipoUsuario)
         {
             if (ingresecontraseña == confirmacontraseña)
             {
-                List<Usuario> Documento= await _context.Usuarios.Where(b => b.NoDocumento == documento).ToListAsync();
+                List<Usuario> Documento = await _context.Usuarios.Where(b => b.NoDocumento == documento).ToListAsync();
                 List<Usuario> Email = await _context.Usuarios.Where(b => b.Email == ingresecorreoelectronico).ToListAsync();
 
                 if (Documento.Count > 0 && Email.Count > 0)
@@ -216,11 +234,38 @@ namespace GoodDriving.Controllers
             }
             return Content("contraseñas incorrectas");
         }
-        
 
         [HttpPost]
-        public async Task<IActionResult> EditarUsuario(int idUsuario,string nombres, string apellidos, string documento,
-            int tipoDocumento,string direccion,long telefono, DateTime fechanacimiento, string ingresecorreoelectronico,int TipoUsuario)
+        public async Task<IActionResult> RegistrarVehiculo(int cantidad, int marca, int modelo)
+        {
+            List<Vehiculo> ModeloMarca = await _context.Vehiculos.Where(b => b.IdMarca == marca && b.IdModelo == modelo).ToListAsync();
+            //List<Vehiculo> Marca= await _context.Vehiculos.ToListAsync();
+            if (ModeloMarca.Count > 0)
+            {
+                return Content("modelo y  marca existentes");
+            }
+
+
+            Vehiculo vehiculo = new Vehiculo();
+            vehiculo.Cantidad = cantidad;
+            vehiculo.IdMarca = marca;
+            vehiculo.IdModelo = modelo;
+            try
+            {
+                _context.Add(vehiculo);
+                _context.SaveChanges();
+                return Content("registro realizado");
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.ToString());
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarUsuario(int idUsuario, string nombres, string apellidos, string documento,
+            int tipoDocumento, string direccion, long telefono, DateTime fechanacimiento, string ingresecorreoelectronico, int TipoUsuario)
         {
             Usuario usuario = await _context.Usuarios.Where(b => b.Id == idUsuario).FirstOrDefaultAsync();
             if (usuario != null)
@@ -233,9 +278,9 @@ namespace GoodDriving.Controllers
                     {
                         return Content("correo existe");
                     }
-                    
+
                 }
-                if(usuario.NoDocumento != documento)
+                if (usuario.NoDocumento != documento)
                 {
                     //VALIDAMOS DE QUE EL DOCUMENTO NO EXISTA
                     Usuario UsuarioDocumento = await _context.Usuarios.Where(b => b.NoDocumento == documento).FirstOrDefaultAsync();
@@ -318,12 +363,30 @@ namespace GoodDriving.Controllers
             }
             return Json(new { usuario = strUsuarios });
         }
-
+        [HttpGet]
+        public async Task<IActionResult> TraerVehiculoU(int id)
+        {
+            List<Vehiculo> Vehiculos= await _context.Vehiculos.Include(e => e.IdMarcaNavigation).Include(e => e.IdModeloNavigation).Where(b => b.Id == id).ToListAsync();
+            List<strVehiculo> strVehiculos = new  List<strVehiculo>();
+            foreach (Vehiculo Vehiculo in Vehiculos)
+            {
+                strVehiculo str = new strVehiculo();
+                str.Id = Vehiculo.Id;
+                str.Cantidad = Vehiculo.Cantidad;
+                str.IdMarca = Vehiculo.IdMarca;
+                str.IdModelo = Vehiculo.IdModelo;
+                str.DescripcionMarca = Vehiculo.IdMarcaNavigation.Descripcion;
+                str.DescripcionModelo = Vehiculo.IdModeloNavigation.Descripcion;
+                strVehiculos.Add(str);
+            }
+            return Json(new { vehiculo = strVehiculos });
+        }
+    
         [HttpPost]
         public async Task<IActionResult> EliminarUsuario(int id)
         {
             Usuario usuario = await _context.Usuarios.Where(b => b.Id == id).FirstOrDefaultAsync();
-            if(usuario != null)
+            if (usuario != null)
             {
                 try
                 {
@@ -355,15 +418,23 @@ namespace GoodDriving.Controllers
             public string TipoUsuario { get; set; }
             public int IdTipoDocumento { get; set; }
             public int IdTipoUsuario { get; set; }
- 
-        }
 
+        }
+        struct strVehiculo
+        {
+            public int Id { get; set; }
+            public int? IdMarca { get; set; }
+            public string? DescripcionMarca { get; set; }
+            public int? IdModelo { get; set; }
+            public string? DescripcionModelo { get; set; }
+            public int Cantidad { get; set; }
+        }
         struct strTipoDocumento
         {
             public int Id { get; set; }
             public string Tipo { get; set; }
         }
-    
+
         struct strTipoUsuario
         {
             public int Id { get; set; }

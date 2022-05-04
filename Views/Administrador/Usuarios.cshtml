@@ -348,7 +348,7 @@
                 url: '@Url.Action("TraerUsuarioU","Administrador")',
                 data: {id:id},
                 success: function(respuesta){
-                    console.log(respuesta);
+                    //console.log(respuesta);
                     var usuario = respuesta.usuario[0];
                     $('#idUsuario').val(usuario.id);
                     $('#nombres').val(usuario.nombre1);

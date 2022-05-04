@@ -4,86 +4,130 @@
 @{
     Layout = "_LayoutAdministrador";
 }
-<head></head>
+<head>
+</head>
 <body>
-<div class="container">
-    <div class="card-body">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    CREAR VEHICULO
-                </button>
-            </div>
+    <div class="container">
+        <div class="card-body">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroVehiculoModal">
+                CREAR VEHICULO
+            </button>
         </div>
-        <div class="card mt-2">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Registro de Vehiculos
-            </div>
-            <div class="card-body">
-                <table id="datatablesSimple">
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>idMarca</th>
-                            <th>idModelo</th>
-                             <th>cantidad</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tablaVehiculos"></tbody>
-                </table>
-            </div>
+    </div>
+    <div class="card mt-2">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Registro de Vehiculos
         </div>
-         <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <form id="registro">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Registrar Vehiculos</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
+        <div class="card-body">
+            <table id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>cantidad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaVehiculos"></tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="registroVehiculoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="registro">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Registrar Vehiculos</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
                                         <div class="col-6">
-                                          <div class="col-6">
                                             <label class="form-label" placeholder="Cantidad">Cantidad</label>
                                             <input class="form-control" type="text" required name="cantidad" />
                                         </div>
-                                          <div class="col-6">
-                                            <select class="form-select" required id="marca" name="Marca">
+                                        <div class="col-6">
+                                            <select class="form-select" required id="marca" name="marca">
                                                 <option selected value="">Marca</option>
                                             </select>
-                                       </div>
+                                        </div>
                                         <div class="col-6">
                                             <select class="form-select" required id="modelo" name="modelo">
                                                 <option selected value="">Modelo</option>
                                             </select>
-                                   
-                                        
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
-                            <button type="submit" class="btn btn-primary">REGISTRAR</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
+                        <button type="submit" class="btn btn-primary">REGISTRAR</button>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
+     <!-- Modal -->
+    <div class="modal fade" id="editarVehiculoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="editar">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Registrar Vehiculos</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="col-6">
+                                            <label class="form-label" placeholder="Cantidad">Cantidad</label>
+                                            <input class="form-control" type="text" required name="cantidad" id="cantidad" />
+                                        </div>
+                                        <div class="col-6">
+                                            <select class="form-select" required id="marca2" name="marca">
+                                                <option selected value="">Marca</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <select class="form-select" required id="modelo2" name="modelo">
+                                                <option selected value="">Modelo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
+                        <button type="submit" class="btn btn-primary">REGISTRAR</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-  @section Scripts{
-        <script>
-             $( document ).ready(function() {
+    @section Scripts{
+    <script>
+        $( document ).ready(function() {
             traerMarca();
             traerModelo();
-          
+            traerVehiculos();
         });
 
         function traerMarca(){
             const select=document.getElementById('marca');
+            const select2=document.getElementById('marca2');
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("TraerMarca","Administrador")',
@@ -95,13 +139,15 @@
                         plantilla+=`<option value="${marca.id}">${marca.descripcion}</option>`
                     });
                     select.innerHTML+=plantilla;
-                   
+                    select2.innerHTML+=plantilla;
+
                 }
             });
         }
 
-       function traerModelo(){
-           const select=document.getElementById('modelo');
+        function traerModelo(){
+            const select=document.getElementById('modelo');
+            const select2=document.getElementById('modelo2');
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("traerModelo","Administrador")',
@@ -113,20 +159,101 @@
                         plantilla+=`<option value="${modelo.id}">${modelo.descripcion}</option>`
                     });
                     select.innerHTML+=plantilla;
-                   
+                    select2.innerHTML+=plantilla;
+
                 }
             });
-       }
-       $('#registro').submit(function(e){
-          $.ajax({
-             type: "POST",
-             data: $('#registro').serialize(),
-             url:'@Url.Action("RegistrarVehiculo","Administrador")',
-             success: function(respuesta{
+        }
 
+        $('#registro').submit(function(e){
+            $.ajax({
+                type: "POST",
+                data: $('#registro').serialize(),
+                url:'@Url.Action("RegistrarVehiculo","Administrador")',
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "modelo y  marca existentes":
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Se encontraron registros',
+                                text: 'El modelo y marca ya se encuentran registrados'
+                            });
+                            break;
+                        case "registro realizado":
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Registro realizado',
+                                allowOutsideClick: false,
+                                confirmButtonText: 'De acuerdo'
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                $('#registro').trigger('reset');
+                                $('#registroVehiculoModal').modal('hide');
+                                //traerUsuarios();
+                            });
+                            break;
+                        default:
+                            console.log(respuesta);
+                            break;
+                    }
+                }
+            });
+            e.preventDefault();
+        });
 
-             }
-       }
-        </script>
+        function traerVehiculos(){
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerVehiculos","Administrador")',
+                success: function(respuesta){
+                    console.log(respuesta);
+                    var Vehiculos = respuesta.vehiculos;
+                    var plantilla = '';
+                    var contador =1;
+                    Vehiculos.forEach(Vehiculo=>{
+                         plantilla+=`<tr ID="${Vehiculo.id}">
+                          <td>${contador}</td>
+                          <td>${Vehiculo.descripcionMarca}</td>
+                          <td>${Vehiculo.descripcionModelo}</td>
+                          <td>${Vehiculo.cantidad}</td>
+                          <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-primary editar" data-bs-toggle="modal" data-bs-target="#editarVehiculoModal">Editar<a>
+                                    <a class="btn btn-danger eliminar">Eliminar<a>
+                                </div>
+                            </td>`
+                        contador+=1;
+                          
+                    });
+                     $('#tablaVehiculos').html(plantilla);
+                     dataTable();
+                }
+
+            });
+        }
+
+        function dataTable(){
+            const datatablesSimple = document.getElementById('datatablesSimple');
+            if (datatablesSimple) {
+                new simpleDatatables.DataTable(datatablesSimple);
+            }
+        }
+
+        $(document).on('click','.editar', function(){
+             var element=$(this)[0].parentElement.parentElement.parentElement;
+             var id=$(element).attr('ID');
+             $.ajax({
+                 type: "GET",
+                 url: '@Url.Action("TraerVehiculoU","Administrador")',
+                 data: {id:id},
+                 success: function(respuesta){
+                       console.log(respuesta);
+                       var vehiculo = respuesta.vehiculo[0];
+                       $('#idUsuario').val(usuario.id);
+
+                 }
+                 });
+        });
+    </script>
     }
 </body>
