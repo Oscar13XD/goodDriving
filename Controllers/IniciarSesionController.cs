@@ -53,6 +53,7 @@ namespace GoodDriving.Controllers
         [HttpPost]
         public async Task<IActionResult> IniciarSesion(string email, string password)
         {
+            password = codifica(password);
             List<Usuario> usuarios = await _context.Usuarios.Include(e => e.IdTipoNavigation).Include(e => e.IdEstadoNavigation).Where(b => b.Email == email && b.Password == password).ToListAsync();
             if(usuarios.Count > 0)
             {
