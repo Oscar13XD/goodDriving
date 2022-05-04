@@ -414,6 +414,12 @@ namespace GoodDriving.Controllers
             int b = 6;
             return a + b;
         }
+        public int sumar2()
+        {
+            int a = 5;
+            int b = 6;
+            return a + b;
+        }
         public int restar2()
         {
             int a = 4;
