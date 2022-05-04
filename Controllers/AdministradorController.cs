@@ -402,6 +402,12 @@ namespace GoodDriving.Controllers
             return Content("no encontrado");
         }
 
+        public int sumar()
+        {
+            int a = 5;
+            int b = 6;
+            return a + b;
+        }
         struct strUsuario
         {
             public int Id { get; set; }
