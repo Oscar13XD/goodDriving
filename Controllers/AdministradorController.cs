@@ -402,6 +402,12 @@ namespace GoodDriving.Controllers
             return Content("no encontrado");
         }
 
+        public int restar()
+        {
+            int a = 4;
+            int b = 2;
+            return a - b;
+        }
         public int sumar()
         {
             int a = 5;
