@@ -414,6 +414,12 @@ namespace GoodDriving.Controllers
             int b = 6;
             return a + b;
         }
+        public int restar2()
+        {
+            int a = 4;
+            int b = 2;
+            return a - b;
+        }
         struct strUsuario
         {
             public int Id { get; set; }
