@@ -17,6 +17,7 @@ namespace GoodDriving.Models
         }
 
         public virtual DbSet<EstadoUsuario> EstadoUsuarios { get; set; } = null!;
+        public virtual DbSet<HorarioTutor> HorarioTutors { get; set; } = null!;
         public virtual DbSet<MarcaVehiculo> MarcaVehiculos { get; set; } = null!;
         public virtual DbSet<ModeloVehiculo> ModeloVehiculos { get; set; } = null!;
         public virtual DbSet<TipoDocumento> TipoDocumentos { get; set; } = null!;
@@ -45,6 +46,32 @@ namespace GoodDriving.Models
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("estado");
+            });
+
+            modelBuilder.Entity<HorarioTutor>(entity =>
+            {
+                entity.ToTable("horarioTutor");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Cupo).HasColumnName("cupo");
+
+                entity.Property(e => e.Dia)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("dia");
+
+                entity.Property(e => e.Hora)
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("hora");
+
+                entity.Property(e => e.IdTutor).HasColumnName("idTutor");
+
+                entity.HasOne(d => d.IdTutorNavigation)
+                    .WithMany(p => p.HorarioTutors)
+                    .HasForeignKey(d => d.IdTutor)
+                    .HasConstraintName("fk_usuarioTutor");
             });
 
             modelBuilder.Entity<MarcaVehiculo>(entity =>

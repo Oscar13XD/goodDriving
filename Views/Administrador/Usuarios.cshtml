@@ -8,7 +8,7 @@
 
 </head>
 <body>
-    <div class="container ">
+    <div class="container">
         <div class="card mt-2">
             <div class="card-body">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -276,66 +276,60 @@
         }
 
         $('#registro').submit(function(e){
-         $.ajax({
-             type: "POST",
-             data: $('#registro').serialize(),
-             url:'@Url.Action("RegistrarUsuario","Administrador")',
-             success: function(respuesta){
-                 switch(respuesta){
-                    case "contraseñas incorrectas":
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Contraseñas no coinciden',
-                            text: 'Las contraseñas no son iguales'
-                        });
-                        break;
-                    case "correo y documento existentes":
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Se encontraron registros',
-                            text: 'El documento y el correo ya se encuentran registrados'
-                        });
-                        break;
-                    case "documento existente":
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Se encontraron registros',
-                            text: 'El Documento ya se encuentra registrado'
-                        });
-                        break;
-                    case "email existente":
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Se encontraron registros',
-                            text: 'El Email ya se encuentra registrado'
-                        });
-                        break;
-                    case "registro realizado":
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Registro realizado',
-                            allowOutsideClick: false,
-                            confirmButtonText: 'De acuerdo'
+            $.ajax({
+                type: "POST",
+                data: $('#registro').serialize(),
+                url:'@Url.Action("RegistrarUsuario","Administrador")',
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "contraseñas incorrectas":
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Contraseñas no coinciden',
+                                text: 'Las contraseñas no son iguales'
+                            });
+                            break;
+                        case "correo y documento existentes":
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Se encontraron registros',
+                                text: 'El documento y el correo ya se encuentran registrados'
+                            });
+                            break;
+                        case "documento existente":
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Se encontraron registros',
+                                text: 'El Documento ya se encuentra registrado'
+                            });
+                            break;
+                        case "email existente":
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Se encontraron registros',
+                                text: 'El Email ya se encuentra registrado'
+                            });
+                            break;
+                        case "registro realizado":
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Registro realizado',
+                                allowOutsideClick: false,
+                                confirmButtonText: 'De acuerdo'
 
-                        }).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
-                            $('#registro').trigger('reset');
-                            $('#staticBackdrop').modal('hide');
-                            traerUsuarios();
-                        });
-                        break;
-                    default:
-                        console.log(respuesta);
-                 }
-                console.log(respuesta);
-
-
-             }
-
-         })
-
-
-
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                $('#registro').trigger('reset');
+                                $('#staticBackdrop').modal('hide');
+                                traerUsuarios();
+                            });
+                            break;
+                        default:
+                            console.log(respuesta);
+                            break;
+                    }
+                }
+            });
             e.preventDefault();
         });
 

@@ -5,6 +5,11 @@ namespace GoodDriving.Models
 {
     public partial class Usuario
     {
+        public Usuario()
+        {
+            HorarioTutors = new HashSet<HorarioTutor>();
+        }
+
         public int Id { get; set; }
         public string NoDocumento { get; set; } = null!;
         public string Email { get; set; } = null!;
@@ -24,5 +29,6 @@ namespace GoodDriving.Models
         public virtual EstadoUsuario IdEstadoNavigation { get; set; } = null!;
         public virtual TipoDocumento? IdTipoDocumentoNavigation { get; set; }
         public virtual TipoUsuario IdTipoNavigation { get; set; } = null!;
+        public virtual ICollection<HorarioTutor> HorarioTutors { get; set; }
     }
 }

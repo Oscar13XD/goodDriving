@@ -1,0 +1,205 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutAdministrador";
+}
+<head>
+</head>
+<body>
+    <div class="container">
+        <div class="card mt-4">
+            <form id="registrarHorario">
+                <div class="card-header">
+                    Asignar Horarios Clase Teorica
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4 mb-2">
+                            <select class="form-select" required id="idTutor" name="idTutor">
+                                <option selected value="">Tutor</option>
+                            </select>
+                        </div>
+                        <div class="col-4 mb-2">
+                            <select class="form-select" required id="" name="dia">
+                                <option selected value="">Día</option>
+                                <option value="LUNES">LUNES</option>
+                                <option value="MARTES">MARTES</option>
+                                <option value="MIERCOLES">MIERCOLES</option>
+                                <option value="JUEVES">JUEVES</option>
+                                <option value="VIERNES">VIERNES</option>
+                                <option value="SABADO">SABADO</option>
+                            </select>
+                        </div>
+                        <div class="col-4 mb-2">
+                            <select class="form-select" required id="" name="hora">
+                                <option selected value="">Hora</option>
+                                <option value="6:00 am - 7:59am">6:00 am - 7:59am</option>
+                                <option value="8:00 am - 9:59am">8:00 am - 9:59am</option>
+                                <option value="10:00 am - 11:59am">10:00 am - 11:59am</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">REGISTRAR</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card mt-2">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Registro de Horarios
+            </div>
+            <div class="card-body">
+                <table id="horarioTutors">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Dia</th>
+                            <th>Hora</th>
+                            <th>Cupo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaSolicitudes"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @section Scripts{
+    <script>
+        $( document ).ready(function() {
+            //traerTiposDeDocumento();
+            //traerTipoDeUsuario();
+            traerTutores();
+            traerTutoresHorarios();
+        });
+
+        function traerTutores(){
+            const select=document.getElementById('idTutor');
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerUsuariosTutores","Administrador")',
+                success: function(respuesta){
+                    //console.log(respuesta);
+                    var Tutores = respuesta.tutores;
+                    var plantilla='';
+                    Tutores.forEach(tutor => {
+                        plantilla+=`<option value="${tutor.id}">${tutor.nombre1} ${tutor.apellido1}</option>`
+                    });
+                    select.innerHTML+=plantilla;
+                }
+            });
+        }
+
+        $('#registrarHorario').submit(function(e){
+            $.ajax({
+                type: "POST",
+                data: $('#registrarHorario').serialize(),
+                url:'@Url.Action("RegistrarHorario","Administrador")',
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "horario existente":
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Se encontraron registros',
+                                text: 'El horario ya se encuentra registrado'
+                            });
+                            break;
+                        case "registro realizado":
+                            traerTutoresHorarios();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Registro realizado',
+                                allowOutsideClick: false,
+                                confirmButtonText: 'De acuerdo'
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                $('#registrarHorario').trigger('reset');
+                            });
+                            break;
+                        default:
+                            console.log(respuesta);
+                            break;
+                    }
+                }
+            });
+            e.preventDefault();
+        });
+
+        function traerTutoresHorarios(){
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerTutoresHorarios","Administrador")',
+                success: function(respuesta){
+                    //console.log(respuesta);
+                    var HorarioTutors = respuesta.horarioTutors;
+                    var plantilla='';
+                    var contador = 1;
+                    HorarioTutors.forEach(HorarioTutor => {
+                        var idTutor = HorarioTutor.idTutor;
+                        $.ajax({
+                            async:false,
+                            type: "GET",
+                            url: '@Url.Action("TraerHorariosTutores","Administrador")',
+                            data: {idTutor:idTutor},
+                            success: function(respuesta){
+                                //console.log(respuesta);
+                                var Horarios = respuesta.horarioTutors;
+                                var numero=Horarios.length;
+                                //console.log(numero);
+                                if(numero===0){
+                                    numero=1;
+                                }
+                                plantilla+=`<tr>
+                                    <td rowspan="${numero}">${contador}</td>
+                                    <td rowspan="${numero}">${HorarioTutor.nombre1Tutor} ${HorarioTutor.nombre2Tutor}</td>
+                                    <td rowspan="${numero}">${HorarioTutor.apellido1Tutor} ${HorarioTutor.apellido2Tutor}</td>`
+                                    contador+=1;
+                                    for(let i=0; i<1; i++){
+                                        var DiaHora=Horarios[i];
+                                        plantilla+=`
+                                            <td>${DiaHora.dia}</td>
+                                            <td>${DiaHora.hora}</td>
+                                            <td>${DiaHora.cupo}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-danger eliminar">Eliminar<a>
+                                                </div>
+                                            </td>
+                                        </tr>`
+                                    }
+                                    for(let i=1; i<numero; i++){
+                                        var DiaHora=Horarios[i];
+                                        plantilla+=`
+                                            <td>${DiaHora.dia}</td>
+                                            <td>${DiaHora.hora}</td>
+                                            <td>${DiaHora.cupo}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-danger eliminar">Eliminar<a>
+                                                </div>
+                                            </td>
+                                        </tr>`
+                                    }
+                            }
+                        });
+                    });
+                    $('#tablaSolicitudes').html(plantilla);
+                    dataTable();
+                }
+            });
+        }
+
+        function dataTable(){
+            const datatablesSimple = document.getElementById('horarioTutors');
+            if (datatablesSimple) {
+                new simpleDatatables.DataTable(datatablesSimple);
+            }
+        }
+    </script>
+    }
+</body>
