@@ -165,7 +165,7 @@
                                             <td>${DiaHora.dia}</td>
                                             <td>${DiaHora.hora}</td>
                                             <td>${DiaHora.cupo}</td>
-                                            <td>
+                                            <td id="${DiaHora.id}">
                                                 <div class="btn-group">
                                                     <a class="btn btn-danger eliminar">Eliminar<a>
                                                 </div>
@@ -178,7 +178,7 @@
                                             <td>${DiaHora.dia}</td>
                                             <td>${DiaHora.hora}</td>
                                             <td>${DiaHora.cupo}</td>
-                                            <td>
+                                            <td id="${DiaHora.id}">
                                                 <div class="btn-group">
                                                     <a class="btn btn-danger eliminar">Eliminar<a>
                                                 </div>
@@ -200,6 +200,33 @@
                 new simpleDatatables.DataTable(datatablesSimple);
             }
         }
+
+        $(document).on('click','.eliminar', function(){
+            var element=$(this)[0].parentElement.parentElement;
+            var id=$(element).attr('id');
+            //console.log(id);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("EliminarHorarioTutor","Administrador")',
+                data: {id:id},
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "eliminado":
+                            traerTutoresHorarios();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Horario Eliminado',
+                                allowOutsideClick: false,
+                                confirmButtonText: 'De acuerdo'
+                            });
+                            break;
+                        default:
+                            console.log(respuesta);
+                            break;
+                    }
+                }
+            });
+        });
     </script>
     }
 </body>

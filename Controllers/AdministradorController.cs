@@ -401,6 +401,26 @@ namespace GoodDriving.Controllers
             return Json(new { horarioTutors = strHorarioTutors });
         }
 
+        [HttpPost] //ELIMINAR HORARIO TUTOR
+        public async Task<IActionResult> EliminarHorarioTutor(int id)
+        {
+            HorarioTutor Horario = await _context.HorarioTutors.Where(b => b.Id == id).FirstOrDefaultAsync();
+            if (Horario != null)
+            {
+                try
+                {
+                    _context.Remove(Horario);
+                    await _context.SaveChangesAsync();
+                    return Content("eliminado");
+                }
+                catch (Exception ex)
+                {
+                    return Content(ex.Message);
+                }
+            }
+            return Content("no encontrado");
+        }
+
         //FUNCIONES GENERALES
         [HttpGet] 
         public async Task<IActionResult> TraerUsuario(int id)
