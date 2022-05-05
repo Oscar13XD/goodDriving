@@ -312,7 +312,7 @@ namespace GoodDriving.Controllers
             return Json(new { vehiculos = strVehiculos });
         }
 
-        [HttpGet] //LEER UN SOLO USUARIO
+        [HttpGet] //LEER UN SOLO VEHICULO
         public async Task<IActionResult> TraerVehiculoU(int id)
         {
             List<Vehiculo> Vehiculos = await _context.Vehiculos.Include(e => e.IdMarcaNavigation).Include(e => e.IdModeloNavigation).Where(b => b.Id == id).ToListAsync();
@@ -330,8 +330,77 @@ namespace GoodDriving.Controllers
             }
             return Json(new { vehiculo = strVehiculos });
         }
+        [HttpPost]  // EDITAR VEHICULO
 
+        public async Task<IActionResult> EditarVehiculo( int idVehiculo, int cantidad, int marca, int modelo)
+        {
+            Vehiculo Vehiculo = await _context.Vehiculos.Where(v => v.Id == idVehiculo).FirstOrDefaultAsync();
+            if (Vehiculo != null)
+            {
+                if(Vehiculo.IdMarca != marca && Vehiculo.IdModelo != modelo)
+                {
+                    List<Vehiculo> ModeloMarca = await _context.Vehiculos.Where(b => b.IdMarca == marca && b.IdModelo == modelo).ToListAsync();
+                    //List<Vehiculo> Marca= await _context.Vehiculos.ToListAsync();
+                    if (ModeloMarca.Count > 0)
+                    {
+                        return Content("modelo y marca existentes");
+                    }
+                }
+                if(Vehiculo.IdMarca != marca)
+                {
+                    List<Vehiculo> ModeloMarca = await _context.Vehiculos.Where(b => b.IdMarca == marca && b.IdModelo == modelo).ToListAsync();
+                    //List<Vehiculo> Marca= await _context.Vehiculos.ToListAsync();
+                    if (ModeloMarca.Count > 0)
+                    {
+                        return Content("modelo y marca existentes");
+                    }
+                }
+                if(Vehiculo.IdModelo != modelo)
+                {
+                    List<Vehiculo> ModeloMarca = await _context.Vehiculos.Where(b => b.IdMarca == marca && b.IdModelo == modelo).ToListAsync();
+                    //List<Vehiculo> Marca= await _context.Vehiculos.ToListAsync();
+                    if (ModeloMarca.Count > 0)
+                    {
+                        return Content("modelo y marca existentes");
+                    }
+                }
+                Vehiculo.IdMarca = marca;
+                Vehiculo.IdModelo = modelo;
+                Vehiculo.Cantidad = cantidad;
+                try
+                {
+                    _context.Update(Vehiculo);
+                    await _context.SaveChangesAsync();
+                    return Content("actualizado");
+                }
+                catch (Exception ex)
+                {
+                    return Content(ex.Message);
+                }
 
+            }
+            return Content("no hay");
+        }
+        
+        [HttpPost] //ELIMINAR VEHICULO
+        public async Task<IActionResult> EliminarVehiculo(int id)
+        {
+            Vehiculo Vehiculo = await _context.Vehiculos.Where(v => v.Id == id).FirstOrDefaultAsync();
+            if (Vehiculo != null)
+            {
+                try
+                {
+                    _context.Remove(Vehiculo);
+                    await _context.SaveChangesAsync();
+                    return Content("eliminado");
+                }
+                catch (Exception ex)
+                {
+                    return Content(ex.Message);
+                }
+               }
+            return Content("no encontrado");
+        }
         //FUNCIONES ASIGNAR HORARIOS
 
         [HttpPost] //REGISTRAR HORARIO

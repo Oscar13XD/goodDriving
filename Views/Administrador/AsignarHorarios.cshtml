@@ -159,20 +159,7 @@
                                     <td rowspan="${numero}">${HorarioTutor.nombre1Tutor} ${HorarioTutor.nombre2Tutor}</td>
                                     <td rowspan="${numero}">${HorarioTutor.apellido1Tutor} ${HorarioTutor.apellido2Tutor}</td>`
                                     contador+=1;
-                                    for(let i=0; i<1; i++){
-                                        var DiaHora=Horarios[i];
-                                        plantilla+=`
-                                            <td>${DiaHora.dia}</td>
-                                            <td>${DiaHora.hora}</td>
-                                            <td>${DiaHora.cupo}</td>
-                                            <td id="${DiaHora.id}">
-                                                <div class="btn-group">
-                                                    <a class="btn btn-danger eliminar">Eliminar<a>
-                                                </div>
-                                            </td>
-                                        </tr>`
-                                    }
-                                    for(let i=1; i<numero; i++){
+                                    for(let i=0; i<numero; i++){
                                         var DiaHora=Horarios[i];
                                         plantilla+=`
                                             <td>${DiaHora.dia}</td>

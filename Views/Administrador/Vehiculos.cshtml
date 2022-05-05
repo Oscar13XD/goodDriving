@@ -17,7 +17,7 @@
     <div class="card mt-2">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            Registro de Vehiculos
+           REGISTRO DE VEHICULOS
         </div>
         <div class="card-body">
             <table id="datatablesSimple">
@@ -34,13 +34,13 @@
             </table>
         </div>
     </div>
-    <!-- Modal -->
+    <!-- Modal Registrar Vehiculo-->
     <div class="modal fade" id="registroVehiculoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form id="registro">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Registrar Vehiculos</h5>
+                        <h5 class="modal-title" id="staticBackdropLabel">Registrar Vehiculo</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -75,13 +75,14 @@
             </div>
         </div>
     </div>
-     <!-- Modal -->
+
+     <!-- Modal Actualizar Vehiculo -->
     <div class="modal fade" id="editarVehiculoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form id="editar">
+                <form id="EditarVehiculo">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Registrar Vehiculos</h5>
+                        <h5 class="modal-title" id="staticBackdropLabel">Actualizar Vehiculo</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -89,6 +90,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-6">
+                                        <input type="hidden" id="idVehiculo" name="idVehiculo" />
                                         <div class="col-6">
                                             <label class="form-label" placeholder="Cantidad">Cantidad</label>
                                             <input class="form-control" type="text" required name="cantidad" id="cantidad" />
@@ -110,7 +112,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
-                        <button type="submit" class="btn btn-primary">REGISTRAR</button>
+                        <button type="submit" class="btn btn-primary">ACTUALIZAR</button>
                     </div>
                 </form>
             </div>
@@ -180,6 +182,7 @@
                             });
                             break;
                         case "registro realizado":
+                            traerVehiculos();
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Registro realizado',
@@ -206,7 +209,7 @@
                 type: "GET",
                 url: '@Url.Action("TraerVehiculos","Administrador")',
                 success: function(respuesta){
-                    console.log(respuesta);
+                    //console.log(respuesta);
                     var Vehiculos = respuesta.vehiculos;
                     var plantilla = '';
                     var contador =1;
@@ -249,10 +252,75 @@
                  success: function(respuesta){
                        console.log(respuesta);
                        var vehiculo = respuesta.vehiculo[0];
-                       $('#idUsuario').val(usuario.id);
-
+                       $('#idVehiculo').val(vehiculo.id);
+                        $('#cantidad').val(vehiculo.cantidad);
+                        $('#marca2').val(vehiculo.idMarca);
+                        $('#modelo2').val(vehiculo.idModelo);
                  }
-                 });
+                });
+        });
+
+        $('#EditarVehiculo').submit(function(e){
+             $.ajax({
+                 type: "POST",
+                data: $('#EditarVehiculo').serialize(),
+                url:'@Url.Action("EditarVehiculo","Administrador")',
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "modelo y marca existentes":
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Se encontraron registros',
+                                text: ' marca y modelo ya se encontraron registrados'
+                            });
+                            break;
+                        case "actualizado":
+                            traerVehiculos();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Vehiculo Actualizado',
+                                allowOutsideClick: false,
+                                confirmButtonText: 'De acuerdo'
+                                }).then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    $('#EditarVehiculo').trigger('reset');
+                                    $('#editarVehiculoModal').modal('hide');
+                            });
+                            break;
+                        default:
+                            console.log(respuesta);
+                            break;
+                    }
+                }
+            });
+            e.preventDefault();
+        });
+         
+        $(document).on('click','.eliminar', function(){
+            var element=$(this)[0].parentElement.parentElement.parentElement;
+            //console.log(element);
+            var id=$(element).attr('ID');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("EliminarVehiculo","Administrador")',
+                data: {id:id},
+                success: function(respuesta){
+                    switch(respuesta){
+                        case"eliminado":
+                            traerVehiculos();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Vehiculo Eliminado',
+                                allowOutsideClick: false,
+                                confirmButtonText: 'De acuerdo'
+                            });
+                            break;
+                        default:
+                            console.log(respuesta);
+                            break;
+                    }
+                }
+            });
         });
     </script>
     }
