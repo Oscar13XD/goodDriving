@@ -1,0 +1,139 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutTutor";
+}
+<head>
+</head>
+<body>
+    <div class="container">
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Horario Clases Teoricas</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col border border-primary py-2">
+                        HORA
+                    </div>
+                    <div class="col border border-primary py-2">
+                        LUNES
+                    </div>
+                    <div class="col border border-primary py-2">
+                        MARTES
+                    </div>
+                    <div class="col border border-primary py-2">
+                        MIERCOLES
+                    </div>
+                    <div class="col border border-primary py-2">
+                        JUEVES
+                    </div>
+                    <div class="col border border-primary py-2">
+                        VIERNES
+                    </div>
+                    <div class="col border border-primary py-2">
+                        SABADO
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col border border-primary py-2">
+                        6:00 am - 7:59am
+                    </div>
+                    <div class="col border border-primary py-2" id="LUNES-6:00 am - 7:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="MARTES-6:00 am - 7:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="MIERCOLES-6:00 am - 7:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="JUEVES-6:00 am - 7:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="VIERNES-6:00 am - 7:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="SABADO-6:00 am - 7:59am">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col border border-primary py-2" >
+                        8:00 am - 9:59am
+                    </div>
+                    <div class="col border border-primary py-2" id="LUNES-8:00 am - 9:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="MARTES-8:00 am - 9:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="MIERCOLES-8:00 am - 9:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="JUEVES-8:00 am - 9:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="VIERNES-8:00 am - 9:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="SABADO-8:00 am - 9:59am">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col border border-primary py-2">
+                        10:00 am - 11:59am
+                    </div>
+                    <div class="col border border-primary py-2" id="LUNES-10:00 am - 11:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="MARTES-10:00 am - 11:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="MIERCOLES-10:00 am - 11:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="JUEVES-10:00 am - 11:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="VIERNES-10:00 am - 11:59am">
+                    </div>
+                    <div class="col border border-primary py-2" id="SABADO-10:00 am - 11:59am">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @section Scripts{
+    <script>
+        $( document ).ready(function() {
+            //traerTiposDeDocumento();
+            //traerTipoDeUsuario();
+            traerHorarioTutorTeorico();
+        });
+
+        function traerHorarioTutorTeorico(){
+            //var id = 9;
+            var id = @User.Identity.Name;
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerHorarioTutorTeorico","Tutor")',
+                data: {id:id},
+                success: function(respuesta){
+                    if(respuesta=="no hay"){
+
+                    }
+                    else{
+                        var Dias = new Array("LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO");
+                        var Horas = new Array("6:00 am - 7:59am", "8:00 am - 9:59am", "10:00 am - 11:59am");
+                        //console.log(respuesta);
+                        var Horarios = respuesta.horarioTutors;
+                        //console.log(Horarios);
+                        //console.log(Dias);
+                        //console.log(Horas);
+                        Horarios.forEach(Horario => {
+                            //console.log(Horario);
+                            Dias.forEach(Dia => {
+                                if(Horario.dia==Dia){
+                                    Horas.forEach(Hora => {
+                                        if(Horario.hora == Hora){
+                                            document.getElementById(Dia +'-' + Hora).classList.toggle('bg-info');
+                                            document.getElementById(Dia +'-' + Hora).innerHTML='ASIGNADO';
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+    }
+</body>
