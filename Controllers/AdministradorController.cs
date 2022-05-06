@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 
 namespace GoodDriving.Controllers
 {
-    [Authorize(Roles = "ADMINISTRADOR")]
+    //[Authorize(Roles = "ADMINISTRADOR")]
     public class AdministradorController : Controller
     {
         private readonly goodDrivingContext _context;
@@ -35,6 +35,11 @@ namespace GoodDriving.Controllers
         }
 
         public IActionResult AsignarHorarios()
+        {
+            return View();
+        }
+
+        public IActionResult SolicitudClase()
         {
             return View();
         }
@@ -595,6 +600,71 @@ namespace GoodDriving.Controllers
                 strTutores.Add(str);
             }
             return Json(new { tutores = strTutores });
+        }
+
+        // FUNCIONES DE SOLICITAR CLASES 
+        [HttpGet]
+        public async Task<IActionResult> TraerSolicitudClases()
+        {
+       
+            List<Clase> Clases= await _context.Clases.Include(e=> e.IdTipoNavigation).Include(e=> e.IdTutorNavigation).Include(e=> e.IdUsuarioNavigation).Include(e=> e.IdVehiculoNavigation).Include(e => e.IdVehiculoNavigation.IdMarcaNavigation).Include(e => e.IdVehiculoNavigation.IdModeloNavigation).Include(e=> e.IdLicenciaNavigation).Include(e=> e.IdEstadoNavigation).ToListAsync();           
+            List<strClase> strClases = new List<strClase>();
+            foreach (Clase clase in Clases)
+            {
+                clase.IdTutorNavigation.Nombre1 += " " + clase.IdTutorNavigation.Nombre2;
+                clase.IdTutorNavigation.Apellido1 += " " + clase.IdTutorNavigation.Apellido2;
+                clase.IdUsuarioNavigation.Nombre1 += " " + clase.IdUsuarioNavigation.Nombre2;
+                clase.IdUsuarioNavigation.Apellido1 += " " + clase.IdUsuarioNavigation.Apellido2;
+
+                string FechaSolicitud = Convert.ToString(clase.FechaSolicitud);
+                DateTime fechaReslt = DateTime.Parse(FechaSolicitud);
+                FechaSolicitud = fechaReslt.ToString("dd/MM/yyyy");
+                strClase str = new strClase();
+                str.Id = clase.Id;
+                str.IdTutor = clase.IdTutor;
+                str.Nombre1Tutor = clase.IdTutorNavigation.Nombre1;
+                str.Apellido1Tutor = clase.IdTutorNavigation.Apellido1;
+                str.IdUsuario = clase.IdUsuario;
+                str.Nombre1Usuario = clase.IdUsuarioNavigation.Nombre1;
+                str.Apellido1Usuario=clase.IdUsuarioNavigation.Apellido1;
+                str.IdVehiculo = clase.IdVehiculo;
+                str.DescripcionMarca = clase.IdVehiculoNavigation.IdMarcaNavigation.Descripcion;
+                str.DescripcionModelo = clase.IdVehiculoNavigation.IdModeloNavigation.Descripcion;
+                str.IdLicencia= clase.IdLicencia;
+                str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
+                str.IdTipo= clase.IdTipo;
+                str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
+                str.FechaSolicitud = FechaSolicitud;
+                str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
+                strClases.Add(str);
+            }
+
+            return Json(new { clases = strClases });
+        }
+
+        // ESTRUCTURAS DE SOLICITUD DE CLASES 
+        struct strClase
+        {
+            public int Id { get; set; }
+            public int? IdTutor { get; set; }
+            public int? IdUsuario { get; set; }
+            public int? IdEstado { get; set; }
+            public int? IdVehiculo { get; set; }
+            public int? IdLicencia { get; set; }
+            public int? IdTipo { get; set; }
+            public string? FechaSolicitud { get; set; }
+            public string? FechaFinalizacion { get; set; }
+            public string? DescripcionEstado { get; set; }
+            public string Apellido1Tutor { get; set; }
+            public string Nombre1Tutor { get; set; }
+            public string Apellido1Usuario { get; set; }
+            public string Nombre1Usuario { get; set; }
+            public int? IdMarca { get; set; }
+            public int? IdModelo { get; set; }
+            public string? DescripcionMarca { get; set; }
+            public string? DescripcionModelo { get; set; }
+            public string? CategoriaLicencia { get; set; }
+
         }
 
         //ESTRUCTURAS DE LAS PETICIONES

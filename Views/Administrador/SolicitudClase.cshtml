@@ -1,0 +1,80 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutAdministrador";
+}
+<head>
+</head>
+<body>
+    <div class="container">
+        <div class="card mt-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                SOLICITUDES DE CLASES REORICAS
+
+            </div>
+            <div class="card-body">
+                <table id="tablaClaseTeorica">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>NombreUuario</th>
+                            <th>NombreTutor</th>
+                            <th>Licencia</th>
+                            <th>Estado</th>
+                            <th>Fecha Solicitud</th>
+                            <th>Fecha Finalizacion</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="TablaClases"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+@section Scripts{
+    <script>
+         $( document ).ready(function() {
+            traerSolicitudClases();
+        });
+        function traerSolicitudClases(){
+              $.ajax({
+                  type: "GET",
+                  url: '@Url.Action("TraerSolicitudClases","Administrador")',
+                   success: function(respuesta){
+                       var Clases= respuesta.clases;
+                       console.log(Clases);
+                       var plantilla ='';
+                       var contador=1;
+                       Clases.forEach(Clase=>{
+                            plantilla+=`<tr ID="${Clase.id}">
+                                <td>${contador}</td>
+                                <td>${Clase.nombre1Usuario} ${Clase.apellido1Usuario}</td>
+                                <td>${Clase.nombre1Tutor} ${Clase.apellido1Tutor}</td>
+                                <td>${Clase.categoriaLicencia}</td>
+                                <td>${Clase.descripcionEstado}</td>
+                                <td>${Clase.fechaSolicitud}</td>
+                                <td>${Clase.fechaFinalizacion}</td>
+                            </tr>`
+                            contador+=1;  
+                       });
+                        $('#TablaClases').html(plantilla);
+                        dataTable();
+
+
+                   }
+               });
+        }
+
+        function dataTable(){
+            const datatablesSimple = document.getElementById('tablaClaseTeorica');
+            if (datatablesSimple) {
+                new simpleDatatables.DataTable(datatablesSimple);
+            }
+        }
+    </script>
+
+}
