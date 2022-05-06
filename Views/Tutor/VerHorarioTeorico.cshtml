@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col border border-primary py-2" >
+                    <div class="col border border-primary py-2">
                         8:00 am - 9:59am
                     </div>
                     <div class="col border border-primary py-2" id="LUNES-8:00 am - 9:59am">
@@ -89,6 +89,57 @@
                 </div>
             </div>
         </div>
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Horario Clases Teoricas</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>HORA</th>
+                                <th>LUNES</th>
+                                <th>MARTES</th>
+                                <th>MIERCOLES</th>
+                                <th>JUEVES</th>
+                                <th>VIERNES</th>
+                                <th>SABADO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>6:00 am - 7:59am</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="table-info">ASIGNADO</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>8:00 am - 9:59am</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="table-info">ASIGNADO</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>10:00 am - 11:59am</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="table-info">ASIGNADO</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
     @section Scripts{
     <script>
@@ -99,8 +150,8 @@
         });
 
         function traerHorarioTutorTeorico(){
-            //var id = 9;
-            var id = @User.Identity.Name;
+            var id = 9;
+            //var id = @User.Identity.Name;
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("TraerHorarioTutorTeorico","Tutor")',

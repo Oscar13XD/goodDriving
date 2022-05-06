@@ -16,10 +16,14 @@ namespace GoodDriving.Models
         {
         }
 
+        public virtual DbSet<Clase> Clases { get; set; } = null!;
+        public virtual DbSet<EstadoClase> EstadoClases { get; set; } = null!;
         public virtual DbSet<EstadoUsuario> EstadoUsuarios { get; set; } = null!;
         public virtual DbSet<HorarioTutor> HorarioTutors { get; set; } = null!;
+        public virtual DbSet<Licencium> Licencia { get; set; } = null!;
         public virtual DbSet<MarcaVehiculo> MarcaVehiculos { get; set; } = null!;
         public virtual DbSet<ModeloVehiculo> ModeloVehiculos { get; set; } = null!;
+        public virtual DbSet<TipoClase> TipoClases { get; set; } = null!;
         public virtual DbSet<TipoDocumento> TipoDocumentos { get; set; } = null!;
         public virtual DbSet<TipoUsuario> TipoUsuarios { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
@@ -30,12 +34,81 @@ namespace GoodDriving.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=LAPTOP-3GJG15MP; Database=goodDriving;Trusted_Connection=true;MultipleActiveResultSets=true");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-CH407N4; Database=goodDriving;Trusted_Connection=true;MultipleActiveResultSets=true");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Clase>(entity =>
+            {
+                entity.ToTable("clase");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.FechaFinalizacion)
+                    .HasColumnType("date")
+                    .HasColumnName("fechaFinalizacion");
+
+                entity.Property(e => e.FechaSolicitud)
+                    .HasColumnType("date")
+                    .HasColumnName("fechaSolicitud");
+
+                entity.Property(e => e.IdEstado).HasColumnName("idEstado");
+
+                entity.Property(e => e.IdLicencia).HasColumnName("idLicencia");
+
+                entity.Property(e => e.IdTipo).HasColumnName("idTipo");
+
+                entity.Property(e => e.IdTutor).HasColumnName("idTutor");
+
+                entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
+
+                entity.Property(e => e.IdVehiculo).HasColumnName("idVehiculo");
+
+                entity.HasOne(d => d.IdEstadoNavigation)
+                    .WithMany(p => p.Clases)
+                    .HasForeignKey(d => d.IdEstado)
+                    .HasConstraintName("fk_estadoClase");
+
+                entity.HasOne(d => d.IdLicenciaNavigation)
+                    .WithMany(p => p.Clases)
+                    .HasForeignKey(d => d.IdLicencia)
+                    .HasConstraintName("fk_licencia");
+
+                entity.HasOne(d => d.IdTipoNavigation)
+                    .WithMany(p => p.Clases)
+                    .HasForeignKey(d => d.IdTipo)
+                    .HasConstraintName("fk_tipoClase");
+
+                entity.HasOne(d => d.IdTutorNavigation)
+                    .WithMany(p => p.ClaseIdTutorNavigations)
+                    .HasForeignKey(d => d.IdTutor)
+                    .HasConstraintName("fk_tutor");
+
+                entity.HasOne(d => d.IdUsuarioNavigation)
+                    .WithMany(p => p.ClaseIdUsuarioNavigations)
+                    .HasForeignKey(d => d.IdUsuario)
+                    .HasConstraintName("fk_usuario");
+
+                entity.HasOne(d => d.IdVehiculoNavigation)
+                    .WithMany(p => p.Clases)
+                    .HasForeignKey(d => d.IdVehiculo)
+                    .HasConstraintName("fk_vehiculo");
+            });
+
+            modelBuilder.Entity<EstadoClase>(entity =>
+            {
+                entity.ToTable("estadoClase");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("descripcion");
+            });
+
             modelBuilder.Entity<EstadoUsuario>(entity =>
             {
                 entity.ToTable("estadoUsuario");
@@ -74,6 +147,22 @@ namespace GoodDriving.Models
                     .HasConstraintName("fk_usuarioTutor");
             });
 
+            modelBuilder.Entity<Licencium>(entity =>
+            {
+                entity.ToTable("licencia");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Categoria)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("categoria");
+
+                entity.Property(e => e.Descripcion)
+                    .HasColumnType("text")
+                    .HasColumnName("descripcion");
+            });
+
             modelBuilder.Entity<MarcaVehiculo>(entity =>
             {
                 entity.ToTable("marcaVehiculo");
@@ -94,6 +183,18 @@ namespace GoodDriving.Models
 
                 entity.Property(e => e.Descripcion)
                     .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("descripcion");
+            });
+
+            modelBuilder.Entity<TipoClase>(entity =>
+            {
+                entity.ToTable("tipoClase");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Descripcion)
+                    .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("descripcion");
             });

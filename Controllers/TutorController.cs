@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GoodDriving.Controllers
 {
-    [Authorize(Roles = "TUTOR")]
+    //[Authorize(Roles = "TUTOR")]
     public class TutorController : Controller
     {
         private readonly goodDrivingContext _context;

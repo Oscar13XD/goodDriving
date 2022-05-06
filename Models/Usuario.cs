@@ -7,6 +7,8 @@ namespace GoodDriving.Models
     {
         public Usuario()
         {
+            ClaseIdTutorNavigations = new HashSet<Clase>();
+            ClaseIdUsuarioNavigations = new HashSet<Clase>();
             HorarioTutors = new HashSet<HorarioTutor>();
         }
 
@@ -29,6 +31,8 @@ namespace GoodDriving.Models
         public virtual EstadoUsuario IdEstadoNavigation { get; set; } = null!;
         public virtual TipoDocumento? IdTipoDocumentoNavigation { get; set; }
         public virtual TipoUsuario IdTipoNavigation { get; set; } = null!;
+        public virtual ICollection<Clase> ClaseIdTutorNavigations { get; set; }
+        public virtual ICollection<Clase> ClaseIdUsuarioNavigations { get; set; }
         public virtual ICollection<HorarioTutor> HorarioTutors { get; set; }
     }
 }
