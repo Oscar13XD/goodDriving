@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 
 namespace GoodDriving.Controllers
 {
-    //[Authorize(Roles = "ADMINISTRADOR")]
+    [Authorize(Roles = "ADMINISTRADOR")]
     public class AdministradorController : Controller
     {
         private readonly goodDrivingContext _context;
