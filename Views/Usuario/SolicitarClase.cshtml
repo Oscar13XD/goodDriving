@@ -1,0 +1,202 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutUsuario";
+}
+<head>
+</head>
+<body>
+    <div class="container">
+        <div class="card mt-4">
+            <form id="registrarCita">
+                <div class="card-header">
+                    <h5>Solicitar Clase Teorica</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <input type="hidden" name="idUsuario" value="10"/>
+                        <div class="col-4">
+                            <label class="form-label">Licencia</label>
+                            <select class="form-select" required id="idLicencia" name="idLicencia" >
+                                <option selected value="">SELECCIONAR</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">Tutor</label>
+                            <select class="form-select" required id="idTutor" name="idTutor">
+                                <option selected value="">SELECCIONAR</option>
+                            </select>
+                        </div>
+                        <div class="col-4" style="position: relative;">
+                            <button class="btn btn-primary" type="submit" style="position:absolute; width: 90%; bottom:0;">SOLICITAR</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card mt-2" id="cardDescripcionLicencia" hidden>
+            <div class="card-header"><h5>Descripcion de la licencia:</h5></div>
+            <div class="card-body" id="descripcionLicencia"></div>
+        </div>
+        <div class="card mt-2" id="cardHorarioTeorico" hidden>
+            <div class="card-header">
+                <h5>Horario Clases Teoricas: <strong></strong></h5>
+            </div>
+            <div class="card-body" id="tablaHorario"></div>
+        </div>
+    </div>
+    @section Scripts{
+    <script>
+        $( document ).ready(function() {
+            traerLicencias();
+            traerTutores();
+        });
+
+        function traerLicencias(){
+            const select=document.getElementById('idLicencia');
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerLicencias","Usuario")',
+                success: function(respuesta){
+                    //console.log(respuesta);
+                    var licencias = respuesta.licencias;
+                    var plantilla='';
+                    licencias.forEach(licencia => {
+                        plantilla+=`<option value="${licencia.id}" descripcion="${licencia.descripcion}">${licencia.categoria}</option>`
+                    });
+                    select.innerHTML+=plantilla;
+                }
+            });
+        }
+
+        function traerTutores(){
+            const select=document.getElementById('idTutor');
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerUsuariosTutores","Usuario")',
+                success: function(respuesta){
+                    //console.log(respuesta);
+                    var Tutores = respuesta.tutores;
+                    var plantilla='';
+                    Tutores.forEach(tutor => {
+                        plantilla+=`<option value="${tutor.id}">${tutor.nombre1} ${tutor.apellido1}</option>`
+                    });
+                    select.innerHTML+=plantilla;
+                }
+            });
+        }
+
+        $('#idLicencia').change(function(){
+            var descripcion = $('option:selected', this).attr('descripcion');
+            if(descripcion){
+                //console.log(descripcion);
+                $('#cardDescripcionLicencia').removeAttr('hidden');
+                $('#descripcionLicencia').html(descripcion)
+            }else{
+                $('#cardDescripcionLicencia').prop('hidden', 'hidden');
+            }
+        });
+
+        $('#idTutor').change(function(){
+            var id=$('#idTutor').val();
+            if(id != ""){
+                //console.log(id);
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("TraerHorarioTutorTeorico","Usuario")',
+                    data: {id:id},
+                    success: function(respuesta){
+                        if(respuesta=="no hay"){
+                            $('#cardHorarioTeorico').removeAttr('hidden');
+                            $('#tablaHorario').html("No hay Horario Registrado para este Tutor");
+                        }
+                        else{
+                            plantillaHorario();
+                            $('#cardHorarioTeorico').removeAttr('hidden');
+                            var Dias = new Array("LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO");
+                            var Horas = new Array("6:00 am - 7:59am", "8:00 am - 9:59am", "10:00 am - 11:59am");
+                            //console.log(respuesta);
+                            var Horarios = respuesta.horarioTutors;
+                            //console.log(Horarios);
+                            //console.log(Dias);
+                            //console.log(Horas);
+                            Horarios.forEach(Horario => {
+                                //console.log(Horario);
+                                Dias.forEach(Dia => {
+                                    if(Horario.dia==Dia){
+                                        Horas.forEach(Hora => {
+                                            if(Horario.hora == Hora){
+                                                document.getElementById(Dia +'-' + Hora).classList.toggle('table-info');
+                                                document.getElementById(Dia +'-' + Hora).innerHTML='ASIGNADO';
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    }
+                });
+            }else{
+                $('#cardHorarioTeorico').prop('hidden', 'hidden');
+            }
+        });
+
+        function plantillaHorario(){
+            var plantilla='';
+            plantilla+=`<div class="table-responsive">
+                <table class="table align-middle table-bordered">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>HORA</th>
+                            <th>LUNES</th>
+                            <th>MARTES</th>
+                            <th>MIERCOLES</th>
+                            <th>JUEVES</th>
+                            <th>VIERNES</th>
+                            <th>SABADO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>6:00 am - 7:59am</td>
+                            <td id="LUNES-6:00 am - 7:59am"></td>
+                            <td id="MARTES-6:00 am - 7:59am"></td>
+                            <td id="MIERCOLES-6:00 am - 7:59am"></td>
+                            <td id="JUEVES-6:00 am - 7:59am"></td>
+                            <td id="VIERNES-6:00 am - 7:59am"></td>
+                            <td id="SABADO-6:00 am - 7:59am"></td>
+                        </tr>
+                        <tr>
+                            <td>8:00 am - 9:59am</td>
+                            <td id="LUNES-8:00 am - 9:59am"></td>
+                            <td id="MARTES-8:00 am - 9:59am"></td>
+                            <td id="MIERCOLES-8:00 am - 9:59am"></td>
+                            <td id="JUEVES-8:00 am - 9:59am"></td>
+                            <td id="VIERNES-8:00 am - 9:59am"></td>
+                            <td id="SABADO-8:00 am - 9:59am"></td>
+                        </tr>
+                        <tr>
+                            <td>10:00 am - 11:59am</td>
+                            <td id="LUNES-10:00 am - 11:59am"></td>
+                            <td id="MARTES-10:00 am - 11:59am"></td>
+                            <td id="MIERCOLES-10:00 am - 11:59am"></td>
+                            <td id="JUEVES-10:00 am - 11:59am"></td>
+                            <td id="VIERNES-10:00 am - 11:59am"></td>
+                            <td id="SABADO-10:00 am - 11:59am"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>`
+            $('#tablaHorario').html(plantilla);
+        }
+
+        $('#registrarCita').submit(function(e){
+            $.ajax({
+
+            });
+            e.preventDefault();
+        });
+    </script>
+    }
+</body>
