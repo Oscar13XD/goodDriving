@@ -624,6 +624,7 @@ namespace GoodDriving.Controllers
                 str.Nombre1Tutor = NombreTutor;
                 str.Apellido1Tutor = ApellidoTutor;
                 str.IdUsuario = clase.IdUsuario;
+                str.IdEstado = clase.IdEstado;
                 str.Nombre1Usuario = NombreUsuario;
                 str.Apellido1Usuario= ApellidoUsuario;
                 str.IdLicencia= clase.IdLicencia;
