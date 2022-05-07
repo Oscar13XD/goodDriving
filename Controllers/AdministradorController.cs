@@ -128,6 +128,7 @@ namespace GoodDriving.Controllers
 
             foreach (Usuario Usuario in Usuarios)
             {
+                TimeSpan Edad = DateTime.Now - Usuario.FechaNacimiento;
                 Usuario.Nombre1 += " " + Usuario.Nombre2;
                 Usuario.Apellido1 += " " + Usuario.Apellido2;
                 strUsuario str = new strUsuario();
@@ -141,6 +142,7 @@ namespace GoodDriving.Controllers
                 str.Email = Usuario.Email;
                 str.TipoUsuario = Usuario.IdTipoNavigation.Tipo;
                 str.Estado = Usuario.IdEstadoNavigation.Estado;
+                str.Edad = (int)Math.Floor(Edad.TotalDays/365.25);
                 strUsuarios.Add(str);
             }
             return Json(new { usuarios = strUsuarios });
@@ -607,7 +609,7 @@ namespace GoodDriving.Controllers
         public async Task<IActionResult> TraerSolicitudClases()
         {
        
-            List<Clase> Clases= await _context.Clases.Include(e=> e.IdTipoNavigation).Include(e=> e.IdTutorNavigation).Include(e=> e.IdUsuarioNavigation).Include(e=> e.IdVehiculoNavigation).Include(e => e.IdVehiculoNavigation.IdMarcaNavigation).Include(e => e.IdVehiculoNavigation.IdModeloNavigation).Include(e=> e.IdLicenciaNavigation).Include(e=> e.IdEstadoNavigation).ToListAsync();           
+            List<Clase> Clases= await _context.Clases.Include(e=> e.IdTipoNavigation).Include(e=> e.IdTutorNavigation).Include(e=> e.IdUsuarioNavigation).Include(e=> e.IdLicenciaNavigation).Include(e=> e.IdEstadoNavigation).ToListAsync();           
             List<strClase> strClases = new List<strClase>();
             foreach (Clase clase in Clases)
             {
@@ -616,9 +618,6 @@ namespace GoodDriving.Controllers
                 clase.IdUsuarioNavigation.Nombre1 += " " + clase.IdUsuarioNavigation.Nombre2;
                 clase.IdUsuarioNavigation.Apellido1 += " " + clase.IdUsuarioNavigation.Apellido2;
 
-                string FechaSolicitud = Convert.ToString(clase.FechaSolicitud);
-                DateTime fechaReslt = DateTime.Parse(FechaSolicitud);
-                FechaSolicitud = fechaReslt.ToString("dd/MM/yyyy");
                 strClase str = new strClase();
                 str.Id = clase.Id;
                 str.IdTutor = clase.IdTutor;
@@ -627,14 +626,11 @@ namespace GoodDriving.Controllers
                 str.IdUsuario = clase.IdUsuario;
                 str.Nombre1Usuario = clase.IdUsuarioNavigation.Nombre1;
                 str.Apellido1Usuario=clase.IdUsuarioNavigation.Apellido1;
-                str.IdVehiculo = clase.IdVehiculo;
-                str.DescripcionMarca = clase.IdVehiculoNavigation.IdMarcaNavigation.Descripcion;
-                str.DescripcionModelo = clase.IdVehiculoNavigation.IdModeloNavigation.Descripcion;
                 str.IdLicencia= clase.IdLicencia;
                 str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
                 str.IdTipo= clase.IdTipo;
                 str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
-                str.FechaSolicitud = FechaSolicitud;
+                str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
                 str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
                 strClases.Add(str);
             }
@@ -678,6 +674,7 @@ namespace GoodDriving.Controllers
             public string Email { get; set; }
             public string Estado { get; set; }
             public string FechaNacimiento { get; set; }
+            public int Edad { get; set; }
             public string NoDocumento { get; set; }
             public long Telefono { get; set; }
             public string Direccion { get; set; }

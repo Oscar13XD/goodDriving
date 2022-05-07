@@ -8,28 +8,50 @@
 </head>
 <body>
     <div class="container">
+        <div class="card mt-4" id="cardClaseSolicitada" hidden> 
+            <div class="card-header">
+                <h5>Solicitud de clases Teoricas</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Nombre Tutor</th>
+                                <th>Licencia</th>
+                                <th>Fecha Solicitud</th>
+                                <th>Fecha Finalizacion</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="claseSolicitada"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="card mt-4">
-            <form id="registrarCita">
+            <form id="registrarClase">
                 <div class="card-header">
                     <h5>Solicitar Clase Teorica</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <input type="hidden" name="idUsuario" value="10"/>
-                        <div class="col-4">
+                        <input type="hidden" name="idUsuario" value="11"/>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
                             <label class="form-label">Licencia</label>
                             <select class="form-select" required id="idLicencia" name="idLicencia" >
                                 <option selected value="">SELECCIONAR</option>
                             </select>
                         </div>
-                        <div class="col-4">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
                             <label class="form-label">Tutor</label>
                             <select class="form-select" required id="idTutor" name="idTutor">
                                 <option selected value="">SELECCIONAR</option>
                             </select>
                         </div>
-                        <div class="col-4" style="position: relative;">
-                            <button class="btn btn-primary" type="submit" style="position:absolute; width: 90%; bottom:0;">SOLICITAR</button>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2 d-flex align-items-end">
+                            <button class="btn btn-primary" type="submit" style="height:min-content; width:100%;">SOLICITAR</button>
                         </div>
                     </div>
                 </div>
@@ -51,6 +73,8 @@
         $( document ).ready(function() {
             traerLicencias();
             traerTutores();
+            traerClaseTeorica();
+            var TutorA=false;
         });
 
         function traerLicencias(){
@@ -110,8 +134,10 @@
                         if(respuesta=="no hay"){
                             $('#cardHorarioTeorico').removeAttr('hidden');
                             $('#tablaHorario').html("No hay Horario Registrado para este Tutor");
+                            TutorA = false;
                         }
                         else{
+                            TutorA = true;
                             plantillaHorario();
                             $('#cardHorarioTeorico').removeAttr('hidden');
                             var Dias = new Array("LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO");
@@ -191,12 +217,96 @@
             $('#tablaHorario').html(plantilla);
         }
 
-        $('#registrarCita').submit(function(e){
-            $.ajax({
-
-            });
+        $('#registrarClase').submit(function(e){
+            if(TutorA){
+                $.ajax({
+                    type: "POST",
+                    data: $('#registrarClase').serialize(),
+                    url:'@Url.Action("RegistrarClase","Usuario")',
+                    success: function(respuesta){
+                        switch(respuesta){
+                            case "clase solicitada":
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Clase Solicitada',
+                                    text: 'En este momento, usted se encuentra con un curso de clase teorica solicitada'
+                                });
+                                break;
+                            case "registro realizado":
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Registro realizado',
+                                    allowOutsideClick: false,
+                                    confirmButtonText: 'De acuerdo'
+                                });
+                                break;
+                            default:
+                                console.log(respuesta);
+                                break;
+                        }
+                    }
+                });
+            }else{
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Tutor sin Horario',
+                    text: 'Este Tutor no tiene actualmente registrado un horario'
+                });
+            }
             e.preventDefault();
         });
+
+        function traerClaseTeorica(){
+            var id = 11;
+            //var id = @User.Identity.Name;
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerClaseUsuario","Usuario")',
+                data: {id:id},
+                success: function(respuesta){
+                    if(respuesta != "no hay"){
+                        //console.log(respuesta);
+                        var Clases = respuesta.clases;
+                        var plantilla='';
+                        var color='';
+                        var eliminar = false;
+                        Clases.forEach(Clase => {
+                            switch(Clase.idEstado){
+                                case 1:
+                                    color = 'class="table-info"';
+                                    eliminar = true;
+                                    break;
+                                case 2:
+                                    color = 'class="table-warning"';
+                                    break;
+                                case 3:
+                                    color = 'class="table-success"';
+                                    break;
+                                case 4:
+                                    color = 'class="table-danger"';
+                                    break;
+                            }
+                            plantilla+=`<tr ID="${Clase.id}">
+                                <td>${Clase.nombre1Tutor} ${Clase.apellido1Tutor}</td>
+                                <td>${Clase.categoriaLicencia}</td>
+                                <td>${Clase.fechaSolicitud}</td>
+                                <td>${Clase.fechaFinalizacion}</td>
+                                <td ${color}>${Clase.descripcionEstado}</td>`
+                                if(eliminar){
+                                    plantilla+=`<td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-danger eliminar">Eliminar<a>
+                                        </div>
+                                    </td>`
+                                }
+                            plantilla+=`</tr>`
+                        });
+                        $('#claseSolicitada').html(plantilla);
+                        $('#cardClaseSolicitada').removeAttr('hidden');
+                    }
+                }
+            });
+        }
     </script>
     }
 </body>

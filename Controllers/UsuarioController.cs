@@ -58,7 +58,7 @@ namespace GoodDriving.Controllers
             return Json(new { tutores = strTutores });
         }
 
-        [HttpGet] //LEER USUARIOS
+        [HttpGet]
         public async Task<IActionResult> TraerHorarioTutorTeorico(int id)
         {
             List<HorarioTutor> HorarioTutors = await _context.HorarioTutors.Where(x => x.IdTutor == id).ToListAsync();
@@ -81,6 +81,61 @@ namespace GoodDriving.Controllers
             return Content("no hay");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RegistrarClase(int idUsuario, int idLicencia, int idTutor)
+        {
+            List<Clase> clases = await _context.Clases.Where(x => x.IdUsuario == idUsuario && x.IdTipo == 1).ToListAsync();
+            if(clases.Count > 0)
+            {
+                return Content("clase solicitada");
+            }
+            Clase clase = new Clase();
+            clase.IdTutor = idTutor;
+            clase.IdUsuario = idUsuario;
+            clase.IdEstado = 1;
+            clase.IdTipo = 1;
+            clase.FechaSolicitud = DateTime.Now.Date;
+            clase.FechaFinalizacion = null;
+            clase.IdLicencia = idLicencia;
+            try
+            {
+                _context.Add(clase);
+                _context.SaveChanges();
+                return Content("registro realizado");
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.ToString());
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TraerClaseUsuario(int id)
+        {
+            List<Clase> clases = await _context.Clases.Include(x =>x.IdTutorNavigation).Include(x => x.IdLicenciaNavigation).Include(x => x.IdEstadoNavigation).Where(x =>x.IdUsuario == id && x.IdTipo == 1).ToListAsync();
+            List<strClase> strClases = new List<strClase>();
+
+            if ( clases.Count > 0)
+            {
+                foreach(Clase clase in clases)
+                {
+                    clase.IdTutorNavigation.Nombre1 += " " + clase.IdTutorNavigation.Nombre2;
+                    clase.IdTutorNavigation.Apellido1 += " " + clase.IdTutorNavigation.Apellido2;
+                    strClase str = new strClase();
+                    str.Id = clase.Id;
+                    str.Nombre1Tutor = clase.IdTutorNavigation.Nombre1;
+                    str.Apellido1Tutor = clase.IdTutorNavigation.Apellido1;
+                    str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
+                    str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
+                    str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
+                    str.IdEstado = clase.IdEstado;
+                    str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
+                    strClases.Add(str);
+                }
+                return Json(new { clases = strClases });
+            }
+            return Content("no hay");
+        }
         struct strLicencia
         {
             public int Id { get; set; }
@@ -116,6 +171,29 @@ namespace GoodDriving.Controllers
             public string? Dia { get; set; }
             public string? Hora { get; set; }
             public int? Cupo { get; set; }
+        }
+        struct strClase
+        {
+            public int Id { get; set; }
+            public int? IdTutor { get; set; }
+            public int? IdUsuario { get; set; }
+            public int? IdEstado { get; set; }
+            public int? IdVehiculo { get; set; }
+            public int? IdLicencia { get; set; }
+            public int? IdTipo { get; set; }
+            public string? FechaSolicitud { get; set; }
+            public string? FechaFinalizacion { get; set; }
+            public string? DescripcionEstado { get; set; }
+            public string Apellido1Tutor { get; set; }
+            public string Nombre1Tutor { get; set; }
+            public string Apellido1Usuario { get; set; }
+            public string Nombre1Usuario { get; set; }
+            public int? IdMarca { get; set; }
+            public int? IdModelo { get; set; }
+            public string? DescripcionMarca { get; set; }
+            public string? DescripcionModelo { get; set; }
+            public string? CategoriaLicencia { get; set; }
+
         }
 
     }
