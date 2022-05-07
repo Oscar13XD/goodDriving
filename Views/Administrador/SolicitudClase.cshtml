@@ -15,17 +15,17 @@
 
             </div>
             <div class="card-body">
-                <table id="tablaClaseTeorica">
+                <table class="table table-bordered" id="tablaClaseTeorica">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>NombreUuario</th>
                             <th>NombreTutor</th>
-                            <th>Licencia</th>
-                            <th>Estado</th>
+                            <th>Categoria Licencia</th>
                             <th>Fecha Solicitud</th>
                             <th>Fecha Finalizacion</th>
-
+                            <th>Estado</th>
+                            <th>Gestiom</th>
                         </tr>
                     </thead>
                     <tbody id="TablaClases"></tbody>
@@ -33,40 +33,160 @@
             </div>
 
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="gestionClase" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <form id="editarClase">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Gestionar Clase</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <h5>Perfil Usuario</h5>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Primer y Segundo Nombre</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Primer y Segundo Apellido</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Edad</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Documento</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Telefono</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Direccion</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Email</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <hr />
+                                        <h5>Perfil Tutor</h5>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Primer y Segundo Nombre</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Primer y Segundo Apellido</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Documento</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Telefono</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Direccion</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Email</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <hr />
+                                        <h5>Detalles de la Clase</h5>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Categoria Licencia</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Fecha Solicitud</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Fecha Finalizacion</label>
+                                            <input class="form-control" type="text" readonly/>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
+                                            <label class="form-label">Estado</label>
+                                            <select class="form-select" required id="tipoUsuario" name="TipoUsuario">
+                                                <option selected value="">SELECCIONAR</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
+                            <button type="submit" class="btn btn-primary">ACTUALIZAR</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-@section Scripts{
+
+    @section Scripts{
     <script>
-         $( document ).ready(function() {
+        $( document ).ready(function() {
             traerSolicitudClases();
         });
+
         function traerSolicitudClases(){
-              $.ajax({
-                  type: "GET",
-                  url: '@Url.Action("TraerSolicitudClases","Administrador")',
-                   success: function(respuesta){
-                       var Clases= respuesta.clases;
-                       console.log(Clases);
-                       var plantilla ='';
-                       var contador=1;
-                       Clases.forEach(Clase=>{
-                            plantilla+=`<tr ID="${Clase.id}">
-                                <td>${contador}</td>
-                                <td>${Clase.nombre1Usuario} ${Clase.apellido1Usuario}</td>
-                                <td>${Clase.nombre1Tutor} ${Clase.apellido1Tutor}</td>
-                                <td>${Clase.categoriaLicencia}</td>
-                                <td>${Clase.descripcionEstado}</td>
-                                <td>${Clase.fechaSolicitud}</td>
-                                <td>${Clase.fechaFinalizacion}</td>
-                            </tr>`
-                            contador+=1;  
-                       });
-                        $('#TablaClases').html(plantilla);
-                        dataTable();
-
-
-                   }
-               });
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerSolicitudClases","Administrador")',
+                success: function(respuesta){
+                    var Clases= respuesta.clases;
+                    console.log(Clases);
+                    var plantilla ='';
+                    var contador=1;
+                    var color='';
+                    Clases.forEach(Clase=>{
+                        switch(Clase.idEstado){
+                            case 1:
+                                color = 'class="table-info"';
+                                eliminar = true;
+                                break;
+                            case 2:
+                                color = 'class="table-warning"';
+                                break;
+                            case 3:
+                                color = 'class="table-success"';
+                                break;
+                            case 4:
+                                color = 'class="table-danger"';
+                                break;
+                        }
+                        plantilla+=`<tr ID="${Clase.id}">
+                            <td>${contador}</td>
+                            <td>${Clase.nombre1Usuario} ${Clase.apellido1Usuario}</td>
+                            <td>${Clase.nombre1Tutor} ${Clase.apellido1Tutor}</td>
+                            <td>${Clase.categoriaLicencia}</td>
+                            <td>${Clase.fechaSolicitud}</td>
+                            <td>${Clase.fechaFinalizacion}</td>
+                            <td ${color}>${Clase.descripcionEstado}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-primary editar" data-bs-toggle="modal" data-bs-target="#gestionClase">Gestionar<a>
+                                </div>
+                            </td>
+                        </tr>`
+                        contador+=1;
+                    });
+                    $('#TablaClases').html(plantilla);
+                    dataTable();
+                }
+            });
         }
 
         function dataTable(){
@@ -75,6 +195,8 @@
                 new simpleDatatables.DataTable(datatablesSimple);
             }
         }
-    </script>
 
-}
+
+    </script>
+    }
+</body>
