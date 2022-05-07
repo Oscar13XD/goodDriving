@@ -84,7 +84,7 @@ namespace GoodDriving.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistrarClase(int idUsuario, int idLicencia, int idTutor)
         {
-            List<Clase> clases = await _context.Clases.Where(x => x.IdUsuario == idUsuario && x.IdTipo == 1).ToListAsync();
+            List<Clase> clases = await _context.Clases.Where(x => x.IdUsuario == idUsuario && x.IdTipo == 1 && (x.IdEstado == 1 || x.IdEstado == 2)).ToListAsync();
             if (clases.Count > 0)
             {
                 return Content("clase solicitada");

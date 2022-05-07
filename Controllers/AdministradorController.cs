@@ -639,6 +639,95 @@ namespace GoodDriving.Controllers
             return Json(new { clases = strClases });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> TraerClaseU(int id)
+        {
+            List<Clase> Clases = await _context.Clases.Include(e => e.IdTipoNavigation).Include(e => e.IdTutorNavigation).Include(e => e.IdUsuarioNavigation).Include(e => e.IdLicenciaNavigation).Include(e => e.IdEstadoNavigation).Where(x => x.Id == id).ToListAsync();
+            List<strClase> strClases = new List<strClase>();
+
+            if (Clases.Count > 0)
+            {
+                foreach (Clase clase in Clases)
+                {
+                    string NombreTutor = clase.IdTutorNavigation.Nombre1 + " " + clase.IdTutorNavigation.Nombre2;
+                    string ApellidoTutor = clase.IdTutorNavigation.Apellido1 + " " + clase.IdTutorNavigation.Apellido2;
+                    string NombreUsuario = clase.IdUsuarioNavigation.Nombre1 + " " + clase.IdUsuarioNavigation.Nombre2;
+                    string ApellidoUsuario = clase.IdUsuarioNavigation.Apellido1 + " " + clase.IdUsuarioNavigation.Apellido2;
+                    TimeSpan Edad = DateTime.Now - clase.IdUsuarioNavigation.FechaNacimiento;
+
+                    strClase str = new strClase();
+                    str.Id = clase.Id;
+                    str.IdTutor = clase.IdTutor;
+                    str.IdUsuario = clase.IdUsuario;
+                    str.IdEstado = clase.IdEstado;
+                    str.IdLicencia = clase.IdLicencia;
+                    str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
+                    str.IdTipo = clase.IdTipo;
+                    str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
+                    str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
+                    str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
+
+                    //DATOS DE USUARIO
+                    str.Nombre1Usuario = NombreUsuario;
+                    str.Apellido1Usuario = ApellidoUsuario;
+                    str.EdadUsuario = (int)Math.Floor(Edad.TotalDays / 365.25);
+                    str.DocumentoUsuario = clase.IdUsuarioNavigation.NoDocumento;
+                    str.TelefonoUsuario = clase.IdUsuarioNavigation.Telefono;
+                    str.DireccionUsuario = clase.IdUsuarioNavigation.Direccion;
+                    str.EmailUsuario = clase.IdUsuarioNavigation.Email;
+
+                    //DATOS TUTOR
+                    str.Nombre1Tutor = NombreTutor;
+                    str.Apellido1Tutor = ApellidoTutor;
+                    str.DocumentoTutor = clase.IdTutorNavigation.NoDocumento;
+                    str.TelefonoTutor = clase.IdTutorNavigation.Telefono;
+                    str.DireccionTutor = clase.IdTutorNavigation.Direccion;
+                    str.EmailTutor = clase.IdTutorNavigation.Email;
+
+                    strClases.Add(str);
+                }
+                return Json(new { clase = strClases });
+            }
+            return Content("no hay");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TraerEstadoClase()
+        {
+            List<EstadoClase> estadoClases = await _context.EstadoClases.ToListAsync();
+            List<strEstadoClase> strEstadoClases = new List<strEstadoClase>();
+            foreach (EstadoClase estadoClase in estadoClases)
+            {
+                strEstadoClase str = new strEstadoClase();
+                str.Id = estadoClase.Id;
+                str.Descripcion = estadoClase.Descripcion;
+                strEstadoClases.Add(str);
+            }
+            return Json(new { estadosClase = strEstadoClases });
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarClase(int idClase, int idEstado)
+        {
+            Clase clase = await _context.Clases.Where(v => v.Id == idClase).FirstOrDefaultAsync();
+            if(clase != null)
+            {
+                clase.IdEstado = idEstado;
+                try
+                {
+                    _context.Update(clase);
+                    await _context.SaveChangesAsync();
+                    return Content("actualizado");
+                }
+                catch (Exception ex)
+                {
+                    return Content(ex.Message);
+                }
+            }
+            return Content("no hay");
+        }
+
         // ESTRUCTURAS DE SOLICITUD DE CLASES 
         struct strClase
         {
@@ -661,6 +750,16 @@ namespace GoodDriving.Controllers
             public string? DescripcionMarca { get; set; }
             public string? DescripcionModelo { get; set; }
             public string? CategoriaLicencia { get; set; }
+            public int EdadUsuario { get; set; }
+            public string DocumentoUsuario { get; set; }
+            public long TelefonoUsuario { get; set; }
+            public string DireccionUsuario { get; set; }
+            public string EmailUsuario { get; set; }
+            public string DocumentoTutor { get; set; }
+            public long TelefonoTutor { get; set; }
+            public string DireccionTutor { get; set; }
+            public string EmailTutor { get; set; }
+
 
         }
 
@@ -724,6 +823,12 @@ namespace GoodDriving.Controllers
             public string? Dia { get; set; }
             public string? Hora { get; set; }
             public int? Cupo { get; set; }
+        }
+        
+        struct strEstadoClase
+        {
+            public int Id { get; set; }
+            public string? Descripcion { get; set; }
         }
         //SHA256
         public static string ToHexString(byte[] array)
