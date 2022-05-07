@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GoodDriving.Controllers
 {
-    //[Authorize(Roles = "USUARIO")]
+    [Authorize(Roles = "USUARIO")]
     public class UsuarioController : Controller
     {
         private readonly goodDrivingContext _context;
@@ -85,7 +85,7 @@ namespace GoodDriving.Controllers
         public async Task<IActionResult> RegistrarClase(int idUsuario, int idLicencia, int idTutor)
         {
             List<Clase> clases = await _context.Clases.Where(x => x.IdUsuario == idUsuario && x.IdTipo == 1).ToListAsync();
-            if(clases.Count > 0)
+            if (clases.Count > 0)
             {
                 return Content("clase solicitada");
             }
@@ -112,12 +112,12 @@ namespace GoodDriving.Controllers
         [HttpGet]
         public async Task<IActionResult> TraerClaseUsuario(int id)
         {
-            List<Clase> clases = await _context.Clases.Include(x =>x.IdTutorNavigation).Include(x => x.IdLicenciaNavigation).Include(x => x.IdEstadoNavigation).Where(x =>x.IdUsuario == id && x.IdTipo == 1).ToListAsync();
+            List<Clase> clases = await _context.Clases.Include(x => x.IdTutorNavigation).Include(x => x.IdLicenciaNavigation).Include(x => x.IdEstadoNavigation).Where(x => x.IdUsuario == id && x.IdTipo == 1).ToListAsync();
             List<strClase> strClases = new List<strClase>();
 
-            if ( clases.Count > 0)
+            if (clases.Count > 0)
             {
-                foreach(Clase clase in clases)
+                foreach (Clase clase in clases)
                 {
                     clase.IdTutorNavigation.Nombre1 += " " + clase.IdTutorNavigation.Nombre2;
                     clase.IdTutorNavigation.Apellido1 += " " + clase.IdTutorNavigation.Apellido2;
@@ -136,6 +136,28 @@ namespace GoodDriving.Controllers
             }
             return Content("no hay");
         }
+        // ELIMINAR CLASE USUARIO
+        [HttpPost]
+        public async Task<IActionResult> EliminarClase(int id)
+        {
+            Clase clase = await _context.Clases.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if (clase != null)
+            {
+                try
+                {
+                    _context.Remove(clase);
+                    await _context.SaveChangesAsync();
+                    return Content("eliminado");
+                }
+                catch (Exception ex)
+                {
+                    return Content(ex.Message);
+                }
+
+            }
+            return Content("No hay");
+        }
+
         struct strLicencia
         {
             public int Id { get; set; }

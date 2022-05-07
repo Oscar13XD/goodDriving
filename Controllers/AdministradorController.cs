@@ -613,19 +613,19 @@ namespace GoodDriving.Controllers
             List<strClase> strClases = new List<strClase>();
             foreach (Clase clase in Clases)
             {
-                clase.IdTutorNavigation.Nombre1 += " " + clase.IdTutorNavigation.Nombre2;
-                clase.IdTutorNavigation.Apellido1 += " " + clase.IdTutorNavigation.Apellido2;
-                clase.IdUsuarioNavigation.Nombre1 += " " + clase.IdUsuarioNavigation.Nombre2;
-                clase.IdUsuarioNavigation.Apellido1 += " " + clase.IdUsuarioNavigation.Apellido2;
+                string NombreTutor = clase.IdTutorNavigation.Nombre1 + " " + clase.IdTutorNavigation.Nombre2;
+                string ApellidoTutor = clase.IdTutorNavigation.Apellido1 + " " + clase.IdTutorNavigation.Apellido2;
+                string NombreUsuario = clase.IdUsuarioNavigation.Nombre1 + " " + clase.IdUsuarioNavigation.Nombre2;
+                string ApellidoUsuario = clase.IdUsuarioNavigation.Apellido1 + " " + clase.IdUsuarioNavigation.Apellido2;
 
                 strClase str = new strClase();
                 str.Id = clase.Id;
                 str.IdTutor = clase.IdTutor;
-                str.Nombre1Tutor = clase.IdTutorNavigation.Nombre1;
-                str.Apellido1Tutor = clase.IdTutorNavigation.Apellido1;
+                str.Nombre1Tutor = NombreTutor;
+                str.Apellido1Tutor = ApellidoTutor;
                 str.IdUsuario = clase.IdUsuario;
-                str.Nombre1Usuario = clase.IdUsuarioNavigation.Nombre1;
-                str.Apellido1Usuario=clase.IdUsuarioNavigation.Apellido1;
+                str.Nombre1Usuario = NombreUsuario;
+                str.Apellido1Usuario= ApellidoUsuario;
                 str.IdLicencia= clase.IdLicencia;
                 str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
                 str.IdTipo= clase.IdTipo;

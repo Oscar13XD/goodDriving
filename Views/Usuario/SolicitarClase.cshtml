@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="card mt-4" id="cardClaseSolicitada" hidden> 
+        <div class="card mt-4" id="cardClaseSolicitada" hidden>
             <div class="card-header">
                 <h5>Solicitud de clases Teoricas</h5>
             </div>
@@ -37,10 +37,10 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <input type="hidden" name="idUsuario" value="11"/>
+                        <input type="hidden" name="idUsuario" value="@User.Identity.Name" />    
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
                             <label class="form-label">Licencia</label>
-                            <select class="form-select" required id="idLicencia" name="idLicencia" >
+                            <select class="form-select" required id="idLicencia" name="idLicencia">
                                 <option selected value="">SELECCIONAR</option>
                             </select>
                         </div>
@@ -233,6 +233,7 @@
                                 });
                                 break;
                             case "registro realizado":
+                                traerClaseTeorica();
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Registro realizado',
@@ -257,8 +258,8 @@
         });
 
         function traerClaseTeorica(){
-            var id = 11;
-            //var id = @User.Identity.Name;
+            //var id = 10;
+            var id = @User.Identity.Name;
             $.ajax({
                 type: "GET",
                 url: '@Url.Action("TraerClaseUsuario","Usuario")',
@@ -286,7 +287,7 @@
                                     color = 'class="table-danger"';
                                     break;
                             }
-                            plantilla+=`<tr ID="${Clase.id}">
+                            plantilla+=`<tr id="${Clase.id}">
                                 <td>${Clase.nombre1Tutor} ${Clase.apellido1Tutor}</td>
                                 <td>${Clase.categoriaLicencia}</td>
                                 <td>${Clase.fechaSolicitud}</td>
@@ -303,10 +304,39 @@
                         });
                         $('#claseSolicitada').html(plantilla);
                         $('#cardClaseSolicitada').removeAttr('hidden');
+                    }else{
+                        $('#cardClaseSolicitada').prop('hidden', 'hidden');
                     }
                 }
             });
         }
+
+        $(document).on('click','.eliminar', function(){
+            var element=$(this)[0].parentElement.parentElement.parentElement;
+            //console.log(element);
+            var id=$(element).attr('id');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("EliminarClase","Usuario")',
+                data: {id:id},
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "eliminado":
+                            traerClaseTeorica();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Clase Eliminada',
+                                allowOutsideClick: false,
+                                confirmButtonText: 'De acuerdo'
+                            });
+                            break;
+                        default:
+                            console.log(respuesta);
+                            break;
+                    }
+                }
+            });
+        });
     </script>
     }
 </body>
