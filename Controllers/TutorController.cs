@@ -247,7 +247,14 @@ namespace GoodDriving.Controllers
             return Json(new { clases = strClases });
         }
 
-
+        // REGISTRAR CUESTIONARIO
+        [HttpPost]
+        public async Task<IActionResult> RegistrarCuestionario(int pregunta1, int pregunta2, int pregunta3, int pregunta4, int pregunta5,
+            int pregunta6, int pregunta7, int pregunta8, int pregunta9, int pregunta10)
+        {
+            int resultado= pregunta1 +pregunta2 +pregunta3 +pregunta4 +pregunta5 +pregunta6 +pregunta7 +pregunta8 +pregunta9 +pregunta10;
+            return Content(resultado.ToString());
+        }
         struct strHorarioTutor
         {
             public int Id { get; set; }
