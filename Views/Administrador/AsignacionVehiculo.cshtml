@@ -4,34 +4,30 @@
 @{
     Layout = "_LayoutAdministrador";
 }
-<head>
-</head>
+<head></head>
 <body>
     <div class="container">
         <div class="card mt-4">
             <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                SOLICITUDES DE CLASES TEORICAS
-
+                <h5>Lista de estudiantes para Clases Practicas, Asignación Vehiculo</h5>
             </div>
             <div class="card-body">
-                <table class="table table-bordered" id="tablaClaseTeorica">
+                <table class="table table-bordered" id="tablaClasePractica">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>NombreUuario</th>
-                            <th>NombreTutor</th>
+                            <th>Nombre Usuario</th>
+                            <th>Nombre Tutor</th>
                             <th>Categoria Licencia</th>
                             <th>Fecha Solicitud</th>
-                            <th>Fecha Finalizacion</th>
-                            <th>Estado</th>
+                            <th>Estado Clase Practica</th>
+                            <th>Vehiculo</th>
                             <th>Gestiom</th>
                         </tr>
                     </thead>
                     <tbody id="TablaClases"></tbody>
                 </table>
             </div>
-
         </div>
         <!-- Modal -->
         <div class="modal fade" id="gestionClase" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -116,9 +112,11 @@
                                             <label class="form-label">Fecha Finalizacion</label>
                                             <input class="form-control" type="text" readonly id="fechaFinalizacion"/>
                                         </div>
+                                        <hr />
+                                        <h5>Detalles del vehiculo</h5>
                                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
-                                            <label class="form-label">Estado</label>
-                                            <select class="form-select" required id="idEstado" name="idEstado">
+                                            <label class="form-label">Vehiculo</label>
+                                            <select class="form-select" required id="idVehiculo" name="idVehiculo">
                                                 <option selected value="">SELECCIONAR</option>
                                             </select>
                                         </div>
@@ -135,21 +133,20 @@
             </div>
         </div>
     </div>
-
     @section Scripts{
     <script>
         $( document ).ready(function() {
             traerSolicitudClases();
-            traerEstadoClase();
+            traerVehiculo();
         });
 
         function traerSolicitudClases(){
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("TraerSolicitudClases","Administrador")',
+                url: '@Url.Action("TraerSolicitudClasesPracticas","Administrador")',
                 success: function(respuesta){
                     var Clases= respuesta.clases;
-                    //console.log(Clases);
+                    console.log(Clases);
                     var plantilla ='';
                     var contador=1;
                     var color='';
@@ -175,8 +172,8 @@
                             <td>${Clase.nombre1Tutor} ${Clase.apellido1Tutor}</td>
                             <td>${Clase.categoriaLicencia}</td>
                             <td>${Clase.fechaSolicitud}</td>
-                            <td>${fechaFinalizacion[0]}</td>
                             <td ${color}>${Clase.descripcionEstado}</td>
+                            <td>${Clase.descripcionMarca} ${Clase.descripcionModelo}</td>
                             <td>
                                 <div class="btn-group">
                                     <a class="btn btn-primary editar" data-bs-toggle="modal" data-bs-target="#gestionClase">Gestionar<a>
@@ -192,7 +189,7 @@
         }
 
         function dataTable(){
-            const datatablesSimple = document.getElementById('tablaClaseTeorica');
+            const datatablesSimple = document.getElementById('tablaClasePractica');
             if (datatablesSimple) {
                 new simpleDatatables.DataTable(datatablesSimple);
             }
@@ -209,7 +206,7 @@
                 success: function(respuesta){
                     //console.log(respuesta);
                     var clase = respuesta.clase[0];
-                    console.log(clase);
+                    //console.log(clase);
                     var fechaFinalizacion = clase.fechaFinalizacion.split(' ');
 
 
@@ -233,25 +230,23 @@
                     $('#fechaSolicitud').val(clase.fechaSolicitud);
                     $('#fechaFinalizacion').val(fechaFinalizacion[0]);
 
-                    $('#idEstado').val(clase.idEstado);
-
+                    $('#idVehiculo').val(clase.idVehiculo);
                 }
             });
         });
 
-        function traerEstadoClase(){
-            const select=document.getElementById('idEstado');
+        function traerVehiculo(){
+            const select=document.getElementById('idVehiculo');
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("TraerEstadoClase","Administrador")',
+                url: '@Url.Action("TraerVehiculos","Administrador")',
                 success: function(respuesta){
-                    var EstadosClase=respuesta.estadosClase;
+                    var Vehiculos = respuesta.vehiculos;
                     var plantilla='';
-                    EstadosClase.forEach(EstadoClase => {
-                        plantilla+=`<option value="${EstadoClase.id}">${EstadoClase.descripcion}</option>`
+                    Vehiculos.forEach(Vehiculo => {
+                        plantilla+=`<option value="${Vehiculo.id}">${Vehiculo.descripcionMarca} ${Vehiculo.descripcionModelo}</option>`
                     });
                     select.innerHTML+=plantilla;
-
                 }
             });
         }
@@ -260,7 +255,7 @@
             $.ajax({
                 type: "POST",
                 data: $('#editarClase').serialize(),
-                url:'@Url.Action("EditarClase","Administrador")',
+                url:'@Url.Action("EditarClaseVehiculo","Administrador")',
                 success: function(respuesta){
                     switch(respuesta){
                         case "actualizado":

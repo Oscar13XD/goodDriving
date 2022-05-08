@@ -2,25 +2,21 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    Layout = "_LayoutAdministrador";
+    Layout = "_LayoutTutor";
 }
-<head>
-</head>
+<head></head>
 <body>
     <div class="container">
         <div class="card mt-4">
             <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                SOLICITUDES DE CLASES TEORICAS
-
+                <h5>Lista de estudiantes para Clases Teoricas</h5>
             </div>
             <div class="card-body">
                 <table class="table table-bordered" id="tablaClaseTeorica">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>NombreUuario</th>
-                            <th>NombreTutor</th>
+                            <th>Email Usuario</th>
                             <th>Categoria Licencia</th>
                             <th>Fecha Solicitud</th>
                             <th>Fecha Finalizacion</th>
@@ -31,7 +27,6 @@
                     <tbody id="TablaClases"></tbody>
                 </table>
             </div>
-
         </div>
         <!-- Modal -->
         <div class="modal fade" id="gestionClase" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -77,32 +72,6 @@
                                             <input class="form-control" type="text" readonly id="emailUsuario"/>
                                         </div>
                                         <hr />
-                                        <h5>Perfil Tutor</h5>
-                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
-                                            <label class="form-label">Primer y Segundo Nombre</label>
-                                            <input class="form-control" type="text" readonly id="nombreTutor"/>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
-                                            <label class="form-label">Primer y Segundo Apellido</label>
-                                            <input class="form-control" type="text" readonly id="apellidoTutor"/>
-                                        </div>
-                                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
-                                            <label class="form-label">Documento</label>
-                                            <input class="form-control" type="text" readonly id="documentoTutor"/>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
-                                            <label class="form-label">Telefono</label>
-                                            <input class="form-control" type="text" readonly id="telefonoTutor"/>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
-                                            <label class="form-label">Direccion</label>
-                                            <input class="form-control" type="text" readonly id="direccionTutor"/>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
-                                            <label class="form-label">Email</label>
-                                            <input class="form-control" type="text" readonly id="emailTutor"/>
-                                        </div>
-                                        <hr />
                                         <h5>Detalles de la Clase</h5>
                                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-2">
                                             <label class="form-label">Categoria Licencia</label>
@@ -135,7 +104,6 @@
             </div>
         </div>
     </div>
-
     @section Scripts{
     <script>
         $( document ).ready(function() {
@@ -144,9 +112,12 @@
         });
 
         function traerSolicitudClases(){
+            var id = @User.Identity.Name;
+            //var id=8;
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("TraerSolicitudClases","Administrador")',
+                url: '@Url.Action("TraerSolicitudClases","Tutor")',
+                data: {id:id},
                 success: function(respuesta){
                     var Clases= respuesta.clases;
                     //console.log(Clases);
@@ -171,8 +142,7 @@
                         }
                         plantilla+=`<tr id="${Clase.id}">
                             <td>${contador}</td>
-                            <td>${Clase.nombre1Usuario} ${Clase.apellido1Usuario}</td>
-                            <td>${Clase.nombre1Tutor} ${Clase.apellido1Tutor}</td>
+                            <td>${Clase.emailUsuario}</td>
                             <td>${Clase.categoriaLicencia}</td>
                             <td>${Clase.fechaSolicitud}</td>
                             <td>${fechaFinalizacion[0]}</td>
@@ -198,52 +168,11 @@
             }
         }
 
-        $(document).on('click','.editar', function(){
-            var element=$(this)[0].parentElement.parentElement.parentElement;
-            //console.log(element);
-            var id=$(element).attr('id');
-            $.ajax({
-                type: "GET",
-                url: '@Url.Action("TraerClaseU","Administrador")',
-                data: {id:id},
-                success: function(respuesta){
-                    //console.log(respuesta);
-                    var clase = respuesta.clase[0];
-                    console.log(clase);
-                    var fechaFinalizacion = clase.fechaFinalizacion.split(' ');
-
-
-                    $('#idClase').val(clase.id);
-                    $('#nombreUsuario').val(clase.nombre1Usuario);
-                    $('#apellidoUsuario').val(clase.apellido1Usuario);
-                    $('#edadUsuario').val(clase.edadUsuario);
-                    $('#documentoUsuario').val(clase.documentoUsuario);
-                    $('#telefonoUsuario').val(clase.telefonoUsuario);
-                    $('#direccionUsuario').val(clase.direccionUsuario);
-                    $('#emailUsuario').val(clase.emailUsuario);
-
-                    $('#nombreTutor').val(clase.nombre1Tutor);
-                    $('#apellidoTutor').val(clase.apellido1Tutor);
-                    $('#documentoTutor').val(clase.documentoTutor);
-                    $('#telefonoTutor').val(clase.telefonoTutor);
-                    $('#direccionTutor').val(clase.direccionTutor);
-                    $('#emailTutor').val(clase.emailTutor);
-
-                    $('#categoriaLicencia').val(clase.categoriaLicencia);
-                    $('#fechaSolicitud').val(clase.fechaSolicitud);
-                    $('#fechaFinalizacion').val(fechaFinalizacion[0]);
-
-                    $('#idEstado').val(clase.idEstado);
-
-                }
-            });
-        });
-
         function traerEstadoClase(){
             const select=document.getElementById('idEstado');
             $.ajax({
                 type: "GET",
-                url: '@Url.Action("TraerEstadoClase","Administrador")',
+                url: '@Url.Action("TraerEstadoClase","Tutor")',
                 success: function(respuesta){
                     var EstadosClase=respuesta.estadosClase;
                     var plantilla='';
@@ -256,11 +185,43 @@
             });
         }
 
+        $(document).on('click','.editar', function(){
+            var element=$(this)[0].parentElement.parentElement.parentElement;
+            //console.log(element);
+            var id=$(element).attr('id');
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("TraerClaseU","Tutor")',
+                data: {id:id},
+                success: function(respuesta){
+                    //console.log(respuesta);
+                    var clase = respuesta.clase[0];
+                    console.log(clase);
+                    var fechaFinalizacion = clase.fechaFinalizacion.split(' ');
+                    
+                    $('#idClase').val(clase.id);
+                    $('#nombreUsuario').val(clase.nombre1Usuario);
+                    $('#apellidoUsuario').val(clase.apellido1Usuario);
+                    $('#edadUsuario').val(clase.edadUsuario);
+                    $('#documentoUsuario').val(clase.documentoUsuario);
+                    $('#telefonoUsuario').val(clase.telefonoUsuario);
+                    $('#direccionUsuario').val(clase.direccionUsuario);
+                    $('#emailUsuario').val(clase.emailUsuario);
+
+                    $('#categoriaLicencia').val(clase.categoriaLicencia);
+                    $('#fechaSolicitud').val(clase.fechaSolicitud);
+                    $('#fechaFinalizacion').val(fechaFinalizacion[0]);
+
+                    $('#idEstado').val(clase.idEstado);
+                }
+            });
+        });
+
         $('#editarClase').submit(function(e){
             $.ajax({
                 type: "POST",
                 data: $('#editarClase').serialize(),
-                url:'@Url.Action("EditarClase","Administrador")',
+                url:'@Url.Action("EditarClase","Tutor")',
                 success: function(respuesta){
                     switch(respuesta){
                         case "actualizado":
@@ -280,6 +241,7 @@
                             console.log(respuesta);
                             break;
                     }
+                    console.log(respuesta);
                 }
             });
             e.preventDefault();

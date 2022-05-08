@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 
 namespace GoodDriving.Controllers
 {
-    //[Authorize(Roles = "ADMINISTRADOR")]
+    [Authorize(Roles = "ADMINISTRADOR")]
     public class AdministradorController : Controller
     {
         private readonly goodDrivingContext _context;
@@ -40,6 +40,11 @@ namespace GoodDriving.Controllers
         }
 
         public IActionResult SolicitudClase()
+        {
+            return View();
+        }
+
+        public IActionResult AsignacionVehiculo()
         {
             return View();
         }
@@ -609,7 +614,7 @@ namespace GoodDriving.Controllers
         public async Task<IActionResult> TraerSolicitudClases()
         {
        
-            List<Clase> Clases= await _context.Clases.Include(e=> e.IdTipoNavigation).Include(e=> e.IdTutorNavigation).Include(e=> e.IdUsuarioNavigation).Include(e=> e.IdLicenciaNavigation).Include(e=> e.IdEstadoNavigation).ToListAsync();           
+            List<Clase> Clases= await _context.Clases.Include(e=> e.IdTipoNavigation).Include(e=> e.IdTutorNavigation).Include(e=> e.IdUsuarioNavigation).Include(e=> e.IdLicenciaNavigation).Include(e=> e.IdEstadoNavigation).Where(x=>x.IdTipo == 1).ToListAsync();           
             List<strClase> strClases = new List<strClase>();
             foreach (Clase clase in Clases)
             {
@@ -640,9 +645,57 @@ namespace GoodDriving.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> TraerSolicitudClasesPracticas()
+        {
+
+            List<Clase> Clases = await _context.Clases.Include(e => e.IdVehiculoNavigation).Include(e => e.IdVehiculoNavigation.IdMarcaNavigation).Include(e => e.IdVehiculoNavigation.IdModeloNavigation).Include(e => e.IdTipoNavigation).Include(e => e.IdTutorNavigation).Include(e => e.IdUsuarioNavigation).Include(e => e.IdLicenciaNavigation).Include(e => e.IdEstadoNavigation).Where(x => x.IdTipo == 2).ToListAsync();
+            List<strClase> strClases = new List<strClase>();
+            foreach (Clase clase in Clases)
+            {
+                string NombreTutor = clase.IdTutorNavigation.Nombre1 + " " + clase.IdTutorNavigation.Nombre2;
+                string ApellidoTutor = clase.IdTutorNavigation.Apellido1 + " " + clase.IdTutorNavigation.Apellido2;
+                string NombreUsuario = clase.IdUsuarioNavigation.Nombre1 + " " + clase.IdUsuarioNavigation.Nombre2;
+                string ApellidoUsuario = clase.IdUsuarioNavigation.Apellido1 + " " + clase.IdUsuarioNavigation.Apellido2;
+
+                strClase str = new strClase();
+                str.Id = clase.Id;
+                str.IdTutor = clase.IdTutor;
+                str.Nombre1Tutor = NombreTutor;
+                str.Apellido1Tutor = ApellidoTutor;
+                str.IdUsuario = clase.IdUsuario;
+                str.IdEstado = clase.IdEstado;
+                str.Nombre1Usuario = NombreUsuario;
+                str.Apellido1Usuario = ApellidoUsuario;
+                str.IdLicencia = clase.IdLicencia;
+                str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
+                str.IdTipo = clase.IdTipo;
+                str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
+                str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
+                str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
+
+                //DATOS DEL VEHICULO
+                if(clase.IdVehiculo != null)
+                {
+                    str.IdVehiculo = clase.IdVehiculo;
+                    str.DescripcionMarca = clase.IdVehiculoNavigation.IdMarcaNavigation.Descripcion;
+                    str.DescripcionModelo = clase.IdVehiculoNavigation.IdModeloNavigation.Descripcion;
+                }
+                else
+                {
+                    str.DescripcionMarca = "";
+                    str.DescripcionModelo = "";
+                }
+
+                strClases.Add(str);
+            }
+
+            return Json(new { clases = strClases });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> TraerClaseU(int id)
         {
-            List<Clase> Clases = await _context.Clases.Include(e => e.IdTipoNavigation).Include(e => e.IdTutorNavigation).Include(e => e.IdUsuarioNavigation).Include(e => e.IdLicenciaNavigation).Include(e => e.IdEstadoNavigation).Where(x => x.Id == id).ToListAsync();
+            List<Clase> Clases = await _context.Clases.Include(e => e.IdVehiculoNavigation).Include(e => e.IdVehiculoNavigation.IdMarcaNavigation).Include(e => e.IdVehiculoNavigation.IdModeloNavigation).Include(e => e.IdTipoNavigation).Include(e => e.IdTutorNavigation).Include(e => e.IdUsuarioNavigation).Include(e => e.IdLicenciaNavigation).Include(e => e.IdEstadoNavigation).Where(x => x.Id == id).ToListAsync();
             List<strClase> strClases = new List<strClase>();
 
             if (Clases.Count > 0)
@@ -684,6 +737,19 @@ namespace GoodDriving.Controllers
                     str.DireccionTutor = clase.IdTutorNavigation.Direccion;
                     str.EmailTutor = clase.IdTutorNavigation.Email;
 
+                    //DATOS DEL VEHICULO
+                    if (clase.IdVehiculo != null)
+                    {
+                        str.IdVehiculo = clase.IdVehiculo;
+                        str.DescripcionMarca = clase.IdVehiculoNavigation.IdMarcaNavigation.Descripcion;
+                        str.DescripcionModelo = clase.IdVehiculoNavigation.IdModeloNavigation.Descripcion;
+                    }
+                    else
+                    {
+                        str.DescripcionMarca = "";
+                        str.DescripcionModelo = "";
+                    }
+
                     strClases.Add(str);
                 }
                 return Json(new { clase = strClases });
@@ -713,6 +779,54 @@ namespace GoodDriving.Controllers
             Clase clase = await _context.Clases.Where(v => v.Id == idClase).FirstOrDefaultAsync();
             if(clase != null)
             {
+                if(idEstado == 3)
+                {
+                    List<Clase> clases = await _context.Clases.Where(v => v.IdTutor == clase.IdTutor && v.IdUsuario == clase.IdUsuario && v.IdLicencia == clase.IdLicencia && v.IdTipo == 2).ToListAsync();
+                    if(clases.Count == 0)
+                    {
+                        Clase clasePractica = new Clase();
+                        clasePractica.IdTutor = clase.IdTutor;
+                        clasePractica.IdUsuario = clase.IdUsuario;
+                        clasePractica.IdEstado = 2;
+                        clasePractica.IdLicencia = clase.IdLicencia;
+                        clasePractica.IdTipo = 2;
+                        clasePractica.FechaSolicitud = DateTime.Now.Date;
+                        try
+                        {
+                            _context.Add(clasePractica);
+                            _context.SaveChanges();
+                        }
+                        catch(Exception ex)
+                        {
+                            return Content(ex.Message);
+                        }
+                    }
+                }
+                else
+                {
+                    Clase clases = await _context.Clases.Where(v => v.IdTutor == clase.IdTutor && v.IdUsuario == clase.IdUsuario && v.IdLicencia == clase.IdLicencia && v.IdTipo == 2).FirstOrDefaultAsync();
+                    if(clases != null)
+                    {
+                        try
+                        {
+                            _context.Remove(clases);
+                            await _context.SaveChangesAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            return Content(ex.Message);
+                        }
+                    }
+                }
+
+                if (idEstado == 3 || idEstado == 4)
+                {
+                    clase.FechaFinalizacion = DateTime.Now.Date;
+                }
+                else
+                {
+                    clase.FechaFinalizacion = null;
+                }
                 clase.IdEstado = idEstado;
                 try
                 {
@@ -728,6 +842,26 @@ namespace GoodDriving.Controllers
             return Content("no hay");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditarClaseVehiculo(int idClase, int idVehiculo)
+        {
+            Clase clase = await _context.Clases.Where(v => v.Id == idClase).FirstOrDefaultAsync();
+            if (clase != null)
+            {
+                clase.IdVehiculo = idVehiculo;
+                try
+                {
+                    _context.Update(clase);
+                    await _context.SaveChangesAsync();
+                    return Content("actualizado");
+                }
+                catch (Exception ex)
+                {
+                    return Content(ex.Message);
+                }
+            }
+            return Content("no hay");
+        }
         // ESTRUCTURAS DE SOLICITUD DE CLASES 
         struct strClase
         {
