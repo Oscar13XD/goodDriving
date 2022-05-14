@@ -113,6 +113,7 @@
                                 <div class="card-body bg-Light">
                                     <div class="row">
                                         <div class="col-12 mb-2">
+                                            <input type="hidden" name="idClase" id="idClaseE" />
                                             <input type="hidden" name="idTutor" value="@User.Identity.Name" />
                                             <input type="hidden" name="idUsuario" id="idUsuario" />
                                             <label class="form-label"><strong>1.¿Qué Debo hacer cuando incrementa la distancia entre mi vehículo y el vehículo de adelante?</strong></label>
@@ -384,8 +385,10 @@
         $(document).on('click','.prueba', function(){
             var element=$(this)[0].parentElement.parentElement.parentElement;
             var idUsuario=$(element).attr('idUsuario');
+            var id=$(element).attr('id');
+            console.log(element);
+            $('#idClaseE').val(id);
             $('#idUsuario').val(idUsuario);
-            //console.log(element);
         });
 
 
