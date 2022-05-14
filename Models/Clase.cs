@@ -14,6 +14,7 @@ namespace GoodDriving.Models
         public int? IdTipo { get; set; }
         public DateTime FechaSolicitud { get; set; }
         public DateTime? FechaFinalizacion { get; set; }
+        public string? ReportePdf { get; set; }
 
         public virtual EstadoClase? IdEstadoNavigation { get; set; }
         public virtual Licencium? IdLicenciaNavigation { get; set; }

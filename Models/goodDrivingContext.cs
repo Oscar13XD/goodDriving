@@ -34,7 +34,7 @@ namespace GoodDriving.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=LAPTOP-3GJG15MP; Database=goodDriving;Trusted_Connection=true;MultipleActiveResultSets=true");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-CH407N4; Database=goodDriving;Trusted_Connection=true;MultipleActiveResultSets=true");
             }
         }
 
@@ -65,6 +65,10 @@ namespace GoodDriving.Models
                 entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
 
                 entity.Property(e => e.IdVehiculo).HasColumnName("idVehiculo");
+
+                entity.Property(e => e.ReportePdf)
+                    .HasColumnType("text")
+                    .HasColumnName("reportePdf");
 
                 entity.HasOne(d => d.IdEstadoNavigation)
                     .WithMany(p => p.Clases)

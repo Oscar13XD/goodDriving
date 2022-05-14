@@ -2,6 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.DocIO;
+using Syncfusion.DocIO.DLS;
+using Syncfusion.DocIORenderer;
+using Syncfusion.Pdf;
+using System.Net;
+using System.Net.Mail;
 
 namespace GoodDriving.Controllers
 {
@@ -219,6 +225,7 @@ namespace GoodDriving.Controllers
             {
                 strClase str = new strClase();
                 str.Id = clase.Id;
+                str.IdUsuario = clase.IdUsuarioNavigation.Id;
                 str.EmailUsuario = clase.IdUsuarioNavigation.Email;
                 str.IdEstado = clase.IdEstado;
                 str.IdLicencia = clase.IdLicencia;
@@ -249,13 +256,379 @@ namespace GoodDriving.Controllers
 
         // REGISTRAR CUESTIONARIO
         [HttpPost]
-        public async Task<IActionResult> RegistrarCuestionario(int pregunta1, int pregunta2, int pregunta3, int pregunta4, int pregunta5,
+        public async Task<IActionResult> RegistrarCuestionario(int idTutor, int idUsuario, int pregunta1, int pregunta2, int pregunta3, int pregunta4, int pregunta5,
             int pregunta6, int pregunta7, int pregunta8, int pregunta9, int pregunta10)
         {
-            int resultado= pregunta1 +pregunta2 +pregunta3 +pregunta4 +pregunta5 +pregunta6 +pregunta7 +pregunta8 +pregunta9 +pregunta10;
-            return Content(resultado.ToString());
+            Usuario Usuario = await _context.Usuarios.Where(x => x.Id == idUsuario).FirstOrDefaultAsync();
+            Usuario Tutor = await _context.Usuarios.Where(x => x.Id == idTutor).FirstOrDefaultAsync();
+
+            string Fortalezas = "";
+            string Debilidades = "";
+            string Recomendaciones = "";
+
+            switch (pregunta1)
+            {
+                case 1:
+                    Fortalezas += "";
+                    Debilidades += "El usuario provocaría un accidente por lo que el otro vehículo también va a velocidad y puede que no pueda reaccionar a aquel movimiento. </br>";
+                    Recomendaciones += "Abstenerse de hacer esto no es necesario bajar completamente la velocidad para dar un poco de espacio para que el otro vehículo pase. </br>";
+                    break;
+                case 2:
+                    Fortalezas += "";
+                    Debilidades += "El usuario provocaría un accidente por lo que el otro vehículo también va a velocidad y puede que no pueda reaccionar a aquel movimiento.";
+                    Recomendaciones += "Abstenerse de hacer esto no es necesario bajar completamente la velocidad para dar un poco de espacio para que el otro vehículo pase.";
+                    break;
+                case 3:
+                    Fortalezas += "El usuario no obstruiría el paso del vehículo";
+                    Debilidades += "";
+                    Recomendaciones += "El usuario debe de saber a que distancia es mejor bajar la velocidad para no provocar ningún accidente y/o choque y el otro vehículo podría pasar sin problema.";
+                    break;
+                default:
+                    break;
+            }
+
+            switch (pregunta2)
+            {
+                case 1:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 2:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 3:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                default:
+                    break;
+            }
+
+            switch (pregunta3)
+            {
+                case 1:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 2:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 3:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                default:
+                    break;
+            }
+
+            switch (pregunta4)
+            {
+                case 1:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 2:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 3:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                default:
+                    break;
+            }
+
+            switch (pregunta5)
+            {
+                case 1:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 2:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 3:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                default:
+                    break;
+            }
+
+            switch (pregunta6)
+            {
+                case 1:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 2:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 3:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                default:
+                    break;
+            }
+
+            switch (pregunta7)
+            {
+                case 1:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 2:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 3:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                default:
+                    break;
+            }
+
+            switch (pregunta8)
+            {
+                case 1:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 2:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 3:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                default:
+                    break;
+            }
+
+            switch (pregunta9)
+            {
+                case 1:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 2:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 3:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                default:
+                    break;
+            }
+
+            switch (pregunta10)
+            {
+                case 1:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 2:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                case 3:
+                    Fortalezas += "";
+                    Debilidades += "";
+                    Recomendaciones += "";
+                    break;
+                default:
+                    break;
+            }
+
+            using (FileStream fileStreamPath = new FileStream(Path.GetFullPath(@"FormatoPrueba/formatoPrueba.docx"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                using (WordDocument document = new WordDocument(fileStreamPath, FormatType.Automatic))
+                {
+                    //BUSCAMOS PALABRA 
+                    TextSelection Nombre1Tutor = document.Find("<<Nombre1Tutor>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange Nombre1TutorRange = Nombre1Tutor.GetAsOneRange();
+                    Nombre1TutorRange.Text = Tutor.Nombre1;
+
+                    //BUSCAMOS PALABRA 
+                    TextSelection Nombre2Tutor = document.Find("<<Nombre2Tutor>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange Nombre2TutorRange = Nombre1Tutor.GetAsOneRange();
+                    if (Tutor.Nombre2 != null)
+                    {
+                        Nombre2TutorRange.Text = Tutor.Nombre2;
+                    }
+                    else
+                    {
+                        Nombre2TutorRange.Text = "";
+                    }
+
+                    //BUSCAMOS PALABRA 
+                    TextSelection Apellido1Tutor = document.Find("<<Apellido1Tutor>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange Apellido1TutorRange = Apellido1Tutor.GetAsOneRange();
+                    Apellido1TutorRange.Text = Tutor.Apellido1;
+
+                    //BUSCAMOS PALABRA 
+                    TextSelection Apellido2Tutor = document.Find("<<Apellido2Tutor>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange Apellido2TutorRange = Apellido2Tutor.GetAsOneRange();
+                    Apellido2TutorRange.Text = Tutor.Apellido2;
+
+                    //BUSCAMOS PALABRA 
+                    TextSelection Nombre1Usuario = document.Find("<<Nombre1Usuario>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange Nombre1UsuarioRange = Nombre1Usuario.GetAsOneRange();
+                    Nombre1UsuarioRange.Text = Usuario.Nombre1;
+
+                    //BUSCAMOS PALABRA 
+                    TextSelection Nombre2Usuario = document.Find("<<Nombre2Usuario>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange Nombre2UsuarioRange = Nombre1Usuario.GetAsOneRange();
+                    Nombre2UsuarioRange.Text = Usuario.Nombre2;
+
+                    //BUSCAMOS PALABRA 
+                    TextSelection Apellido1Usuario = document.Find("<<Apellido1Usuario>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange Apellido1UsuarioRange = Apellido1Usuario.GetAsOneRange();
+                    Apellido1UsuarioRange.Text = Usuario.Apellido1;
+
+                    //BUSCAMOS PALABRA 
+                    TextSelection Apellido2Usuario = document.Find("<<Apellido2Usuario>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange Apellido2UsuarioRange = Apellido2Usuario.GetAsOneRange();
+                    Apellido2UsuarioRange.Text = Usuario.Apellido2;
+
+                    //BUSCAMOS PALABRA 
+                    TextSelection fortalezas = document.Find("<<Fortalezas>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange FortalezasRange = fortalezas.GetAsOneRange();
+                    FortalezasRange.Text = Fortalezas;
+
+                    //BUSCAMOS PALABRA 
+                    TextSelection debilidades = document.Find("<<debilidades>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange debilidadesRange = debilidades.GetAsOneRange();
+                    debilidadesRange.Text = Debilidades;
+
+                    //BUSCAMOS PALABRA 
+                    TextSelection recomendaciones = document.Find("<<recomendaciones>>", false, true);
+                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
+                    WTextRange recomendacionesRange = recomendaciones.GetAsOneRange();
+                    recomendacionesRange.Text = Recomendaciones;
+
+                    Directory.CreateDirectory(Path.GetFullPath(@"FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento));
+                    
+                    using (DocIORenderer renderer = new DocIORenderer())
+                    {
+                        using (PdfDocument pdfDocument = renderer.ConvertToPDF(document))
+                        {
+                            using (FileStream outputStream = new FileStream(Path.GetFullPath(@"FormatoPrueba/DocumentosPruebaPDF/"+ Usuario.NoDocumento + "/PruebaGooddriving.pdf"), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                            {
+                                pdfDocument.Save(outputStream);
+                            }
+                        }
+                    }
+                }
+            }
+            bool correo = SendEmail(Usuario);
+            if (correo)
+            {
+                return Content("Enviado");
+            }
+            return Content("no se envio");
         }
-        struct strHorarioTutor
+
+        private bool SendEmail(Usuario Usuario)
+        {
+            string Destinatario = "nathbernalc@gmail.com";
+            //string urlDomain = "http://localhost:5204/";
+            string EmailOrigen = "gooddriving2022@gmail.com";
+            string Password = "proyecto2022*";
+            Attachment Archivo = new Attachment(Path.GetFullPath(@"FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento + "/PruebaGooddriving.pdf"));
+            //FileStream outputFileStream = new FileStream(Path.GetFullPath(@"FormatoPrueba/Result.docx"), FileMode.Create, FileAccess.ReadWrite);
+            //NOMBRE MENSAJE
+            string Nombre = "Good Driving";
+            string Cuerpo = "";
+            string Asunto = "Prueba GoodDriving";
+
+            var mail = new MailMessage()
+            {
+                From = new MailAddress(EmailOrigen, Nombre),
+                Subject = Asunto,
+                Body = Cuerpo,
+                BodyEncoding = System.Text.Encoding.UTF8,
+                SubjectEncoding = System.Text.Encoding.Default,
+                IsBodyHtml = true,
+
+            };
+            //AÑADIMOS DOCUMENTO ADJUNTO
+            mail.Attachments.Add(Archivo);
+
+
+            mail.To.Add(Destinatario.ToLower().Trim());
+            var client = new SmtpClient()
+            {
+                EnableSsl = true,
+                Port = 587,
+                Host = "smtp.gmail.com",
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(EmailOrigen, Password)
+            };
+
+            //ENVÍAMOS CORREO
+            try
+            {
+                client.Send(mail);
+                client.Dispose();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //ENVIAMOS POR CORREO MENSAJES DE ERROR
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+    
+
+    struct strHorarioTutor
         {
             public int Id { get; set; }
             public int? IdTutor { get; set; }
