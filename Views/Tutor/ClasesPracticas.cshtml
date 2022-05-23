@@ -23,12 +23,17 @@
                             <th>Estado Clase Practica</th>
                             <th>Vehiculo</th>
                             <th>Realizar Prueba</th>
-                            <th>Gestiom</th>
+                            <th>Gestion</th>
+                            <th>Documento Prueba</th>
                         </tr>
                     </thead>
                     <tbody id="TablaClases"></tbody>
                 </table>
             </div>
+        </div>
+        <div class="card mt-4">
+            <!--<iframe src="../../FormatoPrueba/DocumentosPruebaPDF/11374888/PruebaGooddriving.pdf"></iframe>-->
+            <iframe src="http://localhost:5204/FormatoPrueba/DocumentosPruebaPDF/11374888/PruebaGooddriving.pdf"></iframe>
         </div>
         <!-- Modal -->
         <div class="modal fade" id="gestionClase" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -116,152 +121,152 @@
                                             <input type="hidden" name="idClase" id="idClaseE" />
                                             <input type="hidden" name="idTutor" value="@User.Identity.Name" />
                                             <input type="hidden" name="idUsuario" id="idUsuario" />
-                                            <label class="form-label"><strong>1.¿Qué Debo hacer cuando incrementa la distancia entre mi vehículo y el vehículo de adelante?</strong></label>
+                                            <label class="form-label"><strong>1.¿Qué Debo hacer cuando disminuye la distancia entre mi vehículo y el vehículo de adelante?</strong></label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta1" value="2">
+                                                <input class="form-check-input" type="radio" name="pregunta1" value="2" required>
                                                 <label class="form-check-label">Bajar la velocidad del vehículo.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta1" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta1" value="3" required>
                                                 <label class="form-check-label">Bajar la velocidad del vehículo y dejar que se adelante un poco.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta1" value="1">
+                                                <input class="form-check-input" type="radio" name="pregunta1" value="1" required>
                                                 <label class="form-check-label">Frenar en seco y dejar que siga el otro Vehículo.</label>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-2">
                                             <label class="form-label"><strong>2.¿Cuándo maneje en niebla y/o luvia como debo conducir?</strong></label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta2" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta2" value="3" required>
                                                 <label class="form-check-label">Conducir con baja velocidad con precaución y con las luces bajas.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta2" value="2">
+                                                <input class="form-check-input" type="radio" name="pregunta2" value="2" required>
                                                 <label class="form-check-label">Conducir con precaución y con luces bajas.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta2" value="1">
+                                                <input class="form-check-input" type="radio" name="pregunta2" value="1" required>
                                                 <label class="form-check-label">Conducir con luces baja.</label>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-2">
                                             <label class="form-label"><strong>3.Si observo un peligro en la vía (una persona o un animal se me atraviesa), ¿cuáles la mejor manera de reaccionar al respecto?</strong></label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta3" value="2">
+                                                <input class="form-check-input" type="radio" name="pregunta3" value="2" required>
                                                 <label class="form-check-label">Esquivar y observar quienes vienen a mi alrededor y seguir mi camino.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta3" value="1">
+                                                <input class="form-check-input" type="radio" name="pregunta3" value="1" required>
                                                 <label class="form-check-label">Bajar la velocidad.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta3" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta3" value="3" required>
                                                 <label class="form-check-label">Bajar la velocidad y esquivarme. </label>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-2">
                                             <label class="form-label"><strong>4.¿Cómo debo actuar cuando se requiere una frenada emergencia?</strong></label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta4" value="1">
+                                                <input class="form-check-input" type="radio" name="pregunta4" value="1" required>
                                                 <label class="form-check-label">Con frenadas fuertes y a fondo, pero sin bloquear las ruedas.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta4" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta4" value="3" required>
                                                 <label class="form-check-label">Con frenadas suaves y progresivas.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta4" value="2">
+                                                <input class="form-check-input" type="radio" name="pregunta4" value="2" required>
                                                 <label class="form-check-label">Pisando el closth y el freno fuerte sin bloquear las ruedas. </label>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-2">
                                             <label class="form-label"><strong>5.¿Cuál o cuáles son las características que distinguen al conductor seguro?</strong></label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta5" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta5" value="3" required>
                                                 <label class="form-check-label">Es considerado amable y hace todo lo posible para evitar accidentes.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta5" value="1">
+                                                <input class="form-check-input" type="radio" name="pregunta5" value="1" required>
                                                 <label class="form-check-label">Es amable y no respeta las normas de tránsito.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta5" value="2">
+                                                <input class="form-check-input" type="radio" name="pregunta5" value="2" required>
                                                 <label class="form-check-label">Conduce con unas prudencias y es impulsivo. </label>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-2">
                                             <label class="form-label"><strong>6.¿Qué podría hacerlo desviar de la calzada?</strong></label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta6" value="2">
+                                                <input class="form-check-input" type="radio" name="pregunta6" value="2" required>
                                                 <label class="form-check-label">Conducir con una alta velocidad y el cansancio.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta6" value="1">
+                                                <input class="form-check-input" type="radio" name="pregunta6" value="1" required>
                                                 <label class="form-check-label">Conducir con un alta de velocidad.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta6" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta6" value="3" required>
                                                 <label class="form-check-label">Conducir con cansancio, con un alta de velocidad y distracción. </label>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-2">
                                             <label class="form-label"><strong>7.¿Qué puede contribuir a que un conductor subestime peligrosamente su propia velocidad?</strong></label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta7" value="2">
+                                                <input class="form-check-input" type="radio" name="pregunta7" value="2" required>
                                                 <label class="form-check-label">La conducción durante largo tiempo a alta velocidad y ebrio. </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta7" value="1">
+                                                <input class="form-check-input" type="radio" name="pregunta7" value="1" required>
                                                 <label class="form-check-label">La conducción sobre calzadas anchas y en buen estado.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta7" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta7" value="3" required>
                                                 <label class="form-check-label">Conducir durante largo tiempo a alta velocidad ebrio y sobre calzadas anchas. </label>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-2">
                                             <label class="form-label"><strong>8.¿Qué consejo daría usted a un conductor que ha ingerido bebidas alcohólicas?</strong></label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta8" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta8" value="3" required>
                                                 <label class="form-check-label">Decirle que no debe conducir bajo estado de embriaguez. </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta8" value="2">
+                                                <input class="form-check-input" type="radio" name="pregunta8" value="2" required>
                                                 <label class="form-check-label">Que tome una taza de café cargado y luego conduzca a casa.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta8" value="1">
+                                                <input class="form-check-input" type="radio" name="pregunta8" value="1" required>
                                                 <label class="form-check-label">Que se vuelva a casa conduciendo lenta y muy cuidadosamente. </label>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-2">
                                             <label class="form-label"><strong>9.Usted comienza a sentir cansancio en un viaje. ¿Qué debería hacer?</strong> </label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta9" value="2">
+                                                <input class="form-check-input" type="radio" name="pregunta9" value="2" required>
                                                 <label class="form-check-label">Detenerse y comer una gran comida. </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta9" value="1">
+                                                <input class="form-check-input" type="radio" name="pregunta9" value="1" required>
                                                 <label class="form-check-label">Detenerse inmediatamente y respirar profundo.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta9" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta9" value="3" required>
                                                 <label class="form-check-label">Detenerse y dormir una pequeña siesta o detenerse y tomar un poco de café. </label>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-2">
                                             <label class="form-label"><strong>10.¿Qué debería hacer Ud. si el auto queda sin frenos? </strong></label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta10" value="2">
+                                                <input class="form-check-input" type="radio" name="pregunta10" value="2" required>
                                                 <label class="form-check-label">Disminuir la velocidad y ubicarse en el carril de circulación lenta. </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta10" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta10" value="3" required>
                                                 <label class="form-check-label">Disminuir la velocidad y desviarme donde no hay otro Vehículo.</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="pregunta10" value="3">
+                                                <input class="form-check-input" type="radio" name="pregunta10" value="3" required>
                                                 <label class="form-check-label">Hace señales con las manos y girar a la derecha el auto y tratar de orillarlo. </label>
                                             </div>
                                         </div>
@@ -314,7 +319,7 @@
                                 color = 'class="table-danger"';
                                 break;
                         }
-                        plantilla+=`<tr id="${Clase.id}" idUsuario="${Clase.idUsuario}">
+                        plantilla+=`<tr id="${Clase.id}" idUsuario="${Clase.idUsuario}" reportePDF="${Clase.reportePdf}">
                             <td>${contador}</td>
                             <td>${Clase.emailUsuario}</td>
                             <td>${Clase.categoriaLicencia}</td>
@@ -334,8 +339,13 @@
                                 <div class="btn-group">
                                     <a class="btn btn-primary editar" data-bs-toggle="modal" data-bs-target="#gestionClase">Gestionar<a>
                                 </div>
-                            </td>
-                        </tr>`
+                            </td>`
+                            if(Clase.reportePdf != null){
+                                plantilla+=`<td><a class="btn btn-danger pdf">PDF</a></td>`
+                            }else{
+                                plantilla+=`<td class="table-danger">No hay Prueba Realizada</td>`
+                            }
+                        plantilla+=`</tr>`
                         contador+=1;
                     });
                     $('#TablaClases').html(plantilla);
@@ -391,16 +401,48 @@
             $('#idUsuario').val(idUsuario);
         });
 
+        $(document).on('click','.pdf', function(){
+            var element=$(this)[0].parentElement.parentElement;
+            //console.log(element);
+            var pdf=$(element).attr('reportePDF');
+            //console.log(pdf);
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("DescargarReporte","Tutor")',
+                data: {pdf:pdf},
+                success: function(respuesta){
+                }
+            });
+        });
 
         $('#enviarcuestionario').submit(function(e){
             $.ajax({
                 type: "POST",
                 data: $('#enviarcuestionario').serialize(),
-                 url:'@Url.Action("RegistrarCuestionario","Tutor")',
-                 success: function(respuesta){
-                     console.log(respuesta);
-                 }
-                 });
+                url:'@Url.Action("RegistrarCuestionario","Tutor")',
+                success: function(respuesta){
+                    switch(respuesta){
+                        case "Exito":
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Cuestinario Realizado',
+                                text: 'Se ha enviado el resultado de la prueba al Usuario',
+                                allowOutsideClick: false,
+                                confirmButtonText: 'De acuerdo'
+
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                $('#enviarcuestionario').trigger('reset');
+                                $('#cuestionario').modal('hide');
+                                traerSolicitudClases();
+                            });
+                            break;
+                        default:
+                            console.log(respuesta);
+                            break;
+                    }
+                }
+            });
             e.preventDefault();
         });
 

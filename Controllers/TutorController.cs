@@ -43,7 +43,7 @@ namespace GoodDriving.Controllers
         public async Task<IActionResult> TraerHorarioTutorTeorico(int id)
         {
             List<HorarioTutor> HorarioTutors = await _context.HorarioTutors.Where(x => x.IdTutor == id).ToListAsync();
-            if(HorarioTutors.Count > 0)
+            if (HorarioTutors.Count > 0)
             {
                 List<strHorarioTutor> strHorarioTutors = new List<strHorarioTutor>();
                 foreach (HorarioTutor horarioTutor in HorarioTutors)
@@ -65,7 +65,7 @@ namespace GoodDriving.Controllers
         [HttpGet]
         public async Task<IActionResult> TraerSolicitudClases(int id)
         {
-            List<Clase> Clases = await _context.Clases.Include(e => e.IdTipoNavigation).Include(e => e.IdUsuarioNavigation).Include(e => e.IdLicenciaNavigation).Include(e => e.IdEstadoNavigation).Where(x=>x.IdTutor == id && (x.IdEstado != 1 && x.IdEstado != 4) && x.IdTipo == 1).ToListAsync();
+            List<Clase> Clases = await _context.Clases.Include(e => e.IdTipoNavigation).Include(e => e.IdUsuarioNavigation).Include(e => e.IdLicenciaNavigation).Include(e => e.IdEstadoNavigation).Where(x => x.IdTutor == id && (x.IdEstado != 1 && x.IdEstado != 4) && x.IdTipo == 1).ToListAsync();
             List<strClase> strClases = new List<strClase>();
             foreach (Clase clase in Clases)
             {
@@ -234,6 +234,7 @@ namespace GoodDriving.Controllers
                 str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
                 str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
                 str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
+                str.ReportePdf = clase.ReportePdf;
 
                 //DATOS DEL VEHICULO
                 if (clase.IdVehiculo != null)
@@ -271,18 +272,18 @@ namespace GoodDriving.Controllers
             {
                 case 1:
                     Fortalezas += "";
-                    Debilidades += " El usuario provocaría un accidente por lo que el otro vehículo también va a velocidad y puede que no pueda reaccionar a aquel movimiento.";
-                    Recomendaciones += "Abstenerse de hacer esto no es necesario bajar completamente la velocidad para dar un poco de espacio para que el otro vehículo pase.";
+                    Debilidades += "-El usuario provocaría un accidente en caso de tener un vehículo por detrás por lo que el otro vehículo también va a velocidad y puede que no pueda reaccionar a aquel movimiento al frenar en seco. \n";
+                    Recomendaciones += "-El usuario debe abstenerse de frenar en seco de ser necesario bajar la velocidad debería de toma precauciones para qué el otro vehículo pueda pasar sin difícil ni ocasionar un accidente. \n";
                     break;
                 case 2:
-                    Fortalezas += "";
-                    Debilidades += " El usuario provocaría un accidente por lo que el otro vehículo también va a velocidad y puede que no pueda reaccionar a aquel movimiento.";
-                    Recomendaciones += "Abstenerse de hacer esto no es necesario bajar completamente la velocidad para dar un poco de espacio para que el otro vehículo pase.";
+                    Fortalezas += "-Al bajar la velocidad cuando disminuye la distancia entre su vehículo y el vehículo de adelante Evitará un choque fuerte en caso de un frenado repentino del vehículo de adelante. \n";
+                    Debilidades += "";
+                    Recomendaciones += "-No debería bajar la velocidad abruptamente ya que podría ocasionar un choque en caso de tener un vehículo por detrás. \n";
                     break;
                 case 3:
-                    Fortalezas += " El usuario no obstruiría el paso del vehículo.";
+                    Fortalezas += "-Al bajar la velocidad del vehículo y dejar que se adelante un poco el vehículo de adelante evitará choques repentinos. \n";
                     Debilidades += "";
-                    Recomendaciones += " El usuario debe de saber a que distancia es mejor bajar la velocidad para no provocar ningún accidente y/o choque y el otro vehículo podría pasar sin problema.";
+                    Recomendaciones += "-El usuario debe de saber a que distancia es mejor bajar la velocidad para no provocar ningún accidente y/o choque y el otro vehículo podría pasar sin problema. \n";
                     break;
                 default:
                     break;
@@ -291,19 +292,19 @@ namespace GoodDriving.Controllers
             switch (pregunta2)
             {
                 case 1:
-                    Fortalezas += " El usuario tendrá visualidad del camino.";
-                    Debilidades += " No es suficiente para el usuario evitar algún tipo de accidente.";
-                    Recomendaciones += " El usuario debe de controlar tanta velocidad y mejorar la precaución por lo que la luz baja no le da vista amplia del camino.";
+                    Fortalezas += "-El usuario tendrá visualidad del camino. \n";
+                    Debilidades += "-No es suficiente para el usuario evitar algún tipo de accidente si no cumple con las normas de mantener las luces bajas. \n";
+                    Recomendaciones += "-El usuario debe de controlar tanta velocidad y mejorar la precaución por lo que la luz baja no le da vista amplia del camino. \n";
                     break;
                 case 2:
-                    Fortalezas += " Es adecuado porque el ambiente no es el mejor para manejar.";
-                    Debilidades += " Aunque el usuario baje la luz no puede ser suficiente.";
-                    Recomendaciones += " Aunque el usuario tiene precaución la velocidad también se debe de tener en cuenta.";
+                    Fortalezas += "-El usuario tendrá precaución cuando tome una vía y más cuando esta con neblina o lloviendo. \n";
+                    Debilidades += "-Aunque el usuario baje la luz del auto no puede ser suficiente al chocar con algo si no tiene cuidado. \n";
+                    Recomendaciones += "Aunque el usuario tiene precaución la velocidad también se debe de tener en cuenta. \n";
                     break;
                 case 3:
-                    Fortalezas += " El usuario puede ser capaz de reaccionar por si hay otro vehículo o un objeto en la vía así podría evitar un accidente.";
+                    Fortalezas += "-El usuario puede ser capaz de reaccionar por si hay otro vehículo o un objeto en la vía evitando un accidente. \n";
                     Debilidades += "";
-                    Recomendaciones += " Cuando niebla también podría prender sus direccionales con el fin de avisar y ser visto por un vehículo que se encuentre detrás suyo.";
+                    Recomendaciones += "-Cuando haya niebla también podría prender sus direccionales con el fin de avisar y ser visto por un vehículo que se encuentre detrás suyo. \n";
                     break;
                 default:
                     break;
@@ -312,19 +313,19 @@ namespace GoodDriving.Controllers
             switch (pregunta3)
             {
                 case 1:
-                    Fortalezas += " El usuario debe de ir con tiempo para lo que pase en el camino u pase sin salir heridos.";
-                    Debilidades += " El usuario provocaría un choque de tener un vehículo demasiado cerca.";
-                    Recomendaciones += " El usuario debe tener en cuenta el camino para que sea de forma adecuada el pasar por estas situaciones.";
+                    Fortalezas += "-El usuario al ir a velocidad prudente podrá ver el camino y notar si algo puede atravesarce y este podrá esquivarlo si provocar algún daño. \n";
+                    Debilidades += "-El usuario provocaría un choque de tener un vehículo demasiado cerca. \n";
+                    Recomendaciones += "-El usuario debe tener en cuenta el camino tanto en su parte frontal como trasera así podría evitar tanto chocar a algo o alguien y ser así mismo chocado. \n";
                     break;
                 case 2:
-                    Fortalezas += " El usuario podría evitar que algo mas lo tome por sorpresa.";
-                    Debilidades += " El usuario por solo esquivar a un animal y una persona provocaría un accidente o choque con otro carro.";
-                    Recomendaciones += " El usuario debe tener en cuenta siempre el alrededor y saber esquivar de forma adecuada para evitar choques tanto con más vehículos como con cunetas y postes.";
+                    Fortalezas += "-El usuario podría evitar que algo mas lo tome por sorpresa como una persona, un animal u objeto. \n";
+                    Debilidades += "-El usuario por solo esquivar a un animal o una persona provocaría un accidente o choque con otro carro. \n";
+                    Recomendaciones += "-El usuario debe tener en cuenta siempre el alrededor y saber esquivar de forma adecuada para evitar choques tanto con más vehículos como con cunetas y postes. \n";
                     break;
                 case 3:
-                    Fortalezas += " El usuario dejare que pase otro carro y seguir el camino de él.";
+                    Fortalezas += "-El usuario dejara que pase otro carro y esquivarlo y seguir el camino de el para evitar choques. \n";
                     Debilidades += "";
-                    Recomendaciones += " Dejara que pase totalmente lo que hace obstrucción porque puede ser tocado con el vehículo cuando quiera avanzar.";
+                    Recomendaciones += "-El usuario dejara que pase totalmente el carro hasta esquivarlo  para no hacer obstrucción o ser  tocado por otro carro cuando avance. \n";
                     break;
                 default:
                     break;
@@ -333,19 +334,19 @@ namespace GoodDriving.Controllers
             switch (pregunta4)
             {
                 case 1:
-                    Fortalezas += " El conductor es el único de que se pare totalmente el vehículo.";
-                    Debilidades += " Que el usuario no frene en su totalidad y puede que el choque sea más duro.";
-                    Recomendaciones += " Al momento de que el usuario frena tan abruptamente se debe de tener en cuenta que en la parte de atrás puede venir alguien mas y ser chocado.";
+                    Fortalezas += "";
+                    Debilidades += "-Que el usuario no frene en su totalidad y puede que el choque sea más duro. \n";
+                    Recomendaciones += "-Al momento de que el usuario frena tan abruptamente se debe de tener en cuenta que en la parte de atrás puede venir alguien mas y ser chocado. \n";
                     break;
                 case 2:
-                    Fortalezas += " Para una emergencia el usuario tiene que tomar como recurso más adecuado y es pisar el closth y el freno.";
-                    Debilidades += " Debe de ser al tiempo que el usuario frene de no serlo el freno no serviría adecuadamente.";
-                    Recomendaciones += " Que el usuario pise con precisión ambos.";
+                    Fortalezas += "-Para una emergencia el usuario tiene que tomar como recurso más adecuado y es pisar el closth y el freno. \n";
+                    Debilidades += "-Debe de ser al tiempo que el usuario frene de no serlo el freno no serviría adecuadamente y provocaría un accidente. \n";
+                    Recomendaciones += "-El usuario pise moderadamente y  con precisión ambos pedales. \n";
                     break;
                 case 3:
-                    Fortalezas += " Si el usuario puede tener el tiempo y espacio se puede hacer adecuadamente la frenada.";
+                    Fortalezas += "-Si el usuario puede, tiene el tiempo y el espacio puede hacer adecuadamente la frenada progresivamente. \n";
                     Debilidades += "";
-                    Recomendaciones += " El usuario tiene que tener en cuenta que puede que el uso constante de los frenos los recaliente y fallen.";
+                    Recomendaciones += "-El usuario tiene que tener en cuenta que puede que el uso constante de los frenos los recaliente y fallen. \n";
                     break;
                 default:
                     break;
@@ -355,18 +356,18 @@ namespace GoodDriving.Controllers
             {
                 case 1:
                     Fortalezas += "";
-                    Debilidades += " El usuario debe respetar las normas de tránsito si no provocara muchos accidentes por falta de responsabilidad.";
-                    Recomendaciones += " Conocer y respetar las normas de transito.";
+                    Debilidades += "-El usuario debe respetar las normas de tránsito si no provocara muchos accidentes por falta de responsabilidad. \n";
+                    Recomendaciones += "-Conocer y respetar las normas de transito para ser un conductor seguro en la vía. \n";
                     break;
                 case 2:
                     Fortalezas += "";
-                    Debilidades += " El usuario al hacer impulsivo solo provocaría accidentes o chocar su vehículo.";
-                    Recomendaciones += " El usuario debe de tomarse el tiempo para cualquier acción para analizar todos los aspectos antes de tomar un camino.";
+                    Debilidades += "-El usuario al hacer impulsivo solo provocaría accidentes o chocará su vehículo. \n";
+                    Recomendaciones += "-El usuario debería tomarse con calma la conducción por lo que al no hacerlo causará accidentes. \n";
                     break;
                 case 3:
-                    Fortalezas += " Que el conductor sea precavido sin demasiados accidentes.";
+                    Fortalezas += "-Que el conductor sea precavido, para que sea un conductor seguro y teniendo los menos accidentes posibles. \n";
                     Debilidades += "";
-                    Recomendaciones += " El usuario debe de seguir las normas para tener precaución y seguir conduciendo de la mejor manera.";
+                    Recomendaciones += "-El usuario debe de seguir las normas y conducir de la mejor manera. \n";
                     break;
                 default:
                     break;
@@ -376,18 +377,18 @@ namespace GoodDriving.Controllers
             {
                 case 1:
                     Fortalezas += "";
-                    Debilidades += " No le daría tiempo al usuario para reaccionar si va con mucha velocidad.";
-                    Recomendaciones += " El usuario no debería de subir la velocidad a tal punto que no lo deje reaccionar y tener precaución al manejar.";
+                    Debilidades += "-No le daría tiempo al usuario para reaccionar por la velocidad que llevaría. \n";
+                    Recomendaciones += "-El usuario no debería de subir la velocidad Por lo que al ir así y tratar de desviar provocaría que el carro se vuelque o provoque un accidente , por esto se debe de ir a velocidad prudente. \n";
                     break;
                 case 2:
                     Fortalezas += "";
-                    Debilidades += " El usuario al estar cansado no podría reaccionar adecuadamente.";
-                    Recomendaciones += " Cuando un usuario va a manejar debe de descansar lo necesario o tratar de dejar que alguien mas conduzca.";
+                    Debilidades += "-El usuario al estar cansado no podría reaccionar adecuadamente. \n";
+                    Recomendaciones += "-Cuando un usuario va a manejar debe de descansar lo necesario o hacer que alguien mas conduzca para no provocar un accidente. \n";
                     break;
                 case 3:
                     Fortalezas += "";
-                    Debilidades += " El usuario no estará predispuesto ni para manejar ni reaccionar y la velocidad no le dará el tiempo ni espacio.";
-                    Recomendaciones += " El usuario debe de descansar para evitar un accidente y no salir perjudicado por no tomar las mejores medidas de precaución.";
+                    Debilidades += "-El usuario no estará predispuesto ni para manejar ni reaccionar por ir a una alta velocidad. \n";
+                    Recomendaciones += "-El usuario debe de descansar adecuadamente para que tenga uso de razón y reacciones de manera óptima lo que pase en su camino frontal y trasero. \n";
                     break;
                 default:
                     break;
@@ -397,18 +398,18 @@ namespace GoodDriving.Controllers
             {
                 case 1:
                     Fortalezas += "";
-                    Debilidades += " Al momento de tomar una vía y tengas espacio muchas personas aceleran sin tomar en cuenta que pueda travesarse algo y ocasionar un accidente.";
-                    Recomendaciones += " Abstenerse de subir demasiado la velocidad.";
+                    Debilidades += "-Al momento de tomar la vía un usuario tiene que medir su espacio, muchas personas aceleran sin tomar en cuenta que pueda atravesarse algo y ocasionar un accidente. \n";
+                    Recomendaciones += "-El usuario debe de abstenerse de subir demasiado la velocidad aunque la carretera este en óptimas condiciones y se encuentre vacía. \n";
                     break;
                 case 2:
                     Fortalezas += "";
-                    Debilidades += " El usuario no esta consiente de la velocidad que esta tomando al conducir un vehículo.";
-                    Recomendaciones += " Cuando manejas no tomes ni consumas sustancias psicoactivas que te hagan perder tus sentidos.";
+                    Debilidades += "-El usuario no esta consiente de la velocidad que esta tomando al conducir un vehículo. \n";
+                    Recomendaciones += "-Cuando manejes no tomes ni consumas sustancias psicoactivas que te hagan perder tus sentidos y ocasionar un accidente. \n";
                     break;
                 case 3:
                     Fortalezas += "";
-                    Debilidades += " Al momento de un usuario maneje mucho es agotador y al estar ebrio no estaría predispuesto a reaccionar y al ir rápido seria provocar un accidente.";
-                    Recomendaciones += " Si aquella persona va a manejar que no tome y si toma que alguien maneje es lo más ideal.";
+                    Debilidades += "-Al momento que un usuario maneje mucho es agotador y al estar ebrio no estaría predispuesto a reaccionar y al ir rápido provocaria un accidente. \n";
+                    Recomendaciones += "-Si aquella persona va a manejar que no tome y si toma que alguien maneje es lo adecuado. \n";
                     break;
                 default:
                     break;
@@ -417,19 +418,19 @@ namespace GoodDriving.Controllers
             switch (pregunta8)
             {
                 case 1:
-                    Fortalezas += " La mejor manera para que el usuario este bien es dormir para que se le pase el cansancio.";
-                    Debilidades += " No sería una solución total para el usuario porque no dormirá lo suficiente para volver a manejar.";
-                    Recomendaciones += " Que duerma demasiado o lo suficiente que descanse un día para estar realmente en sus 5 sentidos.";
+                    Fortalezas += "";
+                    Debilidades += "-Para el usuario no sería una solución ir a la casa manejando cuidadosamente porque ocasionaría un accidente. \n";
+                    Recomendaciones += "-El usuario debe de dormir lo suficiente para estar en sus cinco sentidos y así podrá reaccionar adecuadamente. \n";
                     break;
                 case 2:
                     Fortalezas += "";
-                    Debilidades += " Al usuario el café no es una sustancia que ayude frente al estado de ebriedad.";
-                    Recomendaciones += " Que el usuario no maneje es la mejor manera.";
+                    Debilidades += "-Al usuario al conducir al tomar café no es una sustancia que ayude frente al estado de ebriedad. \n";
+                    Recomendaciones += "-Que el usuario no maneje al haber tomado bebidas alcohólicas. \n";
                     break;
                 case 3:
                     Fortalezas += "";
                     Debilidades += "";
-                    Recomendaciones += " Si aquella persona va a manejar que no tome y si toma que alguien maneje es lo más ideal.";
+                    Recomendaciones += "Si aquella persona va a manejar que no tome bebidas alcohólicas y si toma que alguien maneje es lo más ideal para no ocasionar un accidente. \n";
                     break;
                 default:
                     break;
@@ -438,19 +439,19 @@ namespace GoodDriving.Controllers
             switch (pregunta9)
             {
                 case 1:
-                    Fortalezas += " Al usuario lo mejor que puede hacer es detenerse si se siente cansado.";
+                    Fortalezas += "-Al usuario lo mejor que puede hacer es detenerse si se siente cansado y dormir un rato de ser necesario. \n";
                     Debilidades += "";
-                    Recomendaciones += " Parar al sentirse demasiado cansado y descansar.";
+                    Recomendaciones += "-El usuario debería Descansar lo suficiente hasta que se sienta en óptimas condiciones para seguir con su camino. \n";
                     break;
                 case 2:
                     Fortalezas += "";
-                    Debilidades += " Al comer el usuario da más cansancio.";
-                    Recomendaciones += " Descansar lo suficiente para poder continuar con el viaje.";
+                    Debilidades += "-Al comer el usuario se sentirá más cansado cuando está manejando. \n";
+                    Recomendaciones += "El usuario debería descansar lo suficiente para poder continuar con el viaje y no ocasionar accidentes. \n";
                     break;
                 case 3:
-                    Fortalezas += " Lo mejor que puede hacer el usuario es parar no provocar ningún accidente.";
+                    Fortalezas += "-Lo mejor que puede hacer el usuario es parar. \n";
                     Debilidades += "";
-                    Recomendaciones += " Antes de tomar camino, sentirse bien y tomar, comer algo que les de energía, para que puedan reaccionar y afrontar alguna circunstancia.";
+                    Recomendaciones += "Antes de que le usuario tome el camino debe de sentirse bien y de ser necesario comer algo que le de energía para que puedan reaccionar y afrontar alguna circunstancia al conducir. \n";
                     break;
                 default:
                     break;
@@ -459,19 +460,19 @@ namespace GoodDriving.Controllers
             switch (pregunta10)
             {
                 case 1:
-                    Fortalezas += " Que el usuario les avisara a otros conductores de lo que está aconteciendo.";
-                    Debilidades += " Al usuario hacer con las manos las señales no siempre se le presta mucha atención.";
-                    Recomendaciones += " Buscar un lugar adecuado para hacer que el vehículo tenga que ir frenando, no está demás siempre estar pendiente de frenos y componentes que hagan que el vehículo falle.";
+                    Fortalezas += "-Que el usuario les avisara a otros conductores de lo que está aconteciendo. \n";
+                    Debilidades += "-Cuando el  usuario hace estas señales no siempre se le presta mucha atención. \n";
+                    Recomendaciones += "-Buscar un lugar adecuado para hacer que el vehículo tenga que ir frenando, no está demás siempre estar pendiente de frenos y componentes que hagan que el vehículo falle. \n";
                     break;
                 case 2:
-                    Fortalezas += " Lo mejor que puede hacer el usuario es disminuir la velocidad ayuda en el momento en que no se tenga control total de lo freno.";
-                    Debilidades += " Sería algo difícil y es disminuir la velocidad porque sin frenos resulta más difícil disminuir la velocidad.";
-                    Recomendaciones += " Tener precaución con la velocidad y verificar los frenos con constancia.";
+                    Fortalezas += "-Lo mejor que puede hacer el usuario es disminuir la velocidad ayuda en el momento en que no se tenga control total del freno. \n";
+                    Debilidades += "-Al no contar con los frenos constará mucho bajar la velocidad. \n";
+                    Recomendaciones += "-Tener precaución con la velocidad y verificar los frenos con constancia. \n";
                     break;
                 case 3:
-                    Fortalezas += " Que el usuario no obstruya el paso de otros vehículos.";
-                    Debilidades += " A veces las carreteras no son tan poco concurridas y tiende a ser complicado hacerse en la parte donde no haya vehículos.";
-                    Recomendaciones += " Al momento de que pase esta situación lo mejor es ir avisando a aquellas personas que van detrás y adelante de ser posible, para no provocar un accidente mucho mayor.";
+                    Fortalezas += "-Que el usuario no obstruya el paso de otros vehículos. \n";
+                    Debilidades += "-Existen carreteras en las que es difícil estar en un carril sin vehículos. \n";
+                    Recomendaciones += "-Al momento de que pase esta situación lo mejor es colocar estacionarias así avisaría en los carros de atrás para que sepan y no obstruirles el paso y en el frente se debe de haber con ruido con con fin de que den espacio de ser muy necesario. \n";
                     break;
                 default:
                     break;
@@ -485,56 +486,25 @@ namespace GoodDriving.Controllers
                     TextSelection Nombre1Tutor = document.Find("<<Nombre1Tutor>>", false, true);
                     //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
                     WTextRange Nombre1TutorRange = Nombre1Tutor.GetAsOneRange();
-                    Nombre1TutorRange.Text = Tutor.Nombre1;
-
-                    //BUSCAMOS PALABRA 
-                    TextSelection Nombre2Tutor = document.Find("<<Nombre2Tutor>>", false, true);
-                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
-                    WTextRange Nombre2TutorRange = Nombre1Tutor.GetAsOneRange();
-                    if (Tutor.Nombre2 != null)
-                    {
-                        Nombre2TutorRange.Text = Tutor.Nombre2;
-                    }
-                    else
-                    {
-                        Nombre2TutorRange.Text = "";
-                    }
+                    Nombre1TutorRange.Text = Tutor.Nombre1 + " " + Tutor.Nombre2;
 
                     //BUSCAMOS PALABRA 
                     TextSelection Apellido1Tutor = document.Find("<<Apellido1Tutor>>", false, true);
                     //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
                     WTextRange Apellido1TutorRange = Apellido1Tutor.GetAsOneRange();
-                    Apellido1TutorRange.Text = Tutor.Apellido1;
-
-                    //BUSCAMOS PALABRA 
-                    TextSelection Apellido2Tutor = document.Find("<<Apellido2Tutor>>", false, true);
-                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
-                    WTextRange Apellido2TutorRange = Apellido2Tutor.GetAsOneRange();
-                    Apellido2TutorRange.Text = Tutor.Apellido2;
+                    Apellido1TutorRange.Text = Tutor.Apellido1 + " " + Tutor.Apellido2;
 
                     //BUSCAMOS PALABRA 
                     TextSelection Nombre1Usuario = document.Find("<<Nombre1Usuario>>", false, true);
                     //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
                     WTextRange Nombre1UsuarioRange = Nombre1Usuario.GetAsOneRange();
-                    Nombre1UsuarioRange.Text = Usuario.Nombre1;
-
-                    //BUSCAMOS PALABRA 
-                    TextSelection Nombre2Usuario = document.Find("<<Nombre2Usuario>>", false, true);
-                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
-                    WTextRange Nombre2UsuarioRange = Nombre1Usuario.GetAsOneRange();
-                    Nombre2UsuarioRange.Text = Usuario.Nombre2;
+                    Nombre1UsuarioRange.Text = Usuario.Nombre1 + " " + Usuario.Nombre2;
 
                     //BUSCAMOS PALABRA 
                     TextSelection Apellido1Usuario = document.Find("<<Apellido1Usuario>>", false, true);
                     //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
                     WTextRange Apellido1UsuarioRange = Apellido1Usuario.GetAsOneRange();
-                    Apellido1UsuarioRange.Text = Usuario.Apellido1;
-
-                    //BUSCAMOS PALABRA 
-                    TextSelection Apellido2Usuario = document.Find("<<Apellido2Usuario>>", false, true);
-                    //OBTENEMOS TEXTO COMO ÚNICO RANGO DE TEXTO
-                    WTextRange Apellido2UsuarioRange = Apellido2Usuario.GetAsOneRange();
-                    Apellido2UsuarioRange.Text = Usuario.Apellido2;
+                    Apellido1UsuarioRange.Text = Usuario.Apellido1 + " " + Usuario.Apellido2;
 
                     //BUSCAMOS PALABRA 
                     TextSelection fortalezas = document.Find("<<Fortalezas>>", false, true);
@@ -555,12 +525,12 @@ namespace GoodDriving.Controllers
                     recomendacionesRange.Text = Recomendaciones;
 
                     Directory.CreateDirectory(Path.GetFullPath(@"FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento));
-                    
+
                     using (DocIORenderer renderer = new DocIORenderer())
                     {
                         using (PdfDocument pdfDocument = renderer.ConvertToPDF(document))
                         {
-                            using (FileStream outputStream = new FileStream(Path.GetFullPath(@"FormatoPrueba/DocumentosPruebaPDF/"+ Usuario.NoDocumento + "/PruebaGooddriving.pdf"), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                            using (FileStream outputStream = new FileStream(Path.GetFullPath(@"FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento + "/PruebaGooddriving.pdf"), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                             {
                                 pdfDocument.Save(outputStream);
                             }
@@ -573,11 +543,11 @@ namespace GoodDriving.Controllers
             {
                 try
                 {
-                    Clase.ReportePdf = "FormatoPrueba/DocumentosPruebaPDF/"+Usuario.NoDocumento+ "/PruebaGooddriving.pdf";
+                    Clase.ReportePdf = "FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento + "/PruebaGooddriving.pdf";
                     _context.Update(Clase);
                     await _context.SaveChangesAsync();
                     return Content("Exito");
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -591,7 +561,8 @@ namespace GoodDriving.Controllers
         private bool SendEmail(Usuario Usuario)
         {
             //string Destinatario = Usuario.Email;
-            string Destinatario = "solanyimilena97@gmail.com";
+            //string Destinatario = "solanyimilena97@gmail.com";
+            string Destinatario = "hernandezmahechaoscar0@gmail.com";
             //string urlDomain = "http://localhost:5204/";
             string EmailOrigen = "gooddriving2022@gmail.com";
             string Password = "proyecto2022*";
@@ -640,9 +611,27 @@ namespace GoodDriving.Controllers
                 return false;
             }
         }
-    
 
-    struct strHorarioTutor
+        [HttpGet]
+        public async Task<IActionResult> DescargarReporte(string pdf)
+        {
+            
+            //File(Path.GetFullPath(@"" + pdf + "", "application/pdf"), "PruebaGooddriving.pdf");
+            /*using (FileStream outputFileStream = System.IO.File.Create(Path.GetFullPath(@"../../../Result.docx")))
+            {
+                outputFileStream.Flush();
+                //Saves the Word document to file stream.
+                document.Save(outputFileStream, FormatType.Docx);
+            }*/
+            if(System.IO.File.Exists(Path.GetFullPath(@"" + pdf + "", "application/pdf")))
+            {
+                FileStream fs = new FileStream(Path.GetFullPath(@"" + pdf + "", "application/pdf"), FileMode.Open);
+                File(fs, "applicattion/pdf");
+            }
+            return Content("ok");
+
+        }
+        struct strHorarioTutor
         {
             public int Id { get; set; }
             public int? IdTutor { get; set; }
@@ -654,7 +643,7 @@ namespace GoodDriving.Controllers
             public string? Hora { get; set; }
             public int? Cupo { get; set; }
         }
-    
+
         struct strClase
         {
             public int Id { get; set; }
@@ -685,8 +674,7 @@ namespace GoodDriving.Controllers
             public long TelefonoTutor { get; set; }
             public string DireccionTutor { get; set; }
             public string EmailTutor { get; set; }
-
-
+            public string ReportePdf { get; set; }
         }
 
         struct strEstadoClase

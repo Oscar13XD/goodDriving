@@ -17,7 +17,7 @@
     <div class="card mt-2">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
-           REGISTRO DE VEHICULOS
+            REGISTRO DE VEHICULOS
         </div>
         <div class="card-body">
             <table id="datatablesSimple">
@@ -47,21 +47,19 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-6">
-                                        <div class="col-6">
-                                            <label class="form-label" placeholder="Cantidad">Cantidad</label>
-                                            <input class="form-control" type="text" required name="cantidad" />
-                                        </div>
-                                        <div class="col-6">
-                                            <select class="form-select" required id="marca" name="marca">
-                                                <option selected value="">Marca</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-6">
-                                            <select class="form-select" required id="modelo" name="modelo">
-                                                <option selected value="">Modelo</option>
-                                            </select>
-                                        </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-2 d-flex flex-column justify-content-end">
+                                        <label class="form-label" placeholder="Cantidad">Cantidad</label>
+                                        <input class="form-control" type="text" required name="cantidad" />
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-2 d-flex flex-column justify-content-end">
+                                        <select class="form-select" required id="marca" name="marca">
+                                            <option selected value="">Marca</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-2 d-flex flex-column justify-content-end">
+                                        <select class="form-select" required id="modelo" name="modelo">
+                                            <option selected value="">Modelo</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +74,7 @@
         </div>
     </div>
 
-     <!-- Modal Actualizar Vehiculo -->
+    <!-- Modal Actualizar Vehiculo -->
     <div class="modal fade" id="editarVehiculoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -89,22 +87,20 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-6">
-                                        <input type="hidden" id="idVehiculo" name="idVehiculo" />
-                                        <div class="col-6">
-                                            <label class="form-label" placeholder="Cantidad">Cantidad</label>
-                                            <input class="form-control" type="text" required name="cantidad" id="cantidad" />
-                                        </div>
-                                        <div class="col-6">
-                                            <select class="form-select" required id="marca2" name="marca">
-                                                <option selected value="">Marca</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-6">
-                                            <select class="form-select" required id="modelo2" name="modelo">
-                                                <option selected value="">Modelo</option>
-                                            </select>
-                                        </div>
+                                    <input type="hidden" id="idVehiculo" name="idVehiculo" />
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-2 d-flex flex-column justify-content-end">
+                                        <label class="form-label" placeholder="Cantidad">Cantidad</label>
+                                        <input class="form-control" type="text" required name="cantidad" id="cantidad" />
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-2 d-flex flex-column justify-content-end">
+                                        <select class="form-select" required id="marca2" name="marca">
+                                            <option selected value="">Marca</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-2 d-flex flex-column justify-content-end">
+                                        <select class="form-select" required id="modelo2" name="modelo">
+                                            <option selected value="">Modelo</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +222,7 @@
                                 </div>
                             </td>`
                         contador+=1;
-                          
+
                     });
                      $('#tablaVehiculos').html(plantilla);
                      dataTable();
@@ -295,7 +291,7 @@
             });
             e.preventDefault();
         });
-         
+
         $(document).on('click','.eliminar', function(){
             var element=$(this)[0].parentElement.parentElement.parentElement;
             //console.log(element);
