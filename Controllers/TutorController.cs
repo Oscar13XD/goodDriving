@@ -6,6 +6,7 @@ using Syncfusion.DocIO;
 using Syncfusion.DocIO.DLS;
 using Syncfusion.DocIORenderer;
 using Syncfusion.Pdf;
+using Syncfusion.Pdf.Parsing;
 using System.Net;
 using System.Net.Mail;
 
@@ -524,13 +525,13 @@ namespace GoodDriving.Controllers
                     WTextRange recomendacionesRange = recomendaciones.GetAsOneRange();
                     recomendacionesRange.Text = Recomendaciones;
 
-                    Directory.CreateDirectory(Path.GetFullPath(@"FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento));
+                    Directory.CreateDirectory(Path.GetFullPath(@"wwwroot/FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento));
 
                     using (DocIORenderer renderer = new DocIORenderer())
                     {
                         using (PdfDocument pdfDocument = renderer.ConvertToPDF(document))
                         {
-                            using (FileStream outputStream = new FileStream(Path.GetFullPath(@"FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento + "/PruebaGooddriving.pdf"), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                            using (FileStream outputStream = new FileStream(Path.GetFullPath(@"wwwroot/FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento + "/PruebaGooddriving.pdf"), FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                             {
                                 pdfDocument.Save(outputStream);
                             }
@@ -615,21 +616,22 @@ namespace GoodDriving.Controllers
         [HttpGet]
         public async Task<IActionResult> DescargarReporte(string pdf)
         {
-            
-            //File(Path.GetFullPath(@"" + pdf + "", "application/pdf"), "PruebaGooddriving.pdf");
-            /*using (FileStream outputFileStream = System.IO.File.Create(Path.GetFullPath(@"../../../Result.docx")))
-            {
-                outputFileStream.Flush();
-                //Saves the Word document to file stream.
-                document.Save(outputFileStream, FormatType.Docx);
-            }*/
-            if(System.IO.File.Exists(Path.GetFullPath(@"" + pdf + "", "application/pdf")))
-            {
-                FileStream fs = new FileStream(Path.GetFullPath(@"" + pdf + "", "application/pdf"), FileMode.Open);
-                File(fs, "applicattion/pdf");
-            }
-            return Content("ok");
+            //Load the PDF document
+            FileStream docStream = new FileStream(Path.GetFullPath(@"" + pdf + ""), FileMode.Open, FileAccess.Read);
+            PdfLoadedDocument loadedDocument = new PdfLoadedDocument(docStream);
+            MemoryStream stream = new MemoryStream();
+            loadedDocument.Save(stream);
 
+            //If the position is not set to '0' then the PDF will be empty.
+            stream.Position = 0;
+            //Close the document.
+            loadedDocument.Close(true);
+            //Defining the ContentType for pdf file.
+            string contentType = "application/pdf";
+            //Define the file name.
+            string fileName = "PruebaGooddriving.pdf";
+            //Creates a FileContentResult object by using the file contents, content type, and file name.
+            return File(stream, contentType, fileName);
         }
         struct strHorarioTutor
         {
