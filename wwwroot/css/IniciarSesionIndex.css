@@ -12,20 +12,17 @@
 }
 
 .contenedor form {
-    padding:60px 100px;
+    padding:60px;
     background-color: #9BECEF;
     border: 2px solid #000000;
-    width: 543px;
 }
 
 .titulo {
     color: #47525E;
     font-family: Berkshire Swash;
     font-size: 40px;
-    line-height: 51px;
     width: 100%;
     text-align: center;
-    margin-bottom:40px;
 }
 
 .subtitulo {

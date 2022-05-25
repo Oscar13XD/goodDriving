@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="~/css/IniciarSesionIndex.css" asp-append-version="true" />
 </head>
 <body>
-    <div class="contenedor">
-        <form id="iniciarSesion">
+    <div class="contenedor row">
+        <form id="iniciarSesion" class="col-xs-12 col-sm-12 col-md-8 col-lg-5 col-xl-4">
             <div class="titulo">Iniciar Sesión</div>
             <div class="mb-3">
                 <input type="email" class="form-control" required aria-describedby="emailHelp" placeholder="Correo" name="email">
@@ -21,8 +21,6 @@
             <button type="submit" class="ingresar">Ingresar</button>
         </form>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     @section Scripts{
     <script>
         $('#iniciarSesion').submit(function(e){

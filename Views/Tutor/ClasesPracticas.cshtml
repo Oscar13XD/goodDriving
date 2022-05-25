@@ -31,8 +31,8 @@
                 </table>
             </div>
         </div>
-        <div id ="pdf">
-            <!--<iframe style="width:100%; height:100vh;" type="application/pdf" src="~/FormatoPrueba/DocumentosPruebaPDF/11374888/PruebaGooddriving.pdf">--></iframe>
+        <div class="mt-4">
+            <iframe id="pdf" type="application/pdf"></iframe>
         </div>
             <!--<iframe src="../../FormatoPrueba/DocumentosPruebaPDF/11374888/PruebaGooddriving.pdf"></iframe>-->
         <!-- Modal -->
@@ -300,7 +300,7 @@
                 data: {id:id},
                 success: function(respuesta){
                     var Clases= respuesta.clases;
-                    console.log(Clases);
+                    //console.log(Clases);
                     var plantilla ='';
                     var contador=1;
                     var color='';
@@ -406,11 +406,9 @@
             //console.log(element);
             var pdf=$(element).attr('reportePDF');
             console.log(pdf);
-            
-            plantilla='';
-            plantilla+=`<iframe style="width:100%; height:100vh;" type="application/pdf" src="~/`+ pdf + `"></iframe>`
-            console.log(plantilla);
-            $('#pdf').html(plantilla);
+            $('#pdf').prop('style', 'width:100%; height:100vh;');
+            $('#pdf').prop('src', '/../'+pdf+'');
+
         });
 
         $('#enviarcuestionario').submit(function(e){

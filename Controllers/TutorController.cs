@@ -479,7 +479,7 @@ namespace GoodDriving.Controllers
                     break;
             }
 
-            using (FileStream fileStreamPath = new FileStream(Path.GetFullPath(@"FormatoPrueba/formatoPrueba.docx"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream fileStreamPath = new FileStream(Path.GetFullPath(@"wwwroot/FormatoPrueba/formatoPrueba.docx"), FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 using (WordDocument document = new WordDocument(fileStreamPath, FormatType.Automatic))
                 {
@@ -539,8 +539,8 @@ namespace GoodDriving.Controllers
                     }
                 }
             }
-            bool correo = SendEmail(Usuario);
-            if (correo)
+            string correo = SendEmail(Usuario);
+            if (correo == "ok")
             {
                 try
                 {
@@ -556,18 +556,18 @@ namespace GoodDriving.Controllers
 
                 }
             }
-            return Content("no se envio");
+            return Content(correo);
         }
 
-        private bool SendEmail(Usuario Usuario)
+        private string SendEmail(Usuario Usuario)
         {
-            //string Destinatario = Usuario.Email;
+            string Destinatario = Usuario.Email.ToString();
             //string Destinatario = "solanyimilena97@gmail.com";
-            string Destinatario = "hernandezmahechaoscar0@gmail.com";
+            //string Destinatario = "hernandezmahechaoscar0@gmail.com";
             //string urlDomain = "http://localhost:5204/";
             string EmailOrigen = "gooddriving2022@gmail.com";
             string Password = "proyecto2022*";
-            Attachment Archivo = new Attachment(Path.GetFullPath(@"FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento + "/PruebaGooddriving.pdf"));
+            Attachment Archivo = new Attachment(Path.GetFullPath(@"wwwroot/FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento + "/PruebaGooddriving.pdf"));
             //FileStream outputFileStream = new FileStream(Path.GetFullPath(@"FormatoPrueba/Result.docx"), FileMode.Create, FileAccess.ReadWrite);
             //NOMBRE MENSAJE
             string Nombre = "Good Driving";
@@ -603,13 +603,13 @@ namespace GoodDriving.Controllers
             {
                 client.Send(mail);
                 client.Dispose();
-                return true;
+                return "ok";
             }
             catch (Exception ex)
             {
                 //ENVIAMOS POR CORREO MENSAJES DE ERROR
-                Console.WriteLine(ex.ToString());
-                return false;
+                return ex.ToString();
+                
             }
         }
 

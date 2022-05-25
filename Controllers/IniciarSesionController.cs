@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
@@ -201,14 +202,14 @@ namespace GoodDriving.Controllers
                 {
                     return Content(ex.Message);
                 }
-                bool enviado = SendEmail(email, token);
-                if (enviado)
+                string enviado = SendEmail(email, token);
+                if (enviado=="ok")
                 {
                     return Content("correo enviado");
                 }
                 else
                 {
-                    return Content("correo no enviado");
+                    return Content(enviado);
                 }
 
             }
@@ -275,9 +276,9 @@ namespace GoodDriving.Controllers
 
         #endregion
 
-        private bool SendEmail(string Destinatario, string token)
+        private string SendEmail(string Destinatario, string token)
         {
-            string urlDomain = "http://localhost:5204/";
+            string urlDomain = "http://www.goodDriving.somee.com/";
             string EmailOrigen = "gooddriving2022@gmail.com";
             string Password = "proyecto2022*";
             string url = urlDomain + "IniciarSesion/Recuperar?token=" + token;
@@ -316,13 +317,12 @@ namespace GoodDriving.Controllers
             {
                 client.Send(mail);
                 client.Dispose();
-                return true;
+                return "ok";
             }
             catch (Exception ex)
             {
                 //ENVIAMOS POR CORREO MENSAJES DE ERROR
-                Console.WriteLine(ex.ToString());
-                return false;
+                return ex.ToString();
             }
 
             /*MailMessage oMailMessage = new MailMessage(EmailOrigen, EmailDestino, "Recuperación de contraseña",
