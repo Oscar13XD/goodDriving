@@ -539,7 +539,7 @@ namespace GoodDriving.Controllers
                     }
                 }
             }
-            string correo = SendEmail(Usuario);
+            string correo = SendEmail(Usuario.NoDocumento, Usuario.Email);
             if (correo == "ok")
             {
                 try
@@ -559,15 +559,15 @@ namespace GoodDriving.Controllers
             return Content(correo);
         }
 
-        private string SendEmail(Usuario Usuario)
+        public static string SendEmail(string NoDocumento, string Email)
         {
-            string Destinatario = Usuario.Email.ToString();
+            string Destinatario = Email;
             //string Destinatario = "solanyimilena97@gmail.com";
             //string Destinatario = "hernandezmahechaoscar0@gmail.com";
             //string urlDomain = "http://localhost:5204/";
             string EmailOrigen = "gooddriving2022@gmail.com";
             string Password = "proyecto2022*";
-            Attachment Archivo = new Attachment(Path.GetFullPath(@"wwwroot/FormatoPrueba/DocumentosPruebaPDF/" + Usuario.NoDocumento + "/PruebaGooddriving.pdf"));
+            Attachment Archivo = new Attachment(Path.GetFullPath(@"wwwroot/FormatoPrueba/DocumentosPruebaPDF/" + NoDocumento + "/PruebaGooddriving.pdf"));
             //FileStream outputFileStream = new FileStream(Path.GetFullPath(@"FormatoPrueba/Result.docx"), FileMode.Create, FileAccess.ReadWrite);
             //NOMBRE MENSAJE
             string Nombre = "Good Driving";

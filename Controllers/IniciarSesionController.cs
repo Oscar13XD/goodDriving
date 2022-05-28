@@ -276,7 +276,7 @@ namespace GoodDriving.Controllers
 
         #endregion
 
-        private string SendEmail(string Destinatario, string token)
+        public static string SendEmail(string Destinatario, string token)
         {
             string urlDomain = "http://www.goodDriving.somee.com/";
             string EmailOrigen = "gooddriving2022@gmail.com";
