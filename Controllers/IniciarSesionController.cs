@@ -15,9 +15,9 @@ namespace GoodDriving.Controllers
     public class IniciarSesionController : Controller
     {
 
-        private readonly goodDrivingContext _context;
+        private readonly SCHEDULE_CLASSContext _context;
 
-        public IniciarSesionController(goodDrivingContext context)
+        public IniciarSesionController(SCHEDULE_CLASSContext context)
         {
             _context = context;
         }
@@ -276,7 +276,7 @@ namespace GoodDriving.Controllers
 
         #endregion
 
-        private string SendEmail(string Destinatario, string token)
+        public static string SendEmail(string Destinatario, string token)
         {
             string urlDomain = "http://www.goodDriving.somee.com/";
             string EmailOrigen = "gooddriving2022@gmail.com";

@@ -8,9 +8,9 @@ namespace GoodDriving.Controllers
     [Authorize(Roles = "USUARIO")]
     public class UsuarioController : Controller
     {
-        private readonly goodDrivingContext _context;
+        private readonly SCHEDULE_CLASSContext _context;
 
-        public UsuarioController(goodDrivingContext context)
+        public UsuarioController(SCHEDULE_CLASSContext context)
         {
             _context = context;
         }

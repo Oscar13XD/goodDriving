@@ -10,9 +10,9 @@ namespace GoodDriving.Controllers
     [Authorize(Roles = "ADMINISTRADOR")]
     public class AdministradorController : Controller
     {
-        private readonly goodDrivingContext _context;
+        private readonly SCHEDULE_CLASSContext _context;
 
-        public AdministradorController(goodDrivingContext context)
+        public AdministradorController(SCHEDULE_CLASSContext context)
         {
             _context = context;
         }
@@ -637,7 +637,7 @@ namespace GoodDriving.Controllers
                 str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
                 str.IdTipo= clase.IdTipo;
                 str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
-                str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
+                str.FechaSolicitud = clase.FechaSolicitud?.ToShortDateString();
                 str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
                 strClases.Add(str);
             }
@@ -671,7 +671,7 @@ namespace GoodDriving.Controllers
                 str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
                 str.IdTipo = clase.IdTipo;
                 str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
-                str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
+                str.FechaSolicitud = clase.FechaSolicitud?.ToShortDateString();
                 str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
 
                 //DATOS DEL VEHICULO
@@ -718,7 +718,7 @@ namespace GoodDriving.Controllers
                     str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
                     str.IdTipo = clase.IdTipo;
                     str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
-                    str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
+                    str.FechaSolicitud = clase.FechaSolicitud?.ToShortDateString();
                     str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
 
                     //DATOS DE USUARIO
