@@ -364,7 +364,7 @@ namespace GoodDriving.Controllers
                 Byte[] hmBytes = hmac.ComputeHash(encoder.GetBytes(valor));
                 hash = ToHexString(hmBytes);
             }
-            return hash.ToUpper();
+            return hash.ToUpper(); 
         }
     }
 }

@@ -19,6 +19,7 @@ namespace GoodDriving.Controllers
 
         //SECCION DE VISTAS
 
+       
         public IActionResult Index()
         {
             return View();

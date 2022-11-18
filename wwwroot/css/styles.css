@@ -3204,6 +3204,7 @@ textarea.form-control-lg {
   background-color: #bb2d3b;
   border-color: #b02a37;
 }
+
 .btn-check:focus + .btn-danger, .btn-danger:focus {
   color: #fff;
   background-color: #bb2d3b;
@@ -3495,6 +3496,7 @@ textarea.form-control-lg {
 .btn-link:disabled, .btn-link.disabled {
   color: #6c757d;
 }
+    
 
 .btn-lg, .btn-group-lg > .btn {
   padding: 0.5rem 1rem;
@@ -4497,6 +4499,7 @@ textarea.form-control-lg {
 .navbar-dark .navbar-nav .nav-link {
   color: rgba(255, 255, 255, 0.55);
 }
+       
 .navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
   color: rgba(255, 255, 255, 0.75);
 }
@@ -7097,6 +7100,7 @@ textarea.form-control-lg {
   justify-content: flex-start !important;
 }
 
+    
 .justify-content-end {
   justify-content: flex-end !important;
 }
@@ -8114,6 +8118,7 @@ textarea.form-control-lg {
     gap: 3rem !important;
   }
 
+  
   .justify-content-sm-start {
     justify-content: flex-start !important;
   }
@@ -9303,6 +9308,7 @@ textarea.form-control-lg {
   .float-lg-none {
     float: none !important;
   }
+      
 
   .d-lg-inline {
     display: inline !important;
@@ -10082,6 +10088,7 @@ textarea.form-control-lg {
   .justify-content-xl-between {
     justify-content: space-between !important;
   }
+
 
   .justify-content-xl-around {
     justify-content: space-around !important;
