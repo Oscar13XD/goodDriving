@@ -15,9 +15,9 @@ namespace GoodDriving.Controllers
     public class IniciarSesionController : Controller
     {
 
-        private readonly goodDrivingContext _context;
+        private readonly SCHEDULE_CLASSContext _context;
 
-        public IniciarSesionController(goodDrivingContext context)
+        public IniciarSesionController(SCHEDULE_CLASSContext context)
         {
             _context = context;
         }

@@ -12,7 +12,7 @@ namespace GoodDriving.Models
         public int? IdVehiculo { get; set; }
         public int? IdLicencia { get; set; }
         public int? IdTipo { get; set; }
-        public DateTime FechaSolicitud { get; set; }
+        public DateTime? FechaSolicitud { get; set; }
         public DateTime? FechaFinalizacion { get; set; }
         public string? ReportePdf { get; set; }
 

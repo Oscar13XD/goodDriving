@@ -15,9 +15,9 @@ namespace GoodDriving.Controllers
     [Authorize(Roles = "TUTOR")]
     public class TutorController : Controller
     {
-        private readonly goodDrivingContext _context;
+        private readonly SCHEDULE_CLASSContext _context;
 
-        public TutorController(goodDrivingContext context)
+        public TutorController(SCHEDULE_CLASSContext context)
         {
             _context = context;
         }
@@ -79,7 +79,7 @@ namespace GoodDriving.Controllers
                 str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
                 str.IdTipo = clase.IdTipo;
                 str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
-                str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
+                str.FechaSolicitud = clase.FechaSolicitud?.ToShortDateString();
                 str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
                 strClases.Add(str);
             }
@@ -130,7 +130,7 @@ namespace GoodDriving.Controllers
                     str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
                     str.IdTipo = clase.IdTipo;
                     str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
-                    str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
+                    str.FechaSolicitud = clase.FechaSolicitud?.ToShortDateString();
                     str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
 
                     //DATOS DE USUARIO
@@ -233,7 +233,7 @@ namespace GoodDriving.Controllers
                 str.CategoriaLicencia = clase.IdLicenciaNavigation.Categoria;
                 str.IdTipo = clase.IdTipo;
                 str.DescripcionEstado = clase.IdEstadoNavigation.Descripcion;
-                str.FechaSolicitud = clase.FechaSolicitud.ToShortDateString();
+                str.FechaSolicitud = clase.FechaSolicitud?.ToShortDateString();
                 str.FechaFinalizacion = clase.FechaFinalizacion.ToString();
                 str.ReportePdf = clase.ReportePdf;
 
